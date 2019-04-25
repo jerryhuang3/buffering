@@ -13,4 +13,6 @@ Install the dependencies and start the server.
 npm install
 npm run dev
 
+go to http://localhost:1234
+
 ```

@@ -10,10 +10,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-stage-0": "^7.0.0",
+    "node-sass": "^4.11.0",
     "parcel": "^1.12.3",
-    "prettier": "^1.17.0"
+    "prettier": "^1.17.0",
+    "sass": "^1.19.0"
   },
   "dependencies": {
+    "express": "^4.16.4",
     "moment-es6": "^1.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

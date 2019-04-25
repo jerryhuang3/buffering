@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 import moment from "moment-es6";
 
 const steps = {
@@ -59,4 +58,4 @@ class App extends Component {
   }
 }
 
-render(React.createElement(App), document.getElementById("root"));
+export default App
