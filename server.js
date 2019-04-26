@@ -9,7 +9,7 @@ const ENV         = process.env.ENV || "development";
 // import express and related libraries
 const express     = require("express");
 const bodyParser  = require("body-parser");
-const sass        = require("node-sass-middleware");
+//const sass        = require("node-sass-middleware");
 const path        = require('path');
 //import helpers
 const queries     = require('./db/queries');
@@ -20,6 +20,8 @@ app.use('/', express.static(path.join(__dirname, 'dist')));
 
 
 
-app.listen(port, () =>
-    console.log(`Server listening on ${port}`)
+app.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`)
+    queries.testIsWorking().then( result => console.log(result));
+  }
 );
