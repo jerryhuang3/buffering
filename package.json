@@ -1,20 +1,25 @@
 {
-  "name": "stepcounter",
+  "name": "buffering",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "parcel build ./src/index.html && node server.js",
     "nodemon": "nodemon server.js",
-    "parcel": "parcel watch ./index.html",
+    "parcel": "parcel watch ./src/index.html",
     "dev": "concurrently --kill-others \"npm run parcel\" \"npm run nodemon\""
   },
-  "author": "",
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "author": "Aleksey, Matt, Jerry",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-stage-0": "^7.0.0",
     "concurrently": "^4.1.0",
