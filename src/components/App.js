@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment-es6";
 
+// Should probably move this somewhere else
 const steps = {
   method: "POST",
   body: JSON.stringify({
@@ -19,7 +20,6 @@ const steps = {
   headers: {
     "Content-Type": "application/json;encoding=utf-8",
     Host: "www.googleapis.com",
-    "Content-length": 296,
     Authorization:
       "Bearer ya29.Glv2Bh1rvodtRGlZtNQ0BAb6KymEqhM3VB_0XRZ49OVuymz0DNH9e5AQnCjlu1HN7e0hib2NgnrPNBc9udlqSe0jBUq_vSZNNa30MXxgOT4nc4d1sNflG_CuEvNt"
   }
@@ -48,7 +48,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.data)
     return (
       <div>
         <h1>Daily Step Total</h1> <hr />
