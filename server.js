@@ -22,6 +22,7 @@ app.use('/', express.static(path.join(__dirname, 'dist')));
 
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`)
-    queries.testIsWorking().then( result => console.log(result));
+    queries.testIsWorking().then( result => console.log(result))
+    queries.getUserProfile("Good").then( result => console.log(result));
   }
 );

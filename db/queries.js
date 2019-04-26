@@ -9,8 +9,17 @@ function testIsWorking () {
     ]);
 }
 
+function getUserProfile(username) {
+  return Promise.all([
+    knex('users').where({
+      username: username
+    }).select()
+  ])
+}
+
 module.exports = {
-  testIsWorking: testIsWorking
+  testIsWorking: testIsWorking,
+  getUserProfile: getUserProfile
 }
 
 // DATABASE STRUCTURE
@@ -18,7 +27,7 @@ module.exports = {
 
 // USERS
 // -----------
-// id
+// id --> auto-incrementing; dont set when adding new user
 // username
 // email
 // password_digest
