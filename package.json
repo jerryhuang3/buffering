@@ -32,6 +32,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "express": "^4.16.4",
+    "jquery": "^3.4.0",
     "moment-es6": "^1.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
