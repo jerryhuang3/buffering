@@ -90,29 +90,76 @@ function PrivateRoute({ component: Component, ...rest }) {
   }
 
 class Login extends Component {
-    state = { redirectToReferrer: false };
-
-    login = () => {
-      fakeAuth.authenticate(() => {
-        this.setState({ redirectToReferrer: true });
-      });
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirectToReferrer: false,
+      username: ""
     };
+  }
 
-    render() {
-      let { from } = this.props.location.state || { from: { pathname: "/" } };
-      let { redirectToReferrer } = this.state;
+  login = () => {
+    fakeAuth.authenticate(() => {
+      this.setState({ redirectToReferrer: true });
+    });
+  };
 
-      if (redirectToReferrer) return <Redirect to={from} />;
+  handleInputChange = (event) => {
+    const { value, name } = event.target;
+    this.setState({
+      [name]: value
+    });
+  }
 
-      return (
-        <div>
-          <form>
-          <p>You must log in to view the page at {from.pathname}</p>
-          <button onClick={this.login}>Log in</button>
-          </form>
-        </div>
-      );
-    }
+  onSubmit = (event) => {
+    event.preventDefault();
+    fetch('/api/authenticate', {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if (res.status === 200) {
+        return res.json();
+      } else {
+        const error = new Error(resJSON.error);
+        throw error;
+      }
+    })
+    .then( resJSON => {
+      this.props.history.push('/');
+      console.log(resJSON);
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Couldn't find this username");
+    });
+  }
+
+  render() {
+    let { from } = this.props.location.state || { from: { pathname: "/" } };
+    let { redirectToReferrer } = this.state;
+
+    if (redirectToReferrer) return <Redirect to={from} />;
+
+    return (
+      <form onSubmit={this.onSubmit}>
+        <p>You must log in to view the page at {from.pathname}</p>
+
+        <input
+          name="username"
+          placeholder="Enter Username"
+          value={this.state.username}
+          onChange={this.handleInputChange}
+          required
+        />
+
+        <input type="submit" value="Log In"/>
+      </form>
+    );
+  }
   }
 
 

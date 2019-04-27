@@ -11,10 +11,12 @@ function testIsWorking () {
 
 function getUserProfile(username) {
   return Promise.all([
-    knex('users').where({
+    knex('users')
+    .where({
       username: username
-    }).select()
-  ])
+    })
+    .select()
+  ]);
 }
 
 module.exports = {
