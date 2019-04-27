@@ -8,34 +8,34 @@ import {
 } from 'react-router-dom';
 
 function App(){
-    return (
-        <Router>
-            <AuthButton />
-            <div>
-                <h1>Welcome</h1>
-                <Link to="/login"> Log In</Link> |
-                <Link to="/signup"> Sign Up</Link> |
-                <Link to="/profile"> Profile</Link> |
-                <Link to="/setgoals"> Set Goals</Link> |
-            </div>
-            <Route path="/login" component={Login}/>
-            <Route path="/signup" component={SignUp}/>
-            <PrivateRoute path="/profile" component={Profile}/>
-            <PrivateRoute path="/setgoals" component={SetGoals}/>
-        </Router>
-    )
+  return (
+      <Router>
+          <AuthButton />
+          <div>
+              <h1>Welcome</h1>
+              <Link to="/login"> Log In</Link> |
+              <Link to="/signup"> Sign Up</Link> |
+              <Link to="/profile"> Profile</Link> |
+              <Link to="/setgoals"> Set Goals</Link> |
+          </div>
+          <Route path="/login" component={Login}/>
+          <Route path="/signup" component={SignUp}/>
+          <PrivateRoute path="/profile" component={Profile}/>
+          <PrivateRoute path="/setgoals" component={SetGoals}/>
+      </Router>
+  )
 }
 
 const fakeAuth = {
-    isAuthenticated: false,
-    authenticate (callback) {
-        this.isAuthenticated = true;
-        setTimeout(callback, 250);
-    },
-    signout(callback) {
-        this.isAuthenticated = false;
-        setTimeout(callback, 250);
-    }
+  isAuthenticated: false,
+  authenticate (callback) {
+      this.isAuthenticated = true;
+      setTimeout(callback, 250);
+  },
+  signout(callback) {
+      this.isAuthenticated = false;
+      setTimeout(callback, 250);
+  }
 };
 
 const AuthButton = withRouter(
