@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { 
+import {
     BrowserRouter as Router,
     Route,
     Link,
@@ -18,10 +18,10 @@ function App(){
                 <Link to="/profile"> Profile</Link> |
                 <Link to="/setgoals"> Set Goals</Link> |
             </div>
-            <Route path="/login" component={Login}/>            
-            <Route path="/signup" component={SignUp}/>            
-            <PrivateRoute path="/profile" component={Profile}/>            
-            <PrivateRoute path="/setgoals" component={SetGoals}/>            
+            <Route path="/login" component={Login}/>
+            <Route path="/signup" component={SignUp}/>
+            <PrivateRoute path="/profile" component={Profile}/>
+            <PrivateRoute path="/setgoals" component={SetGoals}/>
         </Router>
     )
 }
@@ -30,11 +30,11 @@ const fakeAuth = {
     isAuthenticated: false,
     authenticate (callback) {
         this.isAuthenticated = true;
-        setTimeout(callback, 250); 
+        setTimeout(callback, 250);
     },
     signout(callback) {
         this.isAuthenticated = false;
-        setTimeout(callback, 250); 
+        setTimeout(callback, 250);
     }
 };
 
@@ -91,23 +91,25 @@ function PrivateRoute({ component: Component, ...rest }) {
 
 class Login extends Component {
     state = { redirectToReferrer: false };
-  
+
     login = () => {
       fakeAuth.authenticate(() => {
         this.setState({ redirectToReferrer: true });
       });
     };
-  
+
     render() {
       let { from } = this.props.location.state || { from: { pathname: "/" } };
       let { redirectToReferrer } = this.state;
-  
+
       if (redirectToReferrer) return <Redirect to={from} />;
-  
+
       return (
         <div>
+          <form>
           <p>You must log in to view the page at {from.pathname}</p>
           <button onClick={this.login}>Log in</button>
+          </form>
         </div>
       );
     }
