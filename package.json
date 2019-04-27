@@ -34,7 +34,8 @@
     "express": "^4.16.4",
     "jquery": "^3.4.0",
     "moment-es6": "^1.0.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-google-login": "^5.0.4"
   }
 }
