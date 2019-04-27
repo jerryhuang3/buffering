@@ -19,6 +19,12 @@ function getUserProfile(username) {
   ]);
 }
 
+function checkGoogleIdExists(googleId) {
+  return Promise.all([
+    knex
+  ])
+}
+
 module.exports = {
   testIsWorking: testIsWorking,
   getUserProfile: getUserProfile
