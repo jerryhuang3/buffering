@@ -129,7 +129,10 @@ class Login extends Component {
       }
     })
     .then( resJSON => {
-      this.props.history.push('/');
+      // not secure
+      this.login();
+      this.setState({ profileInfo: resJSON });
+      this.props.history.push('/profile');
       console.log(resJSON);
     })
     .catch(err => {
