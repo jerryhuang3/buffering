@@ -39,55 +39,55 @@ const fakeAuth = {
 };
 
 const AuthButton = withRouter(
-    ({ history }) =>
-      fakeAuth.isAuthenticated ? (
-        <p>
-          Welcome!{" "}
-          <button
-            onClick={() => {
-              fakeAuth.signout(() => history.push("/"));
-            }}
-          >
-            Sign out
-          </button>
-        </p>
-      ) : (
-        <p>You are not logged in.</p>
-      )
-  );
+  ({ history }) =>
+    fakeAuth.isAuthenticated ? (
+      <p>
+        Welcome!{" "}
+        <button
+          onClick={() => {
+            fakeAuth.signout(() => history.push("/"));
+          }}
+        >
+          Sign out
+        </button>
+      </p>
+    ) : (
+      <p>You are not logged in.</p>
+    )
+);
 
 
 function SignUp(){
-    return <h3>Signed Up</h3>
+  return <h3>Signed Up</h3>
 }
 
 function Profile(){
-    return <h3>Profile</h3>
+  return <h3>Profile</h3>
 }
 
 function SetGoals(){
-    return <h3>Set Goals</h3>
+  return <h3>Set Goals</h3>
 }
 
 function PrivateRoute({ component: Component, ...rest }) {
-    return (
-      <Route
-        {...rest}
-        render={props =>
-          fakeAuth.isAuthenticated ? (
-            <Component {...props} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location }
-              }}
-            />
-          )
-        }
-      />
-    );
-  }
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        fakeAuth.isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
 
 class Login extends Component {
   constructor(props) {
@@ -163,7 +163,7 @@ class Login extends Component {
       </form>
     );
   }
-  }
+}
 
 
 export default App;
