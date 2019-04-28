@@ -38,17 +38,25 @@ app.post('/api/authenticate', function(req, res) {
   });
 });
 
-app.get('/users/:userId', function(req, res) {
-    User.find(req.params.userId).then(function(user) {
-      res.json({ user: user });
-  });
+
+app.post('/test/newlogin', function(req, res) {
+  console.log("test route happening");
+  const {googleId, name, email} = req.body;
+  console.log(googleId, name, email);
+  queries.insertUserIfNotFound(googleId, name, email)
+    .then( () => console.log("finished inserting") )
+    .then( () => res.sendStatus(200))
+    //.catch( (err) => res.sendStatus(402));
 });
+
+//test with
+//curl -X POST http://localhost:3000/test/newlogin -H 'Content-Type: application/json' -d '{"googleId" : 15, "name": "curlName", "email": "bullshitGmail" }'
+
 
 
 
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`)
-    // queries.testIsWorking().then( result => console.log(result))
-    // queries.getUserProfile("Good").then( result => console.log(result));
+    queries.checkGoogleIdExists(1).then( result => console.log(result));
   }
 );

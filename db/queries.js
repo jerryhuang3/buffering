@@ -21,14 +21,42 @@ function getUserProfile(username) {
 
 function checkGoogleIdExists(googleId) {
   return Promise.all([
-    knex
+    knex('google_users')
+    .where({
+      google_id: googleId
+    })
+    .select('google_id')
   ])
+  .then( result => {
+    if (result[0][0]) {
+      return true
+    } else {
+      return false
+    }
+  });
+}
+
+function insertUserIfNotFound(googleId, name, email) {
+  return checkGoogleIdExists(googleId).then( idExists => {
+    if (!idExists) {
+      return Promise.all([
+        knex('google_users').insert({
+        google_id: googleId,
+        name: name,
+        email: email
+        // currency: currency
+        })
+      ])
+    }
+  })
 }
 
 module.exports = {
   testIsWorking: testIsWorking,
-  getUserProfile: getUserProfile
-}
+  getUserProfile: getUserProfile,
+  checkGoogleIdExists: checkGoogleIdExists,
+  insertUserIfNotFound: insertUserIfNotFound
+};
 
 // DATABASE STRUCTURE
 // ==================
