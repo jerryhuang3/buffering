@@ -95,4 +95,4 @@ app.post('/test/googlelogin', function(req, res) {
   .catch( (err) => res.sendStatus(402));
 });
 
-// curl -X POST http://localhost:3000/test/googlelogin -H 'Content-Type: application/json' -d '{"googleId" : 15, "name": "curlName", "email": "bullshitGmail", "token": "s7f8ehfe8s883u8" }'
+// curl -X POST http://localhost:3000/test/googlelogin -H 'Content-Type: application/json' -d '{"googleId" : 150, "name": "user???", "email": "bullshitGmail", "token": "222sss" }'
