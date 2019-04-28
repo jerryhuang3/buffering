@@ -152,6 +152,19 @@ class Login extends Component {
       <div>
       <Google />
       </div>
+      // <form onSubmit={this.onSubmit}>
+      //   <p>You must log in to view the page {from.pathname}</p>
+
+      //   <input
+      //     name="username"
+      //     placeholder="Enter Username"
+      //     value={this.state.username}
+      //     onChange={this.handleInputChange}
+      //     required
+      //   />
+
+      //   <input type="submit" value="Log In"/>
+      // </form>
     );
     
   }

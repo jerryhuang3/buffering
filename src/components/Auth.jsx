@@ -59,6 +59,14 @@ class Google extends Component {
     console.log(response);
     let code = { authkey: response.code };
   
+    // const user = {
+    //   name: response.profileObj.name,
+    //   email: response.profileObj.email,
+    //   user_id: response.profileObj.googleId
+    // };
+    // let name = response.w3.ig;
+
+    // steps.headers.Authorization = `Bearer ${response.Zi.access_token}`;
     fetch("/login", {
       method: "POST",
       body: JSON.stringify(response),
