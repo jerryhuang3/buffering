@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-const express = require('express');
-const path = require('path'); 
-const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
-=======
 "use strict";
->>>>>>> 47c13c74997419383f35cd1c17a9052e6819f73b
 
 require('dotenv').config();
 
@@ -20,6 +13,8 @@ const bodyParser  = require("body-parser");
 const path        = require('path');
 //import helpers
 const queries     = require('./db/queries');
+// for fetching refresh and access tokens
+const fetch = require('node-fetch');
 
 // iniitalize express
 const app = express();
@@ -28,21 +23,25 @@ app.use(bodyParser.json());
 app.use('/', express.static(path.join(__dirname, 'dist')));
 
 // routes
-app.post('/api/authenticate', function(req, res) {
-  const username = req.body.username;
-  queries.getUserProfile(username)
-  .then( function(value) {
-    if (value[0].length > 0) {
-      console.log(value[0][0]);
-      res.json(value[0][0]);
-    } else {
-      res.sendStatus(401);
-    }
+app.use('/login', function(req, res) {
+  console.log("trying to get from client", req.body);
+
+  const data = {
+    code: req.body.code,
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+    redirect_uri: process.env.RED_URL,
+    access_type: 'offline',
+    grant_type: 'authorization_code'
+  }
+  console.log(data);
+  fetch('https://www.googleapis.com/oauth2/v4/token', {
+    method: 'post',
+    body: JSON.stringify(data),
+    headers: {'Content-Type': 'application/json'},
   })
-  .catch( err => {
-    console.log("error when getting user profile");
-    console.error(err);
-  });
+    .then(res => res.json())
+    .then(json => console.log(json));
 });
 
 app.get('/users/:userId', function(req, res) {

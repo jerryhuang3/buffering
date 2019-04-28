@@ -35,9 +35,11 @@
     "jquery": "^3.4.0",
     "knex": "^0.16.5",
     "moment-es6": "^1.0.0",
+    "node-fetch": "^2.4.1",
     "pg": "^7.10.0",
-    "react": "^16.8.6",
+    "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-google-login": "^5.0.4",
     "react-router-dom": "^5.0.0"
   }
 }

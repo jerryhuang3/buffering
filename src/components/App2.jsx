@@ -6,6 +6,7 @@ import {
     Redirect,
     withRouter
 } from 'react-router-dom';
+import Google from './Auth.jsx';
 
 function App(){
   return (
@@ -144,24 +145,15 @@ class Login extends Component {
   render() {
     let { from } = this.props.location.state || { from: { pathname: "/" } };
     let { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer) return <Redirect to={from} />;
-
+    console.log(redirectToReferrer);
+    if (redirectToReferrer) 
+      return <Redirect to={from} />;
     return (
-      <form onSubmit={this.onSubmit}>
-        <p>You must log in to view the page at {from.pathname}</p>
-
-        <input
-          name="username"
-          placeholder="Enter Username"
-          value={this.state.username}
-          onChange={this.handleInputChange}
-          required
-        />
-
-        <input type="submit" value="Log In"/>
-      </form>
+      <div>
+      <Google />
+      </div>
     );
+    
   }
 }
 
