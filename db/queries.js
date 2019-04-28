@@ -19,13 +19,100 @@ function getUserProfile(username) {
   ]);
 }
 
+function checkGoogleIdExists(googleId) {
+  return Promise.all([
+    knex('google_users')
+    .where({
+      google_id: googleId
+    })
+    .select('google_id')
+  ])
+  .then( result => {
+    if (result[0][0]) {
+      return true
+    } else {
+      return false
+    }
+  });
+}
+
+function insertUser(googleId, name, email) {
+  return Promise.all([
+    knex('google_users').insert({
+    google_id: googleId,
+    name: name,
+    email: email
+    })
+  ])
+}
+
+function setTokenNewUser(googleId, token) {
+  return Promise.all([
+    knex('temp_info').insert({
+      google_id: googleId,
+      access_token: token
+    })
+  ])
+}
+
+function setTokenExistingUser(googleId, token) {
+  return Promise.all([
+    knex('temp_info')
+      .where('google_id', '=', googleId)
+      .update({
+        access_token: token
+      })
+  ])
+}
+
+function insertUserIfNotFound(googleId, name, email) {
+  return checkGoogleIdExists(googleId).then( idExists => {
+    if (!idExists) {
+      return Promise.all([
+        knex('google_users').insert({
+        google_id: googleId,
+        name: name,
+        email: email
+        // currency: currency
+        })
+      ])
+    }
+  })
+}
+
 module.exports = {
   testIsWorking: testIsWorking,
-  getUserProfile: getUserProfile
-}
+  getUserProfile: getUserProfile,
+  checkGoogleIdExists: checkGoogleIdExists,
+  insertUserIfNotFound: insertUserIfNotFound,
+  insertUser: insertUser,
+  setTokenNewUser: setTokenNewUser,
+  setTokenExistingUser: setTokenExistingUser
+};
 
 // DATABASE STRUCTURE
 // ==================
+
+// GOOGLE_USERS
+// ------------
+// google_id
+// name
+// email
+// wallet_amount
+
+// USER_GOALS
+// ------------
+// day
+// steps_goal
+// google_id
+
+// TEMP_INFO
+// -----------
+// access_token
+// current_status
+// created_at
+// updated_at
+// google_id
 
 // USERS
 // -----------
