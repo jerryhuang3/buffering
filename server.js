@@ -15,6 +15,8 @@ const path        = require('path');
 const queries     = require('./db/queries');
 // for fetching refresh and access tokens
 const fetch = require('node-fetch');
+// decode jwt file from google;
+const jwt = require('jsonwebtoken');
 
 // iniitalize express
 const app = express();
@@ -41,7 +43,13 @@ app.use('/login', function(req, res) {
     headers: {'Content-Type': 'application/json'},
   })
     .then(res => res.json())
-    .then(json => console.log(json));
+    .then(json => {
+
+      const user = jwt.decode(json.id_token);
+      console.log(user);
+    });
+
+    
 });
 
 app.get('/users/:userId', function(req, res) {
