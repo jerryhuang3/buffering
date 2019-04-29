@@ -27,8 +27,8 @@ router.post('/newlogin', function(req, res) {
 
 router.post('/googlelogin', function(req, res) {
   console.log("testing a google user login");
-  const {googleId, name, email, token} = req.body;
-  console.log(googleId, name, email, token);
+  const {googleId, name, email, refreshToken} = req.body;
+  console.log(googleId, name, email, refreshToken);
 
   queries.checkGoogleIdExists(googleId)
   .then( idExists => {
@@ -36,18 +36,18 @@ router.post('/googlelogin', function(req, res) {
       console.log("user was not found and that's fine");
 
       queries.insertUser(googleId, name, email)
-      .then( () => { queries.setTokenNewUser(googleId, token); })
+      .then( () => { queries.setTokenNewUser(googleId, refreshToken); })
       .then( () => { res.sendStatus(200); })
 
     } else {
       console.log("this user exists and that's fine");
 
-      queries.setTokenExistingUser(googleId, token)
+      queries.setTokenExistingUser(googleId, refreshToken)
       .then( () => { res.sendStatus(200) })
     }
   })
   .catch( (err) => res.sendStatus(402));
 });
-// curl -X POST http://localhost:3000/test/googlelogin -H 'Content-Type: application/json' -d '{"googleId" : 150, "name": "user???", "email": "bullshitGmail", "token": "222sss" }'
+// curl -X POST http://localhost:3000/test/googlelogin -H 'Content-Type: application/json' -d '{"googleId" : "382847383748293", "name": "user???", "email": "bullshitGmail", "refreshToken": "223432ss" }'
 
 module.exports =router;

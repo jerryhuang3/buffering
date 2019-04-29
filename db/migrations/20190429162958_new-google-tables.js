@@ -2,7 +2,7 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     // fuck it
-    knex.raw('DROP TABLES')
+    knex.raw('DROP TABLE users, user_goals, test_table, temp_info, standing, progress, google_users, goals CASCADE')
   ])
   .then( function() {
     return Promise.all([
@@ -37,6 +37,6 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-    knex.raw('DROP TABLES')
+    knex.raw('DROP TABLE google_users, tokens, goals CASCADE')
   ]);
 };

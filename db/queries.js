@@ -46,21 +46,21 @@ function insertUser(googleId, name, email) {
   ])
 }
 
-function setTokenNewUser(googleId, token) {
+function setTokenNewUser(googleId, refreshToken) {
   return Promise.all([
-    knex('temp_info').insert({
+    knex('tokens').insert({
       google_id: googleId,
-      access_token: token
+      refresh_token: refreshToken
     })
   ])
 }
 
-function setTokenExistingUser(googleId, token) {
+function setTokenExistingUser(googleId, refreshToken) {
   return Promise.all([
-    knex('temp_info')
+    knex('tokens')
       .where('google_id', '=', googleId)
       .update({
-        access_token: token
+        refresh_token: refreshToken
       })
   ])
 }
