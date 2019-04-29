@@ -36,12 +36,13 @@ function checkGoogleIdExists(googleId) {
   });
 }
 
-function insertUser(googleId, name, email) {
+function insertUser(googleId, name, email, refresh_token) {
   return Promise.all([
     knex('google_users').insert({
     google_id: googleId,
     name: name,
-    email: email
+    email: email,
+    refresh_token: refresh_token
     })
   ])
 }
@@ -50,7 +51,7 @@ function setTokenNewUser(googleId, token) {
   return Promise.all([
     knex('temp_info').insert({
       google_id: googleId,
-      access_token: token
+      refresh_token: token
     })
   ])
 }
