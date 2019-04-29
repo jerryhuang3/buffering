@@ -22,5 +22,5 @@
     }
   ],
   "permissions": ["tabs", "activeTab", "<all_urls>"],
-  "web_accessible_resources": ["./css/test.css"]
+  "web_accessible_resources": ["./css/test.css", "/vendor/geoBootstrap.css"]
 }

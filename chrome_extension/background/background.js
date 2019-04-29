@@ -34,6 +34,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   );
   if (request.greeting == "hello") {
     chrome.tabs.insertCSS(null, { file: "./css/test.css" });
+    chrome.tabs.executeScript(null, { file: "./scriptmods/geo.js" });
 
     sendResponse({ farewell: "goodbye" });
   }
