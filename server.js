@@ -73,42 +73,14 @@ app.use("/login", (req, res) => {
     });
 });
 
-app.use('/token', (req, res) => {
-console.log("/token ROUTE IS RUNNING");
-res.status(200).send({msg: 'this user exists and that\'s fine'})
+// TEST
+const testRoutes = require('./test_routes');
+app.use('/test', testRoutes);
 
-})
-
-app.get('/testroute', (req, res) => {
-  console.log('HI');
-})
-
-//test with
-// curl -X POST http://localhost:3000/test/newlogin -H 'Content-Type: application/json' -d '{"googleId" : 15, "name": "curlName", "email": "bullshitGmail" }'
-
-app.post("/test/googlelogin", function(req, res) {
-  console.log("testing a google user login");
-  const { googleId, name, email, refresh_token } = req.body;
-  console.log(googleId, name, email, refresh_token);
-
-  queries
-    .checkGoogleIdExists(googleId)
-    .then(idExists => {
-      if (!idExists) {
-        console.log("user was not found");
-
-        queries.insertUser(googleId, name, email, refresh_token).then(() => {
-          res.sendStatus(200);
-        });
-      } else {
-        console.log("this user exists and that's fine");
-
-        res.sendStatus(200);
-      }
-    })
-    .catch(err => res.sendStatus(402));
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`)
+  queries.testIsWorking().then( result => console.log(result))
+  queries.checkGoogleIdExists(1).then(
+    result => console.log('google_id 1 exists:', result));
+    // if you didn't make google_id=1 user, this should return false
 });
-
-app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
-
-// curl -X POST http://localhost:3000/test/googlelogin -H 'Content-Type: application/json' -d '{"googleId" : 150, "name": "user???", "email": "bullshitGmail", "token": "222sss" }'

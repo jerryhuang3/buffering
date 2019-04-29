@@ -74,7 +74,7 @@ class Google extends Component {
 
   fetchToken(response) {
     console.log("Fetching token from backend");
-    fetch("/token");
+    fetch("/test");
   }
 
   render() {
