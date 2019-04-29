@@ -32,6 +32,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "fetch-node": "0.0.1",
     "jquery": "^3.4.0",
@@ -39,8 +40,8 @@
     "knex": "^0.16.5",
     "moment-es6": "^1.0.0",
     "node-fetch": "^2.4.1",
-    "passport-google-oauth": "^2.0.0",
     "pg": "^7.10.0",
+    "reac": "0.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-google-login": "^5.0.4",

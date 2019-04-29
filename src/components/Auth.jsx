@@ -1,7 +1,13 @@
 import React, { Component } from "react";
-import moment from "moment-es6";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
-import { Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link,
+  Redirect,
+  withRouter
+} from "react-router-dom";
 
 require("dotenv").config();
 
@@ -33,7 +39,6 @@ const steps = {
 };
 
 const logout = response => {
-  console.log(response);
   console.log("logging out");
 };
 
@@ -42,106 +47,63 @@ class Google extends Component {
     super(props);
 
     this.state = {
-      user: {},
-      data: []
+      session: true
     };
-
     this.fetchData = this.fetchData.bind(this);
+    this.fetchToken = this.fetchToken.bind(this);
   }
 
-  componentDidMount() {}
-
-  onReq(res) {
-    console.log("onREQ", res);
-  }
+  // Send Google's Authorization code to server
   fetchData(response) {
-    console.log("GOOGLE sending back information...");
+    console.log("Sending Google's response back information to the server...");
     console.log(response);
     let code = { authkey: response.code };
-  
-    // const user = {
-    //   name: response.profileObj.name,
-    //   email: response.profileObj.email,
-    //   user_id: response.profileObj.googleId
-    // };
-    // let name = response.w3.ig;
-
-    // steps.headers.Authorization = `Bearer ${response.Zi.access_token}`;
     fetch("/login", {
       method: "POST",
       body: JSON.stringify(response),
       headers: {
         "Content-Type": "application/json"
       }
+    })
+    .then( () => {
+      this.fetchToken();
     });
+    // Run function
+    
+  }
 
-    // fetch(
-    //   "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
-    //   steps
-    // )
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     let date = 1555128000000;
-    //     let activity = [];
-    //     let result = JSON.stringify(data);
-    //     console.log(data.bucket);
-    //     for (let i = 0; i < data.bucket.length; i++) {
-    //       if (data.bucket[i].dataset[0].point[0] !== undefined) {
-    //         console.log(
-    //           `${name} took ${
-    //             data.bucket[i].dataset[0].point[0].value[0].intVal
-    //           } steps on ${moment(
-    //             parseInt(data.bucket[i].startTimeMillis)
-    //           ).calendar()}!`
-    //         );
-    //         activity.push(
-    //           `${name} took ${
-    //             data.bucket[i].dataset[0].point[0].value[0].intVal
-    //           } steps on ${moment(
-    //             parseInt(data.bucket[i].startTimeMillis)
-    //           ).calendar()}!`
-    //         );
-    //         date += 86400000;
-    //       }
-    //     }
-
-    //     this.setState({ user: user, data: activity });
-    //   })
-    //   .then(() => {
-    //     fetch("/login", {
-    //       method: "POST",
-    //       body: JSON.stringify(response.code),
-    //       headers: {
-    //         "Content-Type": "application/json"
-    //       }
-    //     });
-    //   });
+  fetchToken(response) {
+    console.log("Fetching token from backend");
+    fetch("/token");
   }
 
   render() {
-    console.log(this.data);
-    const jerrysteps = this.state.data.map(day => {
-      return <p>{day}</p>;
-    });
+    const session = this.state.session ? (
+      <GoogleLogout
+        clientId={process.env.CLIENT_ID}
+        buttonText="Logout"
+        onLogoutSuccess={logout}
+      />
+    ) : (
+      <GoogleLogin 
+        clientId={process.env.CLIENT_ID}
+        scope={SCOPES}
+        buttonText="Login"
+        onSuccess={this.fetchData}
+        onRequest={this.onReq}
+        responseType="code"
+        accessType="offline"
+        approvalPrompt="force"
+        cookiePolicy={"single_host_origin"}
+      />
+    ) 
+    if (this.state.session === true) {
+      return <Redirect to="/profile" />
+    }
     return (
       <section>
-        {jerrysteps}
-        <GoogleLogin
-          clientId={process.env.CLIENT_ID}
-          scope={SCOPES}
-          buttonText="Login"
-          onSuccess={this.fetchData}
-          onRequest={this.onReq}
-          responseType="code"
-          accessType="offline"
-          approvalPrompt="force"
-          cookiePolicy={"single_host_origin"}
-        />
-        <GoogleLogout
-          clientId={process.env.CLIENT_ID}
-          buttonText="Logout"
-          onLogoutSuccess={logout}
-        />
+        <br/><br />
+        <div style={{ border: '2px solid black', width: '100px'}}>{session}</div>
       </section>
     );
   }
