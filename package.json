@@ -14,7 +14,7 @@
     "node": ">=10.0.0",
     "npm": ">=6.0.0"
   },
-  "author": "Aleksey, Matt, Jerry",
+  "author": "Aleksey, Ratt, Jerry",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.0.0",
