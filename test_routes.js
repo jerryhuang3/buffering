@@ -13,6 +13,10 @@ router.get('/', cors(), (req, res) =>
 
 router.get('/login', (req, res) => {
   console.log('getting a fetch from test login');
+
+  // FIND GOOGLE_ID in req.params
+  queries.getUserToken(googleId);
+
   res.send(200);
 });
 
@@ -42,12 +46,14 @@ router.post('/googlelogin', function(req, res) {
 
       queries.insertUser(googleId, name, email)
       .then( () => { queries.setTokenNewUser(googleId, refreshToken); })
+      // SEND GOOGLE_ID
       .then( () => { res.sendStatus(200); })
 
     } else {
       console.log("this user exists and that's fine");
 
       queries.setTokenExistingUser(googleId, refreshToken)
+      // SEND GOOGLE ID
       .then( () => { res.sendStatus(200) })
     }
   })
