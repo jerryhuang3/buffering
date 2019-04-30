@@ -15,9 +15,9 @@ router.get('/login', (req, res) => {
   console.log('getting a fetch from test login');
 
   // FIND GOOGLE_ID in req.params
-  queries.getUserToken(googleId);
+  // queries.getUserToken(googleId);
 
-  res.send(200);
+  res.sendStatus(200);
 });
 
 

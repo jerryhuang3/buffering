@@ -86,7 +86,7 @@ function getUserToken(googleId) {
       .where({
         google_id: googleId
       })
-      .select('refresh_token'_)
+      .select('refresh_token')
   ])
 }
 

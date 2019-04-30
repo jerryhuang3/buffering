@@ -5,7 +5,8 @@ require("dotenv").config();
 // import .env
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
-
+// local session
+const cookieSession = require('cookie-session');
 // import express and related libraries
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -25,9 +26,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", express.static(path.join(__dirname, "dist")));
 
-//app.route("login");
+
+app.use(cookieSession({
+  name: 'session',
+  keys: [process.env.SESSION_KEY],
+
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
+
 
 // routes
+
 app.post("/login", (req, res) => {
   console.log("RECEIVING AUTHORIZATION CODE FROM CLIENT");
   const data = {
@@ -58,6 +68,9 @@ app.post("/login", (req, res) => {
         email: user.email,
         refresh_token: "token"
       };
+
+      req.session.userid = google_id;
+      console.log("REQ SESSION??", req.session.userid);
       console.log("User query is about to run....");
       queries.checkGoogleIdExists(google_id).then(idExists => {
         if (!idExists) {
@@ -94,6 +107,15 @@ app.use('/tokentest', (req, res) => {
 })
 
 app.use('/test', testRoutes);
+
+// Catch-all routes
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)

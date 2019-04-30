@@ -71,7 +71,7 @@ class Google extends Component {
       }
     })
     .then( () => {
-      this.fetchToken();
+      this.setState({session: true});
     });
     // Run function
 
@@ -79,6 +79,7 @@ class Google extends Component {
 
   fetchToken(response) {
     console.log("Fetching token from backend");
+    console.log(document.cookie);
     // server fetch --v
     // fetch("/login/test_fetch")
     // test routes fetch --v
