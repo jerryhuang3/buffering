@@ -51,6 +51,7 @@ class Google extends Component {
     };
     this.fetchData = this.fetchData.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
+    console.log("rendered google component");
   }
 
   componentDidMount() {
@@ -73,15 +74,18 @@ class Google extends Component {
       this.fetchToken();
     });
     // Run function
-    
+
   }
 
   fetchToken(response) {
     console.log("Fetching token from backend");
-    fetch("/tokentest")
-    .then( data => {
-      console.log(typeof data);
-    });
+    // server fetch --v
+    // fetch("/login/test_fetch")
+    // test routes fetch --v
+    fetch("http://localhost:3000/test/login")
+    .then( (res, err) => {
+      console.log(res);
+    })
   }
 
   render() {
@@ -92,7 +96,7 @@ class Google extends Component {
         onLogoutSuccess={logout}
       />
     ) : (
-      <GoogleLogin 
+      <GoogleLogin
         clientId={process.env.CLIENT_ID}
         scope={SCOPES}
         buttonText="Login"
@@ -103,7 +107,7 @@ class Google extends Component {
         approvalPrompt="force"
         cookiePolicy={"single_host_origin"}
       />
-    ) 
+    )
     if (this.state.session === true) {
       return <Redirect to="/profile" />
     }
