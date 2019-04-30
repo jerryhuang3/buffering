@@ -9,7 +9,7 @@
       "32": "/icons/get_started32.png"
     },
     "default_title": "Buffering",
-    "default_popup": "popup.html"
+    "default_popup": "./popup/popup.html"
   },
   "chrome_url_overrides": {
     "newtab": "./newtab/newTab.html"
@@ -21,6 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+      "exclude_globs": ["*://localhost:3000/*", "*://accounts.google.com/*"],
       "js": ["./content/jquery-3.4.0.min.js", "./content/content.js"]
     }
   ],
