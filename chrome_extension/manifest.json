@@ -16,7 +16,7 @@
   },
   "background": {
     "scripts": ["./background/background.js"],
-    "persistent": true
+    "persistent": false
   },
   "content_scripts": [
     {
@@ -26,5 +26,9 @@
     }
   ],
   "permissions": ["tabs", "activeTab", "<all_urls>", "cookies"],
-  "web_accessible_resources": ["./css/test.css", "/vendor/geoBootstrap.css"]
+  "web_accessible_resources": [
+    "./css/test.css",
+    "./scriptmods/cursor.js",
+    "/vendor/geoBootstrap.css"
+  ]
 }
