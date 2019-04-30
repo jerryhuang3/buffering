@@ -41,8 +41,7 @@ function insertUser(googleId, name, email, refresh_token) {
     knex('google_users').insert({
     google_id: googleId,
     name: name,
-    email: email,
-    refresh_token: refresh_token
+    email: email
     })
   ])
 }

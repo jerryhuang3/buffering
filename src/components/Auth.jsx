@@ -47,10 +47,14 @@ class Google extends Component {
     super(props);
 
     this.state = {
-      session: true
+      session: false
     };
     this.fetchData = this.fetchData.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
+  }
+
+  componentDidMount() {
+    
   }
 
   // Send Google's Authorization code to server
@@ -74,7 +78,10 @@ class Google extends Component {
 
   fetchToken(response) {
     console.log("Fetching token from backend");
-    fetch("/test");
+    fetch("/tokentest")
+    .then( data => {
+      console.log(typeof data);
+    });
   }
 
   render() {

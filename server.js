@@ -62,10 +62,13 @@ app.use("/login", (req, res) => {
         if (!idExists) {
           console.log("user was not found");
 
-          queries.insertUser(google_id, name, email, refresh_token).then(() => {
+          queries.insertUser(google_id, name, email).
+          then(() => {
+            queries.setTokenNewUser(google_id, refresh_token).then(() => {
             res.sendStatus(200);
           });
-        } else {
+        }) 
+      } else {
           console.log("this user exists and that's fine");
           res.status(200).send({msg: 'this user exists and that\'s fine'})
         }
@@ -75,6 +78,12 @@ app.use("/login", (req, res) => {
 
 // TEST
 const testRoutes = require('./test_routes');
+app.use('/tokentest', (req, res) => {
+  console.log("/tokentest ROUTE IS RUNNING");
+  const chatMessage = "HELLO";
+  return chatMessage;
+})
+
 app.use('/test', testRoutes);
 
 app.listen(PORT, () => {
