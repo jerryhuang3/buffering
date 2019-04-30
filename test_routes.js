@@ -61,4 +61,9 @@ router.post('/googlelogin', function(req, res) {
 });
 // curl -X POST http://localhost:3000/test/googlelogin -H 'Content-Type: application/json' -d '{"googleId" : "382847383748293", "name": "user???", "email": "bullshitGmail", "refreshToken": "223432ss" }'
 
+router.post('/auth', (req, res) => {
+  queries.getUser("10753898229603")
+})
+
+
 module.exports =router;

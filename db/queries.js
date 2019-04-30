@@ -19,6 +19,20 @@ function getUserProfile(username) {
   ]);
 }
 
+function getUser(googleId) {
+  return Promise.all([
+    knex('google_users')
+    .join('tokens', {"google_users.google_id" : "tokens.google_id"} )
+    .where("google_users.google_id", googleId
+    )
+    .select()
+  ])
+  .then( result => {
+    console.log(result[0][0]);
+    return result[0][0];
+  })
+}
+
 function checkGoogleIdExists(googleId) {
   return Promise.all([
     knex('google_users')
@@ -80,27 +94,15 @@ function insertUserIfNotFound(googleId, name, email) {
   })
 }
 
-function getUserToken(googleId) {
-  return Promise.all([
-    knex('tokens')
-      .where({
-        google_id: googleId
-      })
-      .select('refresh_token')
-  ])
-}
-
-
-
 module.exports = {
   testIsWorking: testIsWorking,
   getUserProfile: getUserProfile,
+  getUser: getUser,
   checkGoogleIdExists: checkGoogleIdExists,
   insertUserIfNotFound: insertUserIfNotFound,
   insertUser: insertUser,
   setTokenNewUser: setTokenNewUser,
-  setTokenExistingUser: setTokenExistingUser,
-  getUserToken: getUserToken
+  setTokenExistingUser: setTokenExistingUser
 };
 
 // DATABASE STRUCTURE

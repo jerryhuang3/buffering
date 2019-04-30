@@ -42,8 +42,8 @@
     "moment-es6": "^1.0.0",
     "node-fetch": "^2.4.1",
     "pg": "^7.10.0",
-    "reac": "0.0.0",
     "react": "^16.4.2",
+    "react-cookie": "^3.1.2",
     "react-dom": "^16.4.2",
     "react-google-login": "^5.0.4",
     "react-router-dom": "^5.0.0"

@@ -6,7 +6,7 @@ require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
 // local session
-const cookieSession = require('cookie-session');
+const cookieSession = require("cookie-session");
 // import express and related libraries
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -26,15 +26,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", express.static(path.join(__dirname, "dist")));
 
+app.use(
+  cookieSession({
+    name: "session",
+    keys: [process.env.SESSION_KEY],
 
-app.use(cookieSession({
-  name: 'session',
-  keys: [process.env.SESSION_KEY],
-
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
-
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  })
+);
 
 // routes
 
@@ -48,7 +48,6 @@ app.post("/login", (req, res) => {
     access_type: "offline",
     grant_type: "authorization_code"
   };
-  console.log(data);
 
   // Requesting token information from google
   fetch("https://www.googleapis.com/oauth2/v4/token", {
@@ -59,68 +58,69 @@ app.post("/login", (req, res) => {
     .then(res => res.json())
     .then(json => {
       const user = jwt.decode(json.id_token);
-      console.log(user);
-      // const {google_id, name, email, refresh_token} = req.body;
-      // console.log(google_id, name, email, refresh_token);
+
       const { google_id, name, email, refresh_token } = {
         google_id: user.sub,
         name: user.name,
         email: user.email,
-        refresh_token: "token"
+        refresh_token: user.refresh_token
       };
 
       req.session.userid = google_id;
-      console.log("REQ SESSION??", req.session.userid);
       console.log("User query is about to run....");
       queries.checkGoogleIdExists(google_id).then(idExists => {
         if (!idExists) {
           console.log("user was not found");
 
-          queries.insertUser(google_id, name, email).
-          then(() => {
+          queries.insertUser(google_id, name, email).then(() => {
             queries.setTokenNewUser(google_id, refresh_token).then(() => {
-            res.sendStatus(200);
+              res.json({ message: "HI" });
+            });
           });
-        }) 
-      } else {
+        } else {
           console.log("this user exists and that's fine");
-          queries.setTokenExistingUser(google_id, refresh_token)
-          .then ( () => {
-            res.sendStatus(200);
-          })
+          // queries.setTokenExistingUser(google_id, refresh_token).then(() => {
+          res.json({ "google_id" : google_id, "name" : user.name});
+          // fetch("http://localhost:3000/login/secondfetch", {
+          //   method: "POST",
+          //   body: JSON.stringify({ "google_id" : google_id, "name" : user.name}),
+          //   headers: { "Content-Type": "application/json" }
+          // });
+          
+          // });
         }
       });
     });
 });
 
-app.get('/login/test_fetch', (req,res) => {
+app.get("/login/test_fetch", (req, res) => {
   // this works!
-  console.log('main server login test');
-})
+  console.log("main server login test");
+});
 
 // TEST
-const testRoutes = require('./test_routes');
-app.use('/tokentest', (req, res) => {
+const testRoutes = require("./test_routes");
+app.use("/tokentest", (req, res) => {
   console.log("/tokentest ROUTE IS RUNNING");
   const chatMessage = "HELLO";
   return chatMessage;
-})
+});
 
-app.use('/test', testRoutes);
+app.use("/test", testRoutes);
 
 // Catch-all routes
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'), function(err) {
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist/index.html"), function(err) {
     if (err) {
-      res.status(500).send(err)
+      res.status(500).send(err);
     }
-  })
-})
+  });
+});
 
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`)
+  console.log(`Server listening on ${PORT}`);
   // queries.testIsWorking().then( result => console.log(result))
   // queries.checkGoogleIdExists(1).then(
-    // result => console.log('google_id 1 exists:', result));
-    // if you didn't make google_id=1 user, this should return false
+  // result => console.log('google_id 1 exists:', result));
+  // if you didn't make google_id=1 user, this should return false
 });
