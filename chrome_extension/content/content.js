@@ -1,6 +1,7 @@
-$("body").css("border", "5px solid red");
-const message = "Hello from content script";
-console.log("%c" + message, "background: red; color: yellow; font-size: large");
+console.log(
+  "%cHello from content script",
+  "background: red; color: yellow; font-size: large"
+);
 
 //make request to server and send response to bg script
 var xhttp = new XMLHttpRequest();
