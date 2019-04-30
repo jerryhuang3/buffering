@@ -11,6 +11,9 @@
     "default_title": "Buffering",
     "default_popup": "popup.html"
   },
+  "chrome_url_overrides": {
+    "newtab": "./newtab/newTab.html"
+  },
   "background": {
     "scripts": ["./background/background.js"],
     "persistent": true
