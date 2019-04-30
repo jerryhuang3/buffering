@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
+import Cookies from "universal-cookie";
 
 class Authentication extends Component {
   constructor(props) {
     super(props);
 
-    this.fetchData = this.fetchData.bind(this);
+    this.AuthorizationCode = this.AuthorizationCode.bind(this);
+    this.fetchToken = this.fetchToken.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
 
-  fetchData(response) {
-    console.log("Sending Google's response back information to the server...");
+  AuthorizationCode(response) {
+    console.log("Sending Google's authorization code to the server...");
     console.log(response);
     fetch("/login", {
       method: "POST",
@@ -19,25 +21,31 @@ class Authentication extends Component {
       headers: {
         "Content-Type": "application/json"
       }
-    });
+    })
+      .then(response => {
+        console.log("RESPONSE", response);
+        this.fetchToken(response);
+      })
+      .then(res => console.log(res));
     this.login();
   }
 
   fetchToken(response) {
     console.log("Fetching token from backend");
-    console.log(document.cookie);
+    
     // server fetch --v
     // fetch("/login/test_fetch")
     // test routes fetch --v
-    fetch("http://localhost:3000/test/login").then((res, err) => {
-      console.log(res);
-    });
   }
 
   // Send Login prop to Nav
   login() {
     console.log("Authentication.jsx: Logging in");
     this.props.login(true);
+    // const cookies = new Cookies();
+
+    // cookies.set("myCat", "Pacman", { path: "/" });
+    // console.log(cookies.get("myCat")); // Pacman
   }
 
   // Send Logout prop to Nav
@@ -59,7 +67,7 @@ class Authentication extends Component {
         clientId={process.env.CLIENT_ID}
         scope="https://www.googleapis.com/auth/fitness.activity.read"
         buttonText="Login"
-        onSuccess={this.fetchData}
+        onSuccess={this.AuthorizationCode}
         responseType="code"
         cookiePolicy={"single_host_origin"}
       />
