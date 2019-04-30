@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Authentication from "./Authentication.jsx";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Authentication from './Authentication.jsx';
 
 class Nav extends Component {
   constructor(props) {
@@ -9,19 +9,21 @@ class Nav extends Component {
   }
 
   // Receives session prop after clicking Login or Logout button
-  session(bool) {
-    this.props.auth(bool);
+  session(name, bool) {
+    this.props.auth(name, bool);
   }
 
   render() {
     // Nav receives state of the session from App.jsx
-    const isUserLoggedIn = this.props.session;
-    const session = this.props.session ? (
+    console.log(this.props.state)
+    const isUserLoggedIn = this.props.state.name;
+    const session = this.props.state.session ? (
       <div>
-        <p>Hey! You are logged in!</p>
-        <div style={{ border: "2px solid black", width: "108px" }}>
+        <p>Hey {this.props.state.name}! You are logged in!</p>
+        <div style={{ border: '2px solid black', width: '108px' }}>
           <Authentication session={isUserLoggedIn} logout={this.session} />
-        </div><br/>
+        </div>
+        <br />
         <Link to="/">Home |</Link>
         <Link to="/profile"> Profile</Link>
         <hr />
@@ -29,11 +31,12 @@ class Nav extends Component {
     ) : (
       <div>
         <p>Hey! You are not logged in!</p>
-        <div style={{ border: "2px solid black", width: "98px" }}>
+        <div style={{ border: '2px solid black', width: '98px' }}>
           <Authentication session={isUserLoggedIn} login={this.session} />
-        </div><br/>
+        </div>
+        <br />
         <Link to="/">Home |</Link>
-        <Link to="/profile"> Profile</Link>        
+        <Link to="/profile"> Profile</Link>
         <hr />
       </div>
     );
