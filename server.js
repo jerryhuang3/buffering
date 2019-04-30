@@ -25,10 +25,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", express.static(path.join(__dirname, "dist")));
 
-app.route("login");
+//app.route("login");
 
 // routes
-app.use("/login", (req, res) => {
+app.post("/login", (req, res) => {
   console.log("RECEIVING AUTHORIZATION CODE FROM CLIENT");
   const data = {
     code: req.body.code,
@@ -49,10 +49,11 @@ app.use("/login", (req, res) => {
     .then(res => res.json())
     .then(json => {
       const user = jwt.decode(json.id_token);
+      console.log(user);
       // const {google_id, name, email, refresh_token} = req.body;
       // console.log(google_id, name, email, refresh_token);
       const { google_id, name, email, refresh_token } = {
-        google_id: Math.floor(parseInt(user.sub) / 10000000),
+        google_id: user.sub,
         name: user.name,
         email: user.email,
         refresh_token: "token"
@@ -62,16 +63,28 @@ app.use("/login", (req, res) => {
         if (!idExists) {
           console.log("user was not found");
 
-          queries.insertUser(google_id, name, email, refresh_token).then(() => {
+          queries.insertUser(google_id, name, email)
+          .then( () => {
+            queries.setTokenNewUser(google_id, refresh_token);
+          })
+          .then(() => {
             res.sendStatus(200);
           });
         } else {
           console.log("this user exists and that's fine");
-          res.status(200).send({msg: 'this user exists and that\'s fine'})
+          queries.setTokenExistingUser(google_id, refresh_token)
+          .then ( () => {
+            res.status(200).send({msg: 'this user exists and that\'s fine'})
+          })
         }
       });
     });
 });
+
+app.get('/login/test_fetch', (req,res) => {
+  // this works!
+  console.log('main server login test');
+})
 
 // TEST
 const testRoutes = require('./test_routes');
@@ -79,8 +92,8 @@ app.use('/test', testRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`)
-  queries.testIsWorking().then( result => console.log(result))
-  queries.checkGoogleIdExists(1).then(
-    result => console.log('google_id 1 exists:', result));
+  // queries.testIsWorking().then( result => console.log(result))
+  // queries.checkGoogleIdExists(1).then(
+    // result => console.log('google_id 1 exists:', result));
     // if you didn't make google_id=1 user, this should return false
 });

@@ -11,6 +11,11 @@ router.get('/', cors(), (req, res) =>
   res.json({ message: "Hello From the Server!" })
 );
 
+router.get('/login', (req, res) => {
+  console.log('getting a fetch from test login');
+  res.send(200);
+});
+
 
 router.post('/newlogin', function(req, res) {
   console.log("test route happening");
