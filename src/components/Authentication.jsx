@@ -51,7 +51,7 @@ class Authentication extends Component {
         clientId={process.env.CLIENT_ID}
         buttonText="Logout"
         onLogoutSuccess={this.logout}
-      />
+      >Logout With Google</GoogleLogout>
     ) : (
       <GoogleLogin
         clientId={process.env.CLIENT_ID}
@@ -62,7 +62,7 @@ class Authentication extends Component {
         accessType="offline"
         approvalPrompt="force"
         cookiePolicy={'single_host_origin'}
-      />
+      >Login With Google</GoogleLogin>
     );
       
     return <section>{button}</section>;

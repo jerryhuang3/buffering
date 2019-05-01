@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Container, Image, Menu } from 'semantic-ui-react';
 import Authentication from './Authentication.jsx';
 
 class Nav extends Component {
@@ -15,33 +16,52 @@ class Nav extends Component {
 
   render() {
     // Nav receives state of the session from App.jsx
-    console.log(this.props.state)
+    console.log(this.props.state);
     const isUserLoggedIn = this.props.state.name;
+
     const session = this.props.state.session ? (
-      <div>
-        <p>Hey {this.props.state.name}! You are logged in!</p>
-        <div style={{ border: '2px solid black', width: '108px' }}>
-          <Authentication session={isUserLoggedIn} logout={this.session} />
-        </div>
-        <br />
-        <NavLink to="/">Home |</NavLink>
-        <NavLink to="/profile"> Profile</NavLink>
-        <hr />
-      </div>
+      <Container>
+        <Menu.Menu position="left">
+          <Menu.Item>
+            <NavLink to="/">Home</NavLink>
+          </Menu.Item>
+          <Menu.Item>
+            <NavLink to="/profile"> Profile</NavLink>
+          </Menu.Item>
+        </Menu.Menu>
+        <Menu.Menu position="center"><h3>Hey {this.props.state.name}! You are logged in!</h3></Menu.Menu>
+        <Menu.Menu position="right">
+          <Menu.Item>
+            <Authentication session={isUserLoggedIn} logout={this.session} />
+          </Menu.Item>
+        </Menu.Menu>
+      </Container>
     ) : (
-      <div>
-        <p>Hey! You are not logged in!</p>
-        <div style={{ border: '2px solid black', width: '98px' }}>
-          <Authentication session={isUserLoggedIn} login={this.session} />
-        </div>
-        <br />
-        <NavLink to="/">Home |</NavLink>
-        <NavLink to="/profile"> Profile</NavLink>
-        <hr />
-      </div>
+      <Container>
+        <Menu.Menu position="left">
+          <Menu.Item>
+            <NavLink to="/">Home</NavLink>
+          </Menu.Item>
+          <Menu.Item>
+            <NavLink to="/profile"> Profile</NavLink>
+          </Menu.Item>
+        </Menu.Menu>
+        <Menu.Menu position="center">
+          <h3>Hey! You are not logged in!</h3>
+        </Menu.Menu>
+        <Menu.Menu position="right">
+          <Menu.Item>
+            <Authentication session={isUserLoggedIn} login={this.session} />
+          </Menu.Item>
+        </Menu.Menu>
+      </Container>
     );
 
-    return <div>{session}</div>;
+    return (
+      <Menu>
+        {session}
+      </Menu>
+    );
   }
 }
 
