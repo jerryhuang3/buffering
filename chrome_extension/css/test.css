@@ -1,3 +1,4 @@
+/* if injecting css, use important, otherwise conflicts may occur. */
 p {
   background-color: pink !important;
 }

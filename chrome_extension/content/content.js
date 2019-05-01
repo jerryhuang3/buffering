@@ -1,13 +1,10 @@
-$("body").css("border", "5px solid red");
-const message = "Hello from content script";
-console.log("%c" + message, "background: red; color: yellow; font-size: large");
+console.log(
+  "%cHello from content script",
+  "background: red; color: yellow; font-size: large"
+);
 
-// chrome.runtime.onMessage.addListener(function(response, sender, sendResponse){
-//    console.log(response)
-// })
-
+//make request to server and send response to bg script
 var xhttp = new XMLHttpRequest();
-
 xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
     const response = xhttp.responseText;
@@ -27,5 +24,4 @@ xhttp.onreadystatechange = function() {
 };
 xhttp.open("GET", "http://localhost:3000/test", true);
 xhttp.send();
-
 console.log("before async request");

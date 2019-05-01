@@ -1,49 +1,47 @@
-import React, { Component } from "react";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import React, { Component } from 'react';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { Redirect, withRouter } from 'react-router-dom';
 
 class Authentication extends Component {
   constructor(props) {
     super(props);
 
-    this.fetchData = this.fetchData.bind(this);
+    this.authorizationCode = this.authorizationCode.bind(this);
+    // this.userInfo = this.userInfo.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
 
-  fetchData(response) {
-    console.log("Sending Google's response back information to the server...");
+  authorizationCode(response) {
+    console.log("Sending Google's authorization code to the server...");
     console.log(response);
-    fetch("/login", {
-      method: "POST",
+    fetch('/login', {
+      method: 'POST',
       body: JSON.stringify(response),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
-    });
-    this.login();
-  }
-
-  fetchToken(response) {
-    console.log("Fetching token from backend");
-    console.log(document.cookie);
-    // server fetch --v
-    // fetch("/login/test_fetch")
-    // test routes fetch --v
-    fetch("http://localhost:3000/test/login").then((res, err) => {
-      console.log(res);
-    });
+    })
+      .then(promise => {
+        return promise.json();
+      })
+      .then(userName => {
+        console.log(userName);
+        this.login(userName.name, userName.access_token);
+      });
   }
 
   // Send Login prop to Nav
-  login() {
-    console.log("Authentication.jsx: Logging in");
-    this.props.login(true);
+  login(name, access) {
+    console.log('Authentication.jsx: Logging in', name);
+    this.props.login(name, true, access);
   }
 
   // Send Logout prop to Nav
   logout() {
-    console.log("Authentication.jsx: Logging out");
-    this.props.logout(false);
+    console.log('Authentication.jsx: Logging out');
+    fetch('/logout', { method: 'POST' });
+    this.props.logout(null, false, null);
   }
 
   render() {
@@ -53,20 +51,22 @@ class Authentication extends Component {
         clientId={process.env.CLIENT_ID}
         buttonText="Logout"
         onLogoutSuccess={this.logout}
-      />
+      >Logout With Google</GoogleLogout>
     ) : (
       <GoogleLogin
         clientId={process.env.CLIENT_ID}
         scope="https://www.googleapis.com/auth/fitness.activity.read"
         buttonText="Login"
-        onSuccess={this.fetchData}
+        onSuccess={this.authorizationCode}
         responseType="code"
-        cookiePolicy={"single_host_origin"}
-      />
+        accessType="offline"
+        approvalPrompt="force"
+        cookiePolicy={'single_host_origin'}
+      >Login With Google</GoogleLogin>
     );
-
+      
     return <section>{button}</section>;
   }
 }
 
-export default Authentication;
+export default withRouter(Authentication);
