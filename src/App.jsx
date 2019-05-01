@@ -47,14 +47,12 @@ class App extends Component {
     console.log(this.state);
     return (
       <Router>
-        <div>
           <Nav state={this.state} auth={this.session} />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/profile" render={(props) => <Profile {...props} data={this.state} />} />
             <Route component={Error} />
           </Switch>
-        </div>
       </Router>
     );
   }
