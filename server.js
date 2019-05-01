@@ -30,7 +30,6 @@ app.use(
   cookieSession({
     name: 'session',
     keys: [process.env.SESSION_KEY],
-
     // Cookie Options
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   })
@@ -39,14 +38,11 @@ app.use(
 // routes
 app.post('/', (req, res) => {
   console.log('GET / is RUNNING');
-  console.log(req.session.userid);
+  console.log("req.session.userid = ", req.session.userid);
   if (req.session.userid) {
     console.log('There are cookies so querying the database');
     queries
       .getUser(req.session.userid)
-      .then(promise => {
-        return promise;
-      })
       .then(result => {
         console.log(result);
         res.json(result);
@@ -57,8 +53,11 @@ app.post('/', (req, res) => {
   }
 });
 
-app.post('/login', (req, res) => {
+
+// ASYNC METHOD
+app.post('/login', async function(req, res){
   console.log('RECEIVING AUTHORIZATION CODE FROM CLIENT');
+
   const data = {
     code: req.body.code,
     client_id: process.env.CLIENT_ID,
@@ -69,63 +68,56 @@ app.post('/login', (req, res) => {
   };
 
   // Requesting token information from google
-  fetch('https://www.googleapis.com/oauth2/v4/token', {
+  const fetchRes = await fetch('https://www.googleapis.com/oauth2/v4/token', {
     method: 'post',
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' }
   })
-    .then(res => res.json())
-    .then(json => {
-      console.log(json);
-      const user = jwt.decode(json.id_token);
-      const { googleId, name, email, accessToken, refreshToken } = {
-        googleId: user.sub,
-        name: user.name,
-        email: user.email,
-        accessToken: json.access_token,
-        refreshToken: json.refresh_token
-      };
-      console.log("refreshTOKENSKNTSKNGSG", refreshToken);
-      req.session.userid = googleId;
-      console.log('User query is about to run....');
-      queries.checkGoogleIdExists(googleId).then(idExists => {
-        if (!idExists) {
-          console.log('user was not found');
 
-          queries.insertUser(googleId, name, email, refreshToken).then(() => {
-            queries.setTokenNewUser(googleId, accessToken).then(() => {
-              res.json({ name: user.name, access_token: accessToken });
-            });
-          });
-        } else {
-          console.log("this user exists and that's fine");
-          queries.setTokenExistingUser(googleId, accessToken).then(() => {
-            res.json({ name: user.name, access_token: accessToken });
-          });
-        }
-      });
-    });
+  //decode data and set constants
+  const fetchJSON = await fetchRes.json();
+  console.log(fetchJSON);
+
+  const user = jwt.decode(fetchJSON.id_token);
+
+  const googleId = user.sub;
+  const name = user.name;
+  const email = user.email;
+  const accessToken = fetchJSON.access_token;
+  const refreshToken = fetchJSON.refresh_token;
+
+  console.log("refreshTOKEN (oooh boy, i hope i get it):", refreshToken);
+
+  req.session.userid = googleId; //set userid in cookie
+  console.log('User query is about to run....');
+
+  const idExists = await queries.checkGoogleIdExists(googleId);
+  if (!idExists) {
+    console.log('user was not found...so we can make one!');
+
+    await queries.insertUser(googleId, name, email, refreshToken);
+    await queries.setTokenNewUser(googleId, accessToken);
+    await res.json({ name: user.name, access_token: accessToken });
+
+  } else {
+    console.log("this user exists and that's fine");
+    await queries.setTokenExistingUser(googleId, accessToken);
+    await res.json({ name: user.name, access_token: accessToken });
+  }
 });
+
+
 
 app.post('/logout', (req, res) => {
-  console.log(req.session.userid);
+  console.log("this is cookie session id: ", req.session.userid);
   req.session = null;
   res.end();
+  // res.sendStatus(200);
 });
 
-app.get('/login/test_fetch', (req, res) => {
-  // this works!
-  console.log('main server login test');
-});
 
 // TEST
 const testRoutes = require('./test_routes');
-app.use('/tokentest', (req, res) => {
-  console.log('/tokentest ROUTE IS RUNNING');
-  const chatMessage = 'HELLO';
-  return chatMessage;
-});
-
 app.use('/test', testRoutes);
 
 // Catch-all routes
@@ -139,8 +131,19 @@ app.get('/*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
-  // queries.testIsWorking().then( result => console.log(result))
-  // queries.checkGoogleIdExists(1).then(
-  // result => console.log('google_id 1 exists:', result));
-  // if you didn't make google_id=1 user, this should return false
 });
+
+
+
+// async error helpers
+
+// const asyncMiddleware = fn =>
+//   (req, res, next) => {
+//     Promise.resolve(fn(req, res, next))
+//       .catch(next);
+//   };
+
+// app.use(function(err, req, res, next) {
+//   console.error(err)
+//   res.status(500).json({message: 'an error occurred'})
+// })
