@@ -5,6 +5,7 @@ class Widget extends Component {
   componentDidMount() {
     this.props.noNav();
   }
+
   render() {
     return (
       <div>
@@ -13,12 +14,8 @@ class Widget extends Component {
         </Container>
         <Grid divided="vertically">
           <Grid.Row columns={2}>
-            <Grid.Column>{this.props.state} Name should be here!</Grid.Column>
-            <Grid.Column>
-              Lorem, ipsum dolor. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Reiciendis quae corrupti explicabo expedita recusandae consectetur magni ea ducimus
-              illo alias? Suscipit quaerat commodi voluptatum cum?
-            </Grid.Column>
+            <Grid.Column />
+            <Grid.Column>{this.props.name}</Grid.Column>
           </Grid.Row>
         </Grid>
       </div>

@@ -57,7 +57,10 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/profile" render={props => <Profile {...props} data={this.state} />} />
-            <Route path="/widget" render={props => <Widget {...props} noNav={this.noNav} />} />
+            <Route
+              path="/widget"
+              render={props => <Widget {...props} noNav={this.noNav} name={this.state.name} />}
+            />
             <Route component={Error} />
           </Switch>
         </div>
