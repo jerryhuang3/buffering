@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { Redirect, withRouter } from 'react-router-dom';
 
 class Authentication extends Component {
   constructor(props) {
@@ -26,21 +27,21 @@ class Authentication extends Component {
       })
       .then(userName => {
         console.log(userName);
-        this.login(userName.name);
+        this.login(userName.name, userName.access_token);
       });
   }
 
   // Send Login prop to Nav
-  login(name) {
+  login(name, access) {
     console.log('Authentication.jsx: Logging in', name);
-    this.props.login(name, true);
+    this.props.login(name, true, access);
   }
 
   // Send Logout prop to Nav
   logout() {
     console.log('Authentication.jsx: Logging out');
     fetch('/logout', { method: 'POST' });
-    this.props.logout(false);
+    this.props.logout(null, false, null);
   }
 
   render() {
@@ -58,6 +59,8 @@ class Authentication extends Component {
         buttonText="Login"
         onSuccess={this.authorizationCode}
         responseType="code"
+        accessType="offline"
+        approvalPrompt="force"
         cookiePolicy={'single_host_origin'}
       />
     );
@@ -66,4 +69,4 @@ class Authentication extends Component {
   }
 }
 
-export default Authentication;
+export default withRouter(Authentication);

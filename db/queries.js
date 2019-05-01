@@ -1,97 +1,94 @@
 require('dotenv').config();
 // import knex
-const knexConfig  = require("../knexfile");
-const knex        = require("knex")(knexConfig.development);
+const knexConfig = require('../knexfile');
+const knex = require('knex')(knexConfig.development);
 
-function testIsWorking () {
-  return Promise.all([
-    knex.select().from('users')
-    ]);
+function testIsWorking() {
+  return Promise.all([knex.select().from('users')]);
 }
 
 function getUserProfile(username) {
   return Promise.all([
     knex('users')
-    .where({
-      username: username
-    })
-    .select()
+      .where({
+        username: username
+      })
+      .select()
   ]);
 }
 
 function getUser(googleId) {
   return Promise.all([
     knex('google_users')
-    .join('tokens', {"google_users.google_id" : "tokens.google_id"} )
-    .where("google_users.google_id", googleId
-    )
-    .select()
-  ])
-  .then( result => {
+      .join('tokens', { 'google_users.google_id': 'tokens.google_id' })
+      .where('google_users.google_id', googleId)
+      .select()
+  ]).then(result => {
     console.log(result[0][0]);
     return result[0][0];
-  })
+  });
 }
 
 function checkGoogleIdExists(googleId) {
   return Promise.all([
     knex('google_users')
-    .where({
-      google_id: googleId
-    })
-    .select('google_id')
-  ])
-  .then( result => {
+      .where({
+        google_id: googleId
+      })
+      .select('google_id')
+  ]).then(result => {
     if (result[0][0]) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   });
 }
 
-function insertUser(googleId, name, email) {
+function insertUser(googleId, name, email, refreshToken) {
   return Promise.all([
     knex('google_users').insert({
-    google_id: googleId,
-    name: name,
-    email: email
+      google_id: googleId,
+      name: name,
+      email: email,
+      refresh_token: refreshToken
     })
-  ])
+  ]);
 }
 
-function setTokenNewUser(googleId, refreshToken) {
+function setTokenNewUser(googleId, accessToken) {
   return Promise.all([
     knex('tokens').insert({
       google_id: googleId,
-      refresh_token: refreshToken
+      access_token: accessToken
     })
-  ])
+  ]);
 }
 
-function setTokenExistingUser(googleId, refreshToken) {
+function setTokenExistingUser(googleId, accessToken) {
   return Promise.all([
     knex('tokens')
       .where('google_id', '=', googleId)
       .update({
-        refresh_token: refreshToken
+        access_token: accessToken
       })
-  ])
+  ]);
 }
 
-function insertUserIfNotFound(googleId, name, email) {
-  return checkGoogleIdExists(googleId).then( idExists => {
+function insertUserIfNotFound(googleId, name, email, refreshToken) {
+  return checkGoogleIdExists(googleId).then(idExists => {
     if (!idExists) {
       return Promise.all([
         knex('google_users').insert({
-        google_id: googleId,
-        name: name,
-        email: email
-        // currency: currency
+          google_id: googleId,
+          name: name,
+          email: email,
+          refresh_token: refreshToken
+          // currency: currency
         })
-      ])
+      ]);
     }
-  })
+  });
 }
 
 module.exports = {

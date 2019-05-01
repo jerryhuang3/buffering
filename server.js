@@ -76,40 +76,42 @@ app.post('/login', (req, res) => {
   })
     .then(res => res.json())
     .then(json => {
+      console.log(json);
       const user = jwt.decode(json.id_token);
-
-      const { google_id, name, email, refresh_token } = {
-        google_id: user.sub,
+      const { googleId, name, email, accessToken, refreshToken } = {
+        googleId: user.sub,
         name: user.name,
         email: user.email,
-        refresh_token: user.refresh_token
+        accessToken: json.access_token,
+        refreshToken: json.refresh_token
       };
-
-      req.session.userid = google_id;
+      console.log("refreshTOKENSKNTSKNGSG", refreshToken);
+      req.session.userid = googleId;
       console.log('User query is about to run....');
-      queries.checkGoogleIdExists(google_id).then(idExists => {
+      queries.checkGoogleIdExists(googleId).then(idExists => {
         if (!idExists) {
           console.log('user was not found');
 
-          queries.insertUser(google_id, name, email).then(() => {
-            queries.setTokenNewUser(google_id, refresh_token).then(() => {
-              res.json({ name: user.name });
+          queries.insertUser(googleId, name, email, refreshToken).then(() => {
+            queries.setTokenNewUser(googleId, accessToken).then(() => {
+              res.json({ name: user.name, access_token: accessToken });
             });
           });
         } else {
           console.log("this user exists and that's fine");
-          // queries.setTokenExistingUser(google_id, refresh_token).then(() => {
-          res.json({ name: user.name });
+          queries.setTokenExistingUser(googleId, accessToken).then(() => {
+            res.json({ name: user.name, access_token: accessToken });
+          });
         }
       });
     });
 });
 
 app.post('/logout', (req, res) => {
-  console.log(req.session.userid)
+  console.log(req.session.userid);
   req.session = null;
-  res.end()
-})
+  res.end();
+});
 
 app.get('/login/test_fetch', (req, res) => {
   // this works!

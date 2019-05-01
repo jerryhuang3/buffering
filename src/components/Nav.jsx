@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Authentication from './Authentication.jsx';
 
 class Nav extends Component {
@@ -9,8 +9,8 @@ class Nav extends Component {
   }
 
   // Receives session prop after clicking Login or Logout button
-  session(name, bool) {
-    this.props.auth(name, bool);
+  session(name, bool, access) {
+    this.props.auth(name, bool, access);
   }
 
   render() {
@@ -24,8 +24,8 @@ class Nav extends Component {
           <Authentication session={isUserLoggedIn} logout={this.session} />
         </div>
         <br />
-        <Link to="/">Home |</Link>
-        <Link to="/profile"> Profile</Link>
+        <NavLink to="/">Home |</NavLink>
+        <NavLink to="/profile"> Profile</NavLink>
         <hr />
       </div>
     ) : (
@@ -35,8 +35,8 @@ class Nav extends Component {
           <Authentication session={isUserLoggedIn} login={this.session} />
         </div>
         <br />
-        <Link to="/">Home |</Link>
-        <Link to="/profile"> Profile</Link>
+        <NavLink to="/">Home |</NavLink>
+        <NavLink to="/profile"> Profile</NavLink>
         <hr />
       </div>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
 import Error from './components/Error.jsx';
@@ -11,7 +11,8 @@ class App extends Component {
 
     this.state = {
       name: null,
-      session: false
+      session: false,
+      access_token: null
     };
 
     this.session = this.session.bind(this);
@@ -30,22 +31,19 @@ class App extends Component {
           this.setState({ session: false});
         } else {
           console.log('COOOKIE IS', data);
-          this.setState({name: data.name, session: true})
+          this.setState({name: data.name, session: true, access_token: data.access_token })
         }
       });
 
   }
 
   // Receives session prop from Nav component which receives session prop from Authentication component
-  session(name, bool) {
-    console.log("App.jsx session", name, bool);
-    this.setState({ name: name, session: bool })
+  session(name, bool, access) {
+    console.log("App.jsx session", name, bool, access);
+    this.setState({ name: name, session: bool, access_token: access })
   }
 
   render() {
-    // if (this.state.session === true) {
-    //   <Redirect to="/profile" />
-    // }
     console.log(this.state);
     return (
       <Router>
@@ -53,7 +51,7 @@ class App extends Component {
           <Nav state={this.state} auth={this.session} />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/profile" component={Profile} />} />
+            <Route path="/profile" render={(props) => <Profile {...props} data={this.state} />} />
             <Route component={Error} />
           </Switch>
         </div>
