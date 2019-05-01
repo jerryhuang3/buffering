@@ -29,7 +29,9 @@ class Nav extends Component {
             <NavLink to="/profile"> Profile</NavLink>
           </Menu.Item>
         </Menu.Menu>
-        <Menu.Menu position="center"><h3>Hey {this.props.state.name}! You are logged in!</h3></Menu.Menu>
+        <Menu.Menu position="center">
+          <h3>Hey {this.props.state.name}! You are logged in!</h3>
+        </Menu.Menu>
         <Menu.Menu position="right">
           <Menu.Item>
             <Authentication session={isUserLoggedIn} logout={this.session} />
@@ -57,11 +59,7 @@ class Nav extends Component {
       </Container>
     );
 
-    return (
-      <Menu>
-        {session}
-      </Menu>
-    );
+    return <Menu>{session}</Menu>;
   }
 }
 
