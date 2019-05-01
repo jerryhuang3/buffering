@@ -4,6 +4,8 @@ import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
 import Error from './components/Error.jsx';
 import Nav from './components/Nav.jsx';
+import Login from './components/Login.jsx';
+import Signup from './components/Signup.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -51,6 +53,8 @@ class App extends Component {
           <Nav state={this.state} auth={this.session} />
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
             <Route path="/profile" render={(props) => <Profile {...props} data={this.state} />} />
             <Route component={Error} />
           </Switch>

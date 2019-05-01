@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Container, Image, Menu } from 'semantic-ui-react';
 import Authentication from './Authentication.jsx';
+import Login from './Login.jsx';
+import Signup from './Signup.jsx';
 
 class Nav extends Component {
   constructor(props) {
@@ -29,8 +31,16 @@ class Nav extends Component {
             <NavLink to="/profile"> Profile</NavLink>
           </Menu.Item>
         </Menu.Menu>
-        <Menu.Menu position="center"><h3>Hey {this.props.state.name}! You are logged in!</h3></Menu.Menu>
+        <Menu.Menu>
+          <h3>Hey {this.props.state.name}! You are logged in!</h3>
+        </Menu.Menu>
         <Menu.Menu position="right">
+          <Menu.Item>
+            <NavLink to="/login">Login</NavLink>
+          </Menu.Item>
+          <Menu.Item>
+            <NavLink to="/signup">Signup</NavLink>
+          </Menu.Item>
           <Menu.Item>
             <Authentication session={isUserLoggedIn} logout={this.session} />
           </Menu.Item>
@@ -46,10 +56,16 @@ class Nav extends Component {
             <NavLink to="/profile"> Profile</NavLink>
           </Menu.Item>
         </Menu.Menu>
-        <Menu.Menu position="center">
+        <Menu.Menu>
           <h3>Hey! You are not logged in!</h3>
         </Menu.Menu>
         <Menu.Menu position="right">
+          <Menu.Item>
+            <NavLink to="/login">Login</NavLink>
+          </Menu.Item>
+          <Menu.Item>
+            <NavLink to="/Signup">Signup</NavLink>
+          </Menu.Item>
           <Menu.Item>
             <Authentication session={isUserLoggedIn} login={this.session} />
           </Menu.Item>
@@ -57,11 +73,7 @@ class Nav extends Component {
       </Container>
     );
 
-    return (
-      <Menu>
-        {session}
-      </Menu>
-    );
+    return <Menu>{session}</Menu>;
   }
 }
 
