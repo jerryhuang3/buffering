@@ -4,6 +4,7 @@ const knexConfig = require('../knexfile');
 const knex = require('knex')(knexConfig.development);
 const bcrypt = require('bcrypt');
 
+
 function testIsWorking() {
   return Promise.all([knex.select().from('users')]);
 }
@@ -18,15 +19,18 @@ function getUserProfile(username) {
   ]);
 }
 
+
 function getUser(email) {
   return Promise.all([
     knex('google_users')
+      .join('tokens', { 'google_users.google_id': 'tokens.google_id' })
       .where('google_users.email', email)
       .select()
   ]).then(result => {
     return result[0][0];
   });
 }
+
 
 function checkEmail(email) {
   return Promise.all([
@@ -60,6 +64,7 @@ function checkPassword(email, password) {
   });
 }
 
+
 function checkGoogleIdExists(googleId) {
   return Promise.all([
     knex('google_users')
@@ -76,6 +81,7 @@ function checkGoogleIdExists(googleId) {
   });
 }
 
+
 function insertUser(googleId, name, email, password) {
   return Promise.all([
     knex('google_users').insert({
@@ -86,6 +92,7 @@ function insertUser(googleId, name, email, password) {
     })
   ]);
 }
+
 
 function setTokenNewUser(googleId, accessToken, refreshToken) {
   return Promise.all([
@@ -107,6 +114,7 @@ function setTokenExistingUser(googleId, accessToken) {
   ]);
 }
 
+
 function insertUserIfNotFound(googleId, name, email, password) {
   return checkGoogleIdExists(googleId).then(idExists => {
     if (!idExists) {
@@ -116,12 +124,57 @@ function insertUserIfNotFound(googleId, name, email, password) {
           name: name,
           email: email,
           password: password
-          // currency: currency
         })
       ]);
     }
   });
 }
+
+
+function checkGoalExists(googleId, endOfDay) {
+  return Promise.all[(
+    knex('goals')
+    .where('google_id', '=', googleId)
+    .where('day_rounded', '=', endOfDay)
+    .select('day_rounded')
+  )]
+  .then( result => {
+    result[0][0] ? true : false;
+  })
+}
+
+function insertGoal(googleId, stepsGoal, endOfDay) {
+  return Promise.all([
+    knex('goals').insert({
+      google_id: googleId,
+      steps_goal: stepsGoal,
+      day_rounded: endOfDay
+    })
+  ]);
+}
+
+function updateGoal(googleId, stepsGoal, endOfDay) {
+  return Promise.all([
+    knex('goals')
+    .where('google_id', '=', googleId)
+    .where('day_rounded', '=', endOfDay)
+    .update({
+      steps_goal: stepsGoal
+    })
+  ])
+}
+
+function pastWeekGoals(googleId, weekAgo, endOfDay) {
+  return Promise.all([
+    knex('goals')
+    .where('google_id','=', googleId)
+    .whereBetween('day_rounded', [weekAgo, endOfDay])
+    .select('steps_goal', 'day_rounded')
+  ])
+}
+
+
+
 
 module.exports = {
   testIsWorking: testIsWorking,

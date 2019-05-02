@@ -15,7 +15,7 @@ class Authentication extends Component {
   authorizationCode(response) {
     console.log("Sending Google's authorization code to the server...");
     console.log(response);
-    fetch('/login', {
+    fetch('/login/google', {
       method: 'POST',
       body: JSON.stringify(response),
       headers: {
@@ -50,8 +50,9 @@ class Authentication extends Component {
       <GoogleLogout
         clientId={process.env.CLIENT_ID}
         buttonText="Logout"
-        onLogoutSuccess={this.logout}
-      >Logout With Google</GoogleLogout>
+        onLogoutSuccess={this.logout}>
+        Logout With Google
+      </GoogleLogout>
     ) : (
       <GoogleLogin
         clientId={process.env.CLIENT_ID}
@@ -60,10 +61,11 @@ class Authentication extends Component {
         onSuccess={this.authorizationCode}
         responseType="code"
         accessType="offline"
-        cookiePolicy={'single_host_origin'}
-      >Login With Google</GoogleLogin>
+        cookiePolicy={'single_host_origin'}>
+        Login With Google
+      </GoogleLogin>
     );
-      
+
     return <section>{button}</section>;
   }
 }
