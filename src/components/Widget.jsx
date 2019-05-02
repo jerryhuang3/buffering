@@ -7,6 +7,7 @@ class Widget extends Component {
   }
 
   render() {
+    console.log('We should see some activity here: ', this.props.activity);
     return (
       <div>
         <Container textAlign="center">
@@ -14,7 +15,9 @@ class Widget extends Component {
         </Container>
         <Grid divided="vertically">
           <Grid.Row columns={2}>
-            <Grid.Column />
+            <Grid.Column>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, illo?
+            </Grid.Column>
             <Grid.Column>{this.props.name}</Grid.Column>
           </Grid.Row>
         </Grid>
