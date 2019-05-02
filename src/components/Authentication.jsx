@@ -15,7 +15,7 @@ class Authentication extends Component {
   authorizationCode(response) {
     console.log("Sending Google's authorization code to the server...");
     console.log(response);
-    fetch('/login', {
+    fetch('/login/google', {
       method: 'POST',
       body: JSON.stringify(response),
       headers: {
