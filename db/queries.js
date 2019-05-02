@@ -3,6 +3,7 @@ require('dotenv').config();
 const knexConfig = require('../knexfile');
 const knex = require('knex')(knexConfig.development);
 
+
 function testIsWorking() {
   return Promise.all([knex.select().from('users')]);
 }
@@ -90,6 +91,43 @@ function insertUserIfNotFound(googleId, name, email, refreshToken) {
     }
   });
 }
+
+function checkGoalExists(googleId, endOfDay) {
+  return Promise.all[(
+    knex('goals')
+    .where('google_id', '=', googleId)
+    .where('day_rounded', '=', endOfDay)
+    .select('day_rounded')
+  )]
+  .then( result => {
+    result[0][0] ? true : false;
+  })
+}
+
+function insertGoal(googleId, stepsGoal, endOfDay) {
+  return Promise.all([
+    knex('goals').insert({
+      google_id: googleId,
+      steps_goal: stepsGoal,
+      day_rounded: endOfDay
+    })
+  ]);
+}
+
+function updateGoal(googleId, stepsGoal, endOfDay) {
+  return Promise.all([
+    knex('goals')
+    .where('google_id', '=', googleId)
+    .where('day_rounded', '=', endOfDay)
+    .update({
+      steps_goal: stepsGoal
+    })
+  ])
+}
+
+function pastWeekGoals(googleId, weekAgo, today) {
+}
+
 
 module.exports = {
   testIsWorking: testIsWorking,
