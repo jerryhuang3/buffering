@@ -186,7 +186,9 @@ module.exports = {
   setTokenNewUser: setTokenNewUser,
   setTokenExistingUser: setTokenExistingUser,
   checkEmail: checkEmail,
-  checkPassword: checkPassword
+  checkPassword: checkPassword,
+  pastWeekGoals: pastWeekGoals,
+  updateGoal: updateGoal
 };
 
 // DATABASE STRUCTURE

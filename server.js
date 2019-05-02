@@ -177,7 +177,7 @@ app.post('/goals', async function(req, res) {
   const endOfDay = today.valueOf();
   const weekAgo = today.subtract(7, 'days').valueOf();
 
-  const foundGoals = await query.pastWeekGoals(googleId, weekAgo, endOfDay)[0];
+  const foundGoals = await queries.pastWeekGoals(googleId, weekAgo, endOfDay)[0];
   let pastWeekArray = [endOfDay];
   for (let i = 1; i < 7; i++)  {
     const ithDayAgo = today.subtract(i, 'days').valueOf();
@@ -186,7 +186,7 @@ app.post('/goals', async function(req, res) {
   console.log("past week array has length ", pastWeekArray.length); // should be 7
 
   const goalHistory = pastWeekArray.map( day => {
-    const dayGoal = foundGoals.filter( goalObj => goalObj.day_rounded === day)[0];
+    const dayGoal = foundGoals.filter( goalObj => goalObj.day_rounded === day)[0]; // errors if no goals
     return dayGoal ? dayGoal : 0;
   });
   console.log(goalHistory);

@@ -52,7 +52,7 @@ class Profile extends Component {
       goals: [3000, 3500, 3000, 4000, 4000, 4000, 5000],
       steps: [3748, 4789, 2674, 2489, 6738, 4837, 7682]
     }
-    //progressChart.graphStepData(stepsArray, testData.goals);
+    progressChart.graphStepData(stepsArray, testData.goals);
   }
 
   render() {
