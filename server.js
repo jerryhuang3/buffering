@@ -19,6 +19,9 @@ const queries = require('./db/queries');
 // for generating refresh and access tokens
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
+// store goals by end of day
+const moment = require('moment');
+
 
 // iniitalize express
 const app = express();
@@ -54,7 +57,7 @@ app.post('/', (req, res) => {
 });
 
 
-// ASYNC METHOD
+// LOGIN / LOGOUT
 app.post('/login', async function(req, res){
   console.log('RECEIVING AUTHORIZATION CODE FROM CLIENT');
 
@@ -97,12 +100,12 @@ app.post('/login', async function(req, res){
 
     await queries.insertUser(googleId, name, email, refreshToken);
     await queries.setTokenNewUser(googleId, accessToken);
-    await res.json({ name: user.name, access_token: accessToken });
+    res.json({ name: user.name, access_token: accessToken });
 
   } else {
     console.log("this user exists and that's fine");
     await queries.setTokenExistingUser(googleId, accessToken);
-    await res.json({ name: user.name, access_token: accessToken });
+    res.json({ name: user.name, access_token: accessToken });
   }
 });
 
@@ -113,6 +116,51 @@ app.post('/logout', (req, res) => {
   req.session = null;
   res.end();
   // res.sendStatus(200);
+});
+
+
+// GOALS
+app.post('/set_goal', async function(req, res) {
+  console.log('SET GOAL ROUTE');
+  const googleId = req.body.googleId;
+  const stepsGoal = req.body.stepsGoal;
+  const givenDay = req.body.givenDay; //what happens here??
+  const endOfDay = moment(Date.now()).endOf('day').valueOf(); //related to above
+
+  // check if this goal exists then insert/update as appropriate
+  const goalExists = await query.checkGoalExists(googleId, endOfDay);
+  if (goalExists) {
+    await query.updateGoal(googleId, stepsGoal, endOfDay);
+    res.sendStatus(200);
+  } else {
+    await query.insertGoal(googleId, stepsGoal, endOfDay);
+    res.sendStatus(200);
+  }
+});
+
+app.get('goals', async function(req, res) {
+  console.log('GET GOALS ROUTE');
+  const googleId = req.body.googleId;
+  // calculate rounded day and week ago from current time
+  const today = moment(Date.now()).endOf('day');
+  const endOfDay = today.valueOf();
+  const weekAgo = today.subtract(7, 'days').valueOf();
+
+  const foundGoals = await query.pastWeekGoals(googleId, weekAgo, endOfDay)[0];
+  let pastWeekArray = [endOfDay];
+  for (let i = 1; i < 7; i++)  {
+    const ithDayAgo = today.subtract(i, 'days').valueOf();
+    pastWeekArray.push(ithDayAgo);
+  }
+  console.log("past week array has length ", pastWeekArray.length); // should be 7
+
+  const goalHistory = pastWeekArray.map( day => {
+    const dayGoal = foundGoals.filter( goalObj => goalObj.day_rounded === day)[0];
+    return dayGoal ? dayGoal : 0;
+  });
+  console.log(goalHistory);
+
+  res.json({ goalHistory: goalHistory });
 });
 
 

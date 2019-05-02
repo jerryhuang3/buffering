@@ -10,7 +10,7 @@ const steps = {
         dataSourceId: 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'
       }
     ],
-  
+
     bucketByTime: { durationMillis: 86400000 },
     startTimeMillis: 1554868800000,
     endTimeMillis: Date.now()
@@ -25,7 +25,7 @@ const steps = {
 class Profile extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       activity: []
     }
@@ -33,10 +33,10 @@ class Profile extends Component {
 
   componentDidMount() {
     console.log('THIS RUNS');
-    const activity = [];
+    const activityHistory = { steps: [], goals: [] };
     const name = this.props.data.name;
     steps.headers.Authorization = `Bearer ${this.props.data.access_token}`;
-  
+
 
     fetch('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', steps)
       .then(response => response.json())
@@ -44,7 +44,7 @@ class Profile extends Component {
         console.log(data.bucket);
         for (let i = 0; i < data.bucket.length; i++) {
           if (data.bucket[i].dataset[0].point[0] !== undefined) {
-            
+
             activity.push(
               `${name} took ${data.bucket[i].dataset[0].point[0].value[0].intVal} steps on ${moment(
                 parseInt(data.bucket[i].startTimeMillis)
@@ -54,7 +54,9 @@ class Profile extends Component {
         }
         this.setState({activity});
       });
-      
+
+    // assemble steps + goals
+
   }
 
   render() {
