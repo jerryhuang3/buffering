@@ -22,17 +22,16 @@
     {
       "matches": ["<all_urls>"],
       "exclude_globs": ["*://localhost:3000/*", "*://accounts.google.com/*"],
-      "js": [
-        "./content/jquery-3.4.0.min.js",
-        "https://cdn.jsdelivr.net/npm/jimp@0.6.4/browser/lib/jimp.min.js",
-        "./content/content.js"
-      ]
+      "js": ["./content/jquery-3.4.0.min.js", "./content/content.js"]
     }
   ],
   "permissions": ["tabs", "activeTab", "<all_urls>", "cookies"],
   "web_accessible_resources": [
     "./css/test.css",
+    "./scriptmods/image.js",
     "./scriptmods/cursor.js",
-    "/vendor/geoBootstrap.css"
+    "/vendor/geoBootstrap.css",
+    "https://cdn.jsdelivr.net/npm/jimp@0.6.4/browser/lib/jimp.min.js",
+    "icons/*"
   ]
 }

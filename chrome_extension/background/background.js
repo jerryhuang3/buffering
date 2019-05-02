@@ -6,10 +6,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       : "this shouldn't happen"
   );
   if (request.greeting == 'hello') {
-    chrome.tabs.insertCSS(null, { file: './css/test.css' });
-    chrome.tabs.executeScript(null, { file: './scriptmods/mouseMoveVisibility.js' });
-    chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
-
+    //insert scripts to execute here
+    chrome.tabs.executeScript(null, { file: './scriptmods/image.js' });
     sendResponse({ farewell: 'goodbye' });
   }
 });
+
+//some scripts/css to inject
+// chrome.tabs.insertCSS(null, { file: './css/test.css' });
+// chrome.tabs.executeScript(null, { file: './scriptmods/mouseMoveVisibility.js' });
+// chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
