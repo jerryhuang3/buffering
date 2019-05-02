@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import moment from 'moment';
-=======
 import { Redirect } from 'react-router-dom';
 import moment from 'moment-es6';
->>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
 
 const steps = {
   method: 'POST',
