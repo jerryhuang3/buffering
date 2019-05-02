@@ -186,6 +186,7 @@ app.post('/goals', async function(req, res) {
   console.log("past week array has length ", pastWeekArray.length); // should be 7
 
   const goalHistory = pastWeekArray.map( day => {
+    console.log(day);
     const dayGoal = foundGoals.filter( goalObj => goalObj.day_rounded === day)[0]; // errors if no goals
     return dayGoal ? dayGoal : 0;
   });
