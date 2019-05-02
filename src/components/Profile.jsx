@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+import { Redirect } from 'react-router-dom';
+import moment from 'moment-es6';
 
 const steps = {
   method: 'POST',
@@ -31,8 +32,7 @@ class Profile extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log('THIS RUNS');
+  async componentDidMount() {
     const activity = [];
     const name = this.props.data.name;
     steps.headers.Authorization = `Bearer ${this.props.data.access_token}`;
@@ -54,11 +54,12 @@ class Profile extends Component {
         }
         this.setState({activity});
       });
-      
   }
 
   render() {
-    console.log(this.state);
+    if (!this.props.session) {
+      return <Redirect to="/login" />;
+    }
     const steps = this.state.activity.map(day => {
       return <p>{day}</p>;
     });

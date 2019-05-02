@@ -60,7 +60,6 @@ class Authentication extends Component {
         onSuccess={this.authorizationCode}
         responseType="code"
         accessType="offline"
-        approvalPrompt="force"
         cookiePolicy={'single_host_origin'}
       >Login With Google</GoogleLogin>
     );

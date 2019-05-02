@@ -5,6 +5,8 @@ import Profile from './components/Profile.jsx';
 import Error from './components/Error.jsx';
 import Nav from './components/Nav.jsx';
 import Widget from './components/Widget';
+import Login from './components/Login.jsx';
+import Signup from './components/Signup.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -20,22 +22,25 @@ class App extends Component {
     this.session = this.session.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Check for cookie session
-    fetch('/', { method: 'POST' })
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        if (!data) {
-          console.log('No cookie');
-          this.setState({ session: false });
-        } else {
-          console.log('COOOKIE IS', data);
-          this.setState({ name: data.name, session: true, access_token: data.access_token });
-        }
-      });
+    try {
+      const response = await fetch('/', { method: 'POST' });
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      const json = await response.json();
+      if (!json) {
+        console.log('No cookie');
+      } else {
+        console.log('COOKIE EXISTS! SETTING SESSION TO TRUE');
+        console.table(json);
+        this.test;
+        this.setState({ name: json.name, session: true, access_token: json.access_token });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // Receives session prop from Nav component which receives session prop from Authentication component
@@ -59,6 +64,14 @@ class App extends Component {
             <Route
               path="/widget"
               render={props => <Widget {...props} noNav={this.noNav} data={this.state} />}
+            />
+            <Route
+              path="/login"
+              render={props => <Login {...props} session={this.state.session} />}
+            />
+            <Route
+              path="/signup"
+              render={props => <Signup {...props} session={this.state.session} />}
             />
             <Route component={Error} />
           </Switch>
