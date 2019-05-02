@@ -34,6 +34,10 @@ const testData = {
 }
 
 function goalRedOrGreen(goalValue, stepValue, idx) {
+  if (goalValue === 0 || stepValue === 0) {
+    return 'rgba(100,100,100,0.5)';
+  }
+
   const alpha = 0.5 * (idx + 1) / 7;
   const redAmt = goalValue < stepValue ? 255 - parseInt(goalValue / stepValue) : 0;
   const greenAmt = goalValue > stepValue ? Math.max(255, 100 + 5 * stepValue/goalValue) : 0;

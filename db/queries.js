@@ -2,6 +2,7 @@ require('dotenv').config();
 // import knex
 const knexConfig = require('../knexfile');
 const knex = require('knex')(knexConfig.development);
+const bcrypt = require('bcrypt');
 
 
 function testIsWorking() {
@@ -18,17 +19,50 @@ function getUserProfile(username) {
   ]);
 }
 
-function getUser(googleId) {
+
+function getUser(email) {
   return Promise.all([
     knex('google_users')
-      .join('tokens', { 'google_users.google_id': 'tokens.google_id' })
-      .where('google_users.google_id', googleId)
+      .where('google_users.email', email)
       .select()
   ]).then(result => {
-    console.log(result[0][0]);
     return result[0][0];
   });
 }
+
+
+function checkEmail(email) {
+  return Promise.all([
+    knex('google_users')
+      .where({
+        email: email
+      })
+      .select('id')
+  ]).then(result => {
+    if (result[0][0]) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+}
+
+function checkPassword(email, password) {
+  return Promise.all([
+    knex('google_users')
+      .where({
+        email: email
+      })
+      .select('password')
+  ]).then(result => {
+    if (result[0][0]) {
+      return bcrypt.compareSync(password, result[0][0].password);
+    } else {
+      return false;
+    }
+  });
+}
+
 
 function checkGoogleIdExists(googleId) {
   return Promise.all([
@@ -46,22 +80,25 @@ function checkGoogleIdExists(googleId) {
   });
 }
 
-function insertUser(googleId, name, email, refreshToken) {
+
+function insertUser(googleId, name, email, password) {
   return Promise.all([
     knex('google_users').insert({
       google_id: googleId,
       name: name,
       email: email,
-      refresh_token: refreshToken
+      password: password
     })
   ]);
 }
 
-function setTokenNewUser(googleId, accessToken) {
+
+function setTokenNewUser(googleId, accessToken, refreshToken) {
   return Promise.all([
     knex('tokens').insert({
       google_id: googleId,
-      access_token: accessToken
+      access_token: accessToken,
+      refresh_token: refreshToken
     })
   ]);
 }
@@ -76,7 +113,8 @@ function setTokenExistingUser(googleId, accessToken) {
   ]);
 }
 
-function insertUserIfNotFound(googleId, name, email, refreshToken) {
+
+function insertUserIfNotFound(googleId, name, email, password) {
   return checkGoogleIdExists(googleId).then(idExists => {
     if (!idExists) {
       return Promise.all([
@@ -84,13 +122,13 @@ function insertUserIfNotFound(googleId, name, email, refreshToken) {
           google_id: googleId,
           name: name,
           email: email,
-          refresh_token: refreshToken
-          // currency: currency
+          password: password
         })
       ]);
     }
   });
 }
+
 
 function checkGoalExists(googleId, endOfDay) {
   return Promise.all[(
@@ -135,6 +173,8 @@ function pastWeekGoals(googleId, weekAgo, endOfDay) {
 }
 
 
+
+
 module.exports = {
   testIsWorking: testIsWorking,
   getUserProfile: getUserProfile,
@@ -143,7 +183,9 @@ module.exports = {
   insertUserIfNotFound: insertUserIfNotFound,
   insertUser: insertUser,
   setTokenNewUser: setTokenNewUser,
-  setTokenExistingUser: setTokenExistingUser
+  setTokenExistingUser: setTokenExistingUser,
+  checkEmail: checkEmail,
+  checkPassword: checkPassword
 };
 
 // DATABASE STRUCTURE

@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import moment from 'moment';
+=======
+import { Redirect } from 'react-router-dom';
+import moment from 'moment-es6';
+>>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
 
 const steps = {
   method: 'POST',
@@ -10,7 +15,11 @@ const steps = {
         dataSourceId: 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'
       }
     ],
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
     bucketByTime: { durationMillis: 86400000 },
     startTimeMillis: 1554868800000,
     endTimeMillis: Date.now()
@@ -25,18 +34,30 @@ const steps = {
 class Profile extends Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
     this.state = {
       activity: []
     }
   }
 
+<<<<<<< HEAD
   componentDidMount() {
     console.log('THIS RUNS');
     const activityHistory = { steps: [], goals: [] };
     const name = this.props.data.name;
     steps.headers.Authorization = `Bearer ${this.props.data.access_token}`;
 
+=======
+  async componentDidMount() {
+    const activity = [];
+    const name = this.props.data.name;
+    steps.headers.Authorization = `Bearer ${this.props.data.access_token}`;
+  
+>>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
 
     fetch('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', steps)
       .then(response => response.json())
@@ -44,7 +65,11 @@ class Profile extends Component {
         console.log(data.bucket);
         for (let i = 0; i < data.bucket.length; i++) {
           if (data.bucket[i].dataset[0].point[0] !== undefined) {
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
             activity.push(
               `${name} took ${data.bucket[i].dataset[0].point[0].value[0].intVal} steps on ${moment(
                 parseInt(data.bucket[i].startTimeMillis)
@@ -54,6 +79,7 @@ class Profile extends Component {
         }
         this.setState({activity});
       });
+<<<<<<< HEAD
 
     // assemble steps + goals
 
@@ -61,6 +87,14 @@ class Profile extends Component {
 
   render() {
     console.log(this.state);
+=======
+  }
+
+  render() {
+    if (!this.props.session) {
+      return <Redirect to="/login" />;
+    }
+>>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
     const steps = this.state.activity.map(day => {
       return <p>{day}</p>;
     });
