@@ -4,11 +4,8 @@ import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
 import Error from './components/Error.jsx';
 import Nav from './components/Nav.jsx';
-<<<<<<< HEAD
-=======
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
->>>>>>> 7cb596db15c5460ebed19412e94b1f2244c208c9
 
 class App extends Component {
   constructor(props) {
