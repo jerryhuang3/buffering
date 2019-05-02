@@ -43,7 +43,6 @@ class App extends Component {
 
   // Receives session prop from Nav component which receives session prop from Authentication component
   session(name, bool, access) {
-    console.log('App.jsx session', name, bool, access);
     this.setState({ name: name, session: bool, access_token: access });
   }
 

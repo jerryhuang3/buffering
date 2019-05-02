@@ -122,12 +122,12 @@ app.post('/login/google', async function(req, res) {
 
     await queries.insertUser(googleId, name, email);
     await queries.setTokenNewUser(googleId, accessToken, refreshToken);
-    await res.json({ name: user.name, access_token: accessToken });
+    res.json({ name: user.name, access_token: accessToken });
 
   } else {
     console.log("this user exists and that's fine");
     await queries.setTokenExistingUser(googleId, accessToken);
-    await res.json({ name: user.name, access_token: accessToken });
+    res.json({ name: user.name, access_token: accessToken });
   }
 });
 

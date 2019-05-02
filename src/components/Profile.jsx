@@ -57,7 +57,7 @@ class Profile extends Component {
   }
 
   render() {
-    if (!this.props.session) {
+    if (!this.props.data.session) {
       return <Redirect to="/login" />;
     }
     const steps = this.state.activity.map(day => {

@@ -21,6 +21,7 @@ function getUserProfile(username) {
 function getUser(email) {
   return Promise.all([
     knex('google_users')
+      .join('tokens', { 'google_users.google_id': 'tokens.google_id' })
       .where('google_users.email', email)
       .select()
   ]).then(result => {
