@@ -17,8 +17,9 @@
   "author": "Aleksey, Ratt, Jerry",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-stage-0": "^7.0.0",

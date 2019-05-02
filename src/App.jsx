@@ -20,42 +20,49 @@ class App extends Component {
     this.session = this.session.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Check for cookie session
-    fetch('/', { method: 'POST' })
-      .then(response => {
-        return response.json()
-      })
-      .then(data => {
-        console.log(data)
-        if (!data) {
-          console.log('No cookie');
-          this.setState({ session: false});
-        } else {
-          console.log('COOOKIE IS', data);
-          this.setState({name: data.name, session: true, access_token: data.access_token })
-        }
-      });
-
+    try {
+      const response = await fetch('/', { method: 'POST' });
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      const json = await response.json();
+      if (!json) {
+        console.log('No cookie');
+      } else {
+        console.log('COOKIE EXISTS! SETTING SESSION TO TRUE');
+        console.table(json);
+        this.test;
+        this.setState({ name: json.name, session: true, access_token: json.access_token });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // Receives session prop from Nav component which receives session prop from Authentication component
   session(name, bool, access) {
-    console.log("App.jsx session", name, bool, access);
-    this.setState({ name: name, session: bool, access_token: access })
+    console.log('App.jsx session', name, bool, access);
+    this.setState({ name: name, session: bool, access_token: access });
   }
 
   render() {
-    console.log(this.state);
     return (
       <Router>
         <div>
           <Nav state={this.state} auth={this.session} />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/profile" render={(props) => <Profile {...props} data={this.state} />} />
+            <Route
+              path="/login"
+              render={props => <Login {...props} session={this.state.session} />}
+            />
+            <Route
+              path="/signup"
+              render={props => <Signup {...props} session={this.state.session} />}
+            />
+            <Route path="/profile" render={props => <Profile {...props} data={this.state} />} />
             <Route component={Error} />
           </Switch>
         </div>

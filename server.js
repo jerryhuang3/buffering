@@ -9,6 +9,7 @@ const ENV = process.env.ENV || 'development';
 const cookieSession = require('cookie-session');
 // import express and related libraries
 const express = require('express');
+const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 //const sass        = require("node-sass-middleware");
 const path = require('path');
@@ -38,25 +39,49 @@ app.use(
 // routes
 app.post('/', (req, res) => {
   console.log('GET / is RUNNING');
-  console.log("req.session.userid = ", req.session.userid);
-  if (req.session.userid) {
+  console.log('req.session.user = ', req.session.user);
+  if (req.session.user) {
     console.log('There are cookies so querying the database');
-    queries
-      .getUser(req.session.userid)
-      .then(result => {
-        console.log(result);
-        res.json(result);
-      });
+    queries.getUser(req.session.user).then(result => {
+      console.log(result);
+      return res.json(result);
+    });
   } else {
-    console.log('No cookies so sending Hello');
+    console.log('No cookies so sending');
     res.send(false);
   }
 });
 
+app.post('/signup', async (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = bcrypt.hashSync(req.body.password, 10);
+  const emailExists = await queries.checkEmail(req.body.email);
+    if (emailExists) {
+      res.status(400).send("<h1>HTTP 400 - BAD REQUEST: E-MAIL ALREADY USED!</h1><p><a href=\"/signup\">Back to Signup</a></p>");
+    } else {
+      await queries.insertUser(null, name, email, password);
+      req.session.user = email; //Set user in cookie
+      res.redirect('/profile');
+    }
+});
 
-// ASYNC METHOD
-app.post('/login', async function(req, res){
+app.post('/login', async (req, res) => {
+  console.log('RECEIVING LOGIN DATA');
+  const email = req.body.email;
+  const password = req.body.password;
+  const checkPassword = await queries.checkPassword(email, password);
+  if (checkPassword) {
+    req.session.user = email; //Set user in cookie
+    res.redirect('/profile');
+  } else {
+    res.status(400).send("<h1>HTTP 400 - BAD REQUEST: E-MAIL OR PASSWORD INCORRECT!</h1><p><a href=\"/login\">Back to Login</a></p>");
+  }
+});
+
+app.post('/login/google', async function(req, res) {
   console.log('RECEIVING AUTHORIZATION CODE FROM CLIENT');
+  if (req.body.email);
 
   const data = {
     code: req.body.code,
@@ -88,15 +113,15 @@ app.post('/login', async function(req, res){
 
   console.log("refreshTOKEN (oooh boy, i hope i get it):", refreshToken);
 
-  req.session.userid = googleId; //set userid in cookie
+  req.session.user = email; //set user in cookie
   console.log('User query is about to run....');
 
   const idExists = await queries.checkGoogleIdExists(googleId);
   if (!idExists) {
     console.log('user was not found...so we can make one!');
 
-    await queries.insertUser(googleId, name, email, refreshToken);
-    await queries.setTokenNewUser(googleId, accessToken);
+    await queries.insertUser(googleId, name, email);
+    await queries.setTokenNewUser(googleId, accessToken, refreshToken);
     await res.json({ name: user.name, access_token: accessToken });
 
   } else {
@@ -106,15 +131,11 @@ app.post('/login', async function(req, res){
   }
 });
 
-
-
 app.post('/logout', (req, res) => {
-  console.log("this is cookie session id: ", req.session.userid);
+  console.log('logout route is working');
   req.session = null;
   res.end();
-  // res.sendStatus(200);
 });
-
 
 // TEST
 const testRoutes = require('./test_routes');
@@ -132,8 +153,6 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-
 
 // async error helpers
 

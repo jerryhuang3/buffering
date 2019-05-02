@@ -1,50 +1,13 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { Button, Form, Grid, Message, Segment, Header, Modal } from 'semantic-ui-react';
 import { GoogleLogin } from 'react-google-login';
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-
-    this.authorizationCode = this.authorizationCode.bind(this);
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-  }
-
-  authorizationCode(response) {
-    console.log("Sending Google's authorization code to the server...");
-    console.log(response);
-    fetch('/login', {
-      method: 'POST',
-      body: JSON.stringify(response),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(promise => {
-        return promise.json();
-      })
-      .then(userName => {
-        console.log(userName);
-        this.login(userName.name, userName.access_token);
-      });
-  }
-
-  // Send Login prop to Nav
-  login(name, access) {
-    console.log('Authentication.jsx: Logging in', name);
-    this.props.login(name, true, access);
-  }
-
-  // Send Logout prop to Nav
-  logout() {
-    console.log('Authentication.jsx: Logging out');
-    fetch('/logout', { method: 'POST' });
-    this.props.logout(null, false, null);
-  }
-
   render() {
+    if (this.props.session) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="login-form">
         {/*
@@ -66,34 +29,41 @@ class Login extends Component {
             <Header as="h2" color="teal" textAlign="center">
               Log in to your account
             </Header>
-            <Form size="large">
+            <Form action="/login" method="POST" size="large">
               <Segment stacked>
-                <Form.Input fluid icon="user" iconPosition="left" placeholder="E-mail address" />
+                <Form.Input
+                  fluid
+                  icon="paper plane"
+                  iconPosition="left"
+                  placeholder="E-mail address"
+                  name="email"
+                  type="email"
+                />
                 <Form.Input
                   fluid
                   icon="lock"
                   iconPosition="left"
                   placeholder="Password"
+                  name="password"
                   type="password"
                 />
-
                 <Button color="teal" fluid size="large">
                   Login
                 </Button>
               </Segment>
             </Form>
             <Message>
-              New to us? <NavLink to="/Signup">Sign up</NavLink>
+              New to us? <NavLink to="/signup">Sign up</NavLink>
             </Message>
             <GoogleLogin
               clientId={process.env.CLIENT_ID}
-              scope="https://www.googleapis.com/auth/fitness.activity.read"
+              scope={process.env.SCOPES}
               buttonText="Login"
               onSuccess={this.authorizationCode}
               responseType="code"
               accessType="offline"
               cookiePolicy={'single_host_origin'}
-              className='login-google-btn'>
+              className="login-google-btn">
               Login With Google
             </GoogleLogin>
           </Grid.Column>
