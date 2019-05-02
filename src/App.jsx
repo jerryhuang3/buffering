@@ -49,7 +49,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <Router>
         <div>
@@ -59,7 +58,7 @@ class App extends Component {
             <Route path="/profile" render={props => <Profile {...props} data={this.state} />} />
             <Route
               path="/widget"
-              render={props => <Widget {...props} noNav={this.noNav} name={this.state.name} />}
+              render={props => <Widget {...props} noNav={this.noNav} data={this.state} />}
             />
             <Route component={Error} />
           </Switch>
