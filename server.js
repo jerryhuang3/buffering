@@ -129,7 +129,7 @@ app.post('/login/google', async function(req, res) {
     console.log('user was not found...so we can make one!');
 
 
-    await queries.insertUser(googleId, name, email);
+    await queries.insertUser(googleId, name, email, "");
     await queries.setTokenNewUser(googleId, accessToken, refreshToken);
     res.json({ name: user.name, access_token: accessToken });
 
@@ -169,7 +169,7 @@ app.post('/set_goal', async function(req, res) {
   }
 });
 
-app.get('goals', async function(req, res) {
+app.post('/goals', async function(req, res) {
   console.log('GET GOALS ROUTE');
   const googleId = req.body.googleId;
   // calculate rounded day and week ago from current time

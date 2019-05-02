@@ -14,7 +14,8 @@ class App extends Component {
     this.state = {
       name: null,
       session: false,
-      access_token: null
+      access_token: null,
+      google_id: null
     };
 
     this.session = this.session.bind(this);
@@ -34,7 +35,7 @@ class App extends Component {
         console.log('COOKIE EXISTS! SETTING SESSION TO TRUE');
         console.table(json);
         this.test;
-        this.setState({ name: json.name, session: true, access_token: json.access_token });
+        this.setState({ name: json.name, session: true, access_token: json.access_token, google_id: json.google_id});
       }
     } catch (err) {
       console.log(err);
