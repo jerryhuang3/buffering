@@ -125,7 +125,13 @@ function updateGoal(googleId, stepsGoal, endOfDay) {
   ])
 }
 
-function pastWeekGoals(googleId, weekAgo, today) {
+function pastWeekGoals(googleId, weekAgo, endOfDay) {
+  return Promise.all([
+    knex('goals')
+    .where('google_id','=', googleId)
+    .whereBetween('day_rounded', [weekAgo, endOfDay])
+    .select('steps_goal', 'day_rounded')
+  ])
 }
 
 
