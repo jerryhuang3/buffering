@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment-es6';
 import dataUtils from '../utils/data-utils';
-//import progressChart from '../utils/progress-chart';
+import progressChart from '../utils/progress-chart';
 
 const steps = {
   method: 'POST',
@@ -46,13 +46,13 @@ class Profile extends Component {
     });
     const goalJSON = await goalFetch.json();
     console.log("STEPS: ", stepsArray);
-    console.log("GOALS: ", goal.JSON);
+    console.log("GOALS: ", goalJSON.goalHistory);
 
     const testData = {
       goals: [3000, 3500, 3000, 4000, 4000, 4000, 5000],
       steps: [3748, 4789, 2674, 2489, 6738, 4837, 7682]
     }
-    progressChart.graphStepData(stepsArray, testData.goals);
+    progressChart.graphStepData(goalJSON.goalHistory, stepsArray);
   }
 
   render() {
@@ -64,7 +64,7 @@ class Profile extends Component {
     });
     return (
       <div>
-        <canvas id="ProgressChart" width="200px" height="200px"></canvas>
+        <canvas id="ProgressChart"></canvas>
       </div>
     );
   }
