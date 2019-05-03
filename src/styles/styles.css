@@ -15,3 +15,8 @@ cursor: pointer
 .login-google-btn svg {
     margin-left: 40px;
 }
+
+#ProgressChart {
+    /* width: 60% !important; */
+    /* height: 50% !important; */
+}

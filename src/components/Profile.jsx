@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment-es6';
+import dataUtils from '../utils/data-utils';
+import progressChart from '../utils/progress-chart';
 
 const steps = {
   method: 'POST',
@@ -11,7 +13,7 @@ const steps = {
         dataSourceId: 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps'
       }
     ],
-  
+
     bucketByTime: { durationMillis: 86400000 },
     startTimeMillis: 1554868800000,
     endTimeMillis: Date.now()
@@ -26,34 +28,31 @@ const steps = {
 class Profile extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       activity: []
     }
   }
 
   async componentDidMount() {
-    const activity = [];
-    const name = this.props.data.name;
-    steps.headers.Authorization = `Bearer ${this.props.data.access_token}`;
-  
+    const stepsArray = await dataUtils.filterAndFetchSteps(this.props.data.access_token);
+    const goalFetch = await fetch('/goals', {
+      method: 'POST',
+      headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+        },
+      body: JSON.stringify({ googleId: this.props.data.google_id })
+    });
+    const goalJSON = await goalFetch.json();
+    console.log("STEPS: ", stepsArray);
+    console.log("GOALS: ", goalJSON.goalHistory);
 
-    fetch('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', steps)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.bucket);
-        for (let i = 0; i < data.bucket.length; i++) {
-          if (data.bucket[i].dataset[0].point[0] !== undefined) {
-            
-            activity.push(
-              `${name} took ${data.bucket[i].dataset[0].point[0].value[0].intVal} steps on ${moment(
-                parseInt(data.bucket[i].startTimeMillis)
-              ).calendar()}!`
-            );
-          }
-        }
-        this.setState({activity});
-      });
+    const testData = {
+      goals: [3000, 3500, 3000, 4000, 4000, 4000, 5000],
+      steps: [3748, 4789, 2674, 2489, 6738, 4837, 7682]
+    }
+    progressChart.graphStepData(goalJSON.goalHistory, stepsArray);
   }
 
   render() {
@@ -65,7 +64,7 @@ class Profile extends Component {
     });
     return (
       <div>
-        {steps}
+        <canvas id="ProgressChart"></canvas>
       </div>
     );
   }
