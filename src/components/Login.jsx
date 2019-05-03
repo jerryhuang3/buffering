@@ -4,6 +4,38 @@ import { Button, Form, Grid, Message, Segment, Header, Modal } from 'semantic-ui
 import { GoogleLogin } from 'react-google-login';
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.authorizationCode = this.authorizationCode.bind(this);
+    this.login = this.login.bind(this);
+  }
+
+  authorizationCode(response) {
+    console.log("Sending Google's authorization code to the server...");
+    console.log(response);
+    fetch('/test/login', {
+      method: 'POST',
+      body: JSON.stringify(response),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(promise => {
+        return promise.json();
+      })
+      .then(userName => {
+        console.log(userName);
+        this.login(userName.name, userName.access_token);
+      });
+  }
+
+  // Send Login prop to Nav
+  login(name, access) {
+    console.log('Authentication.jsx: Logging in', name);
+    this.props.login(name, true, access);
+  }
+
   render() {
     if (this.props.session) {
       return <Redirect to="/" />;
@@ -57,11 +89,9 @@ class Login extends Component {
             </Message>
             <GoogleLogin
               clientId={process.env.CLIENT_ID}
-              scope={process.env.SCOPES}
               buttonText="Login"
               onSuccess={this.authorizationCode}
               responseType="code"
-              accessType="offline"
               cookiePolicy={'single_host_origin'}
               className="login-google-btn">
               Login With Google

@@ -1,8 +1,37 @@
 import React, { Component } from 'react';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink, Redirect, withRouter } from 'react-router-dom';
 import { Button, Form, Grid, Message, Segment, Header, Modal } from 'semantic-ui-react';
+import { GoogleLogin } from 'react-google-login';
 
 class Signup extends Component {
+  constructor(props) {
+    super(props);
+
+    this.authorizationCode = this.authorizationCode.bind(this);
+    // this.login = this.login.bind(this);
+  }
+
+  async authorizationCode(response) {
+    console.log("Sending Google's authorization code to the server...");
+    console.log(response);
+    const res = await fetch('/signup', {
+      method: 'POST',
+      body: JSON.stringify(response),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const json = await res.json() ? this.props.history.push('/400') : console.log("THIS IS FALSE");    
+    //     // this.login(userName.name, userName.access_token);
+    
+  }
+
+  // Send Login prop to Nav
+  // login(name, access) {
+  //   console.log('Authentication.jsx: Logging in', name);
+  //   this.props.login(name, true, access);
+  // }
+  
   render() {
     if (this.props.session) {
       return <Redirect to="/" />;
@@ -61,10 +90,19 @@ class Signup extends Component {
             <Message>
               Already have an account? <NavLink to="/login">Login</NavLink>
             </Message>
+            <GoogleLogin
+              clientId={process.env.CLIENT_ID}
+              buttonText="Login"
+              onSuccess={this.authorizationCode}
+              responseType="code"
+              cookiePolicy={'single_host_origin'}
+              className="login-google-btn">
+              Sign up with Google
+            </GoogleLogin>
           </Grid.Column>
         </Grid>
       </div>
     );
   }
 }
-export default Signup;
+export default withRouter(Signup);

@@ -24,6 +24,8 @@ const jwt = require('jsonwebtoken');
 // store goals by end of day
 const moment = require('moment');
 
+const auth = require('./auth');
+
 // iniitalize express
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -56,18 +58,29 @@ app.post('/', (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = bcrypt.hashSync(req.body.password, 10);
-  const emailExists = await queries.checkEmail(req.body.email);
+  const user = req.body.code ? await auth.googleAuth(req.body.code) : {
+    type: 'signup',
+    name: req.body.name,
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password, 10)
+  };
+  console.log(user);
+  const emailExists = await queries.checkEmail(user.email);
+  console.log(emailExists);
   if (emailExists) {
-    res
-      .status(400)
-      .send(
-        '<h1>HTTP 400 - BAD REQUEST: E-MAIL ALREADY USED!</h1><p><a href="/signup">Back to Signup</a></p>'
-      );
+    res.json(true);
   } else {
-    await queries.insertUser(null, name, email, password);
+    switch (user.type) {
+      case 'google':
+        console.log('google signup detected');
+        await queries.insertUser(user.googleId, user.name, user.email, null, user.picture);
+        await queries.setTokenNewUser(user.googleId, user.accessTok, user.refreshTok, user.accessTokExp);
+        break;
+      case 'signup':
+        console.log('web signup detected');
+        await queries.insertUser(null, user.name, user.email, user.password, null);
+        break;
+    }
     req.session.user = email; //Set user in cookie
     res.redirect('/profile');
   }
@@ -92,54 +105,22 @@ app.post('/login', async (req, res) => {
 
 app.post('/login/google', async function(req, res) {
   console.log('RECEIVING AUTHORIZATION CODE FROM CLIENT');
-  if (req.body.email);
 
-  const data = {
-    code: req.body.code,
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
-    redirect_uri: process.env.REDIRECT_URI,
-    access_type: 'offline',
-    grant_type: 'authorization_code'
-  };
+  const profile = await auth.googleAuth(req.body.code);
+  console.log(profile);
 
-  // Requesting token information from google
-  const fetchRes = await fetch('https://www.googleapis.com/oauth2/v4/token', {
-    method: 'post',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' }
-  });
+  // const idExists = await queries.checkGoogleIdExists(googleId);
+  // if (!idExists) {
+  //   console.log('user was not found...so we can make one!');
 
-  //decode data and set constants
-  const fetchJSON = await fetchRes.json();
-  console.log(fetchJSON);
-
-  const user = jwt.decode(fetchJSON.id_token);
-
-  const googleId = user.sub;
-  const name = user.name;
-  const email = user.email;
-  const accessToken = fetchJSON.access_token;
-  const refreshToken = fetchJSON.refresh_token;
-
-  console.log('refreshTOKEN (oooh boy, i hope i get it):', refreshToken);
-
-  req.session.user = email; //set user in cookie
-
-  console.log('User query is about to run....');
-
-  const idExists = await queries.checkGoogleIdExists(googleId);
-  if (!idExists) {
-    console.log('user was not found...so we can make one!');
-
-    await queries.insertUser(googleId, name, email, '');
-    await queries.setTokenNewUser(googleId, accessToken, refreshToken);
-    res.json({ name: user.name, access_token: accessToken });
-  } else {
-    console.log("this user exists and that's fine");
-    await queries.setTokenExistingUser(googleId, accessToken);
-    res.json({ name: user.name, access_token: accessToken });
-  }
+  //   await queries.insertUser(googleId, name, email, '');
+  //   await queries.setTokenNewUser(googleId, accessToken, refreshToken);
+  //   res.json({ name: user.name, access_token: accessToken });
+  // } else {
+  //   console.log("this user exists and that's fine");
+  //   await queries.setTokenExistingUser(googleId, accessToken);
+  //   res.json({ name: user.name, access_token: accessToken });
+  // }
 });
 
 app.post('/logout', (req, res) => {
@@ -192,16 +173,11 @@ app.post('/goals', async function(req, res) {
     const ithDayAgo = today.subtract(1, 'days').valueOf();
     pastWeekArray.push(ithDayAgo);
   }
-  console.log('Past week Array', pastWeekArray);
-  console.log('past week array has length ', pastWeekArray.length); // should be 7
-  console.log('Found GOALS', foundGoals);
+
   const goalHistory = pastWeekArray.map(day => {
-    console.log(day);
     const dayGoal = foundGoals.filter(goalObj => parseInt(goalObj.day_rounded) === day)[0]; // errors if no goals
-    console.log(dayGoal);
     return dayGoal ? dayGoal.steps_goal : 0;
   });
-  console.log(goalHistory);
 
   res.json({ goalHistory: goalHistory });
 });

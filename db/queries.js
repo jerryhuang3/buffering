@@ -82,24 +82,26 @@ function checkGoogleIdExists(googleId) {
 }
 
 
-function insertUser(googleId, name, email, password) {
+function insertUser(googleId, name, email, password, imageUrl) {
   return Promise.all([
     knex('google_users').insert({
       google_id: googleId,
       name: name,
       email: email,
-      password: password
+      password: password,
+      image_url: imageUrl
     })
   ]);
 }
 
 
-function setTokenNewUser(googleId, accessToken, refreshToken) {
+function setTokenNewUser(googleId, accessToken, refreshToken, expiresAt) {
   return Promise.all([
     knex('tokens').insert({
       google_id: googleId,
       access_token: accessToken,
-      refresh_token: refreshToken
+      refresh_token: refreshToken,
+      expires_at: expiresAt
     })
   ]);
 }

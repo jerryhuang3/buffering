@@ -43,9 +43,9 @@ class Nav extends Component {
           <Menu.Item>
             <button onClick={this.logout}>Logout</button>
           </Menu.Item>
-          <Menu.Item>
+          {/* <Menu.Item>
             <Authentication session={isUserLoggedIn} logout={this.session} />
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu.Menu>
       </Container>
     ) : (
@@ -68,9 +68,9 @@ class Nav extends Component {
           <Menu.Item>
             <NavLink to="/signup">Signup</NavLink>
           </Menu.Item>
-          <Menu.Item>
+          {/* <Menu.Item>
             <Authentication session={isUserLoggedIn} login={this.session} />
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu.Menu>
       </Container>
     );
