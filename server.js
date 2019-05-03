@@ -24,7 +24,6 @@ const jwt = require('jsonwebtoken');
 // store goals by end of day
 const moment = require('moment');
 
-
 // iniitalize express
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,7 +38,6 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   })
 );
-
 
 // routes
 app.post('/', (req, res) => {
@@ -62,13 +60,17 @@ app.post('/signup', async (req, res) => {
   const email = req.body.email;
   const password = bcrypt.hashSync(req.body.password, 10);
   const emailExists = await queries.checkEmail(req.body.email);
-    if (emailExists) {
-      res.status(400).send("<h1>HTTP 400 - BAD REQUEST: E-MAIL ALREADY USED!</h1><p><a href=\"/signup\">Back to Signup</a></p>");
-    } else {
-      await queries.insertUser(null, name, email, password);
-      req.session.user = email; //Set user in cookie
-      res.redirect('/profile');
-    }
+  if (emailExists) {
+    res
+      .status(400)
+      .send(
+        '<h1>HTTP 400 - BAD REQUEST: E-MAIL ALREADY USED!</h1><p><a href="/signup">Back to Signup</a></p>'
+      );
+  } else {
+    await queries.insertUser(null, name, email, password);
+    req.session.user = email; //Set user in cookie
+    res.redirect('/profile');
+  }
 });
 
 app.post('/login', async (req, res) => {
@@ -80,11 +82,13 @@ app.post('/login', async (req, res) => {
     req.session.user = email; //Set user in cookie
     res.redirect('/profile');
   } else {
-    res.status(400).send("<h1>HTTP 400 - BAD REQUEST: E-MAIL OR PASSWORD INCORRECT!</h1><p><a href=\"/login\">Back to Login</a></p>");
+    res
+      .status(400)
+      .send(
+        '<h1>HTTP 400 - BAD REQUEST: E-MAIL OR PASSWORD INCORRECT!</h1><p><a href="/login">Back to Login</a></p>'
+      );
   }
 });
-
-
 
 app.post('/login/google', async function(req, res) {
   console.log('RECEIVING AUTHORIZATION CODE FROM CLIENT');
@@ -104,7 +108,7 @@ app.post('/login/google', async function(req, res) {
     method: 'post',
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' }
-  })
+  });
 
   //decode data and set constants
   const fetchJSON = await fetchRes.json();
@@ -118,7 +122,7 @@ app.post('/login/google', async function(req, res) {
   const accessToken = fetchJSON.access_token;
   const refreshToken = fetchJSON.refresh_token;
 
-  console.log("refreshTOKEN (oooh boy, i hope i get it):", refreshToken);
+  console.log('refreshTOKEN (oooh boy, i hope i get it):', refreshToken);
 
   req.session.user = email; //set user in cookie
 
@@ -128,11 +132,9 @@ app.post('/login/google', async function(req, res) {
   if (!idExists) {
     console.log('user was not found...so we can make one!');
 
-
-    await queries.insertUser(googleId, name, email, "");
+    await queries.insertUser(googleId, name, email, '');
     await queries.setTokenNewUser(googleId, accessToken, refreshToken);
     res.json({ name: user.name, access_token: accessToken });
-
   } else {
     console.log("this user exists and that's fine");
     await queries.setTokenExistingUser(googleId, accessToken);
@@ -140,15 +142,12 @@ app.post('/login/google', async function(req, res) {
   }
 });
 
-
-
 app.post('/logout', (req, res) => {
-  console.log("this is cookie session id: ", req.session.userid);
+  console.log('this is cookie session id: ', req.session.userid);
   req.session = null;
   res.end();
   // res.sendStatus(200);
 });
-
 
 // GOALS
 app.post('/set_goal', async function(req, res) {
@@ -156,7 +155,9 @@ app.post('/set_goal', async function(req, res) {
   const googleId = req.body.googleId;
   const stepsGoal = req.body.stepsGoal;
   const givenDay = req.body.givenDay; //what happens here??
-  const endOfDay = moment(Date.now()).endOf('day').valueOf(); //related to above
+  const endOfDay = moment(Date.now())
+    .endOf('day')
+    .valueOf(); //related to above
 
   // check if this goal exists then insert/update as appropriate
   const goalExists = await query.checkGoalExists(googleId, endOfDay);
@@ -175,27 +176,35 @@ app.post('/goals', async function(req, res) {
   // calculate rounded day and week ago from current time
   const today = moment(Date.now()).endOf('day');
   const endOfDay = today.valueOf();
-  const weekAgo = today.subtract(7, 'days').valueOf();
+  // const endOfDay = new Date();
+  // endOfDay.setHours(23, 59, 59, 999);
 
-  const foundGoals = await queries.pastWeekGoals(googleId, weekAgo, endOfDay)[0];
+  // console.log('END OF DAY', endOfDay.getTime());
+  const weekAgo = moment(Date.now())
+    .endOf('day')
+    .subtract(7, 'days')
+    .valueOf();
+
+  const foundGoalsAwait = await queries.pastWeekGoals(googleId, weekAgo, endOfDay);
+  const foundGoals = foundGoalsAwait[0];
   let pastWeekArray = [endOfDay];
-  for (let i = 1; i < 7; i++)  {
-    const ithDayAgo = today.subtract(i, 'days').valueOf();
+  for (let i = 1; i < 7; i++) {
+    const ithDayAgo = today.subtract(1, 'days').valueOf();
     pastWeekArray.push(ithDayAgo);
   }
-  console.log("past week array has length ", pastWeekArray.length); // should be 7
-
-  const goalHistory = pastWeekArray.map( day => {
+  console.log('Past week Array', pastWeekArray);
+  console.log('past week array has length ', pastWeekArray.length); // should be 7
+  console.log('Found GOALS', foundGoals);
+  const goalHistory = pastWeekArray.map(day => {
     console.log(day);
-    const dayGoal = foundGoals.filter( goalObj => goalObj.day_rounded === day)[0]; // errors if no goals
-    return dayGoal ? dayGoal : 0;
+    const dayGoal = foundGoals.filter(goalObj => parseInt(goalObj.day_rounded) === day)[0]; // errors if no goals
+    console.log(dayGoal);
+    return dayGoal ? dayGoal.steps_goal : 0;
   });
   console.log(goalHistory);
 
   res.json({ goalHistory: goalHistory });
 });
-
-
 
 // TEST
 const testRoutes = require('./test_routes');
@@ -213,7 +222,6 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
 
 // async error helpers
 
