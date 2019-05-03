@@ -75,9 +75,11 @@ class Signup extends Component {
             </Message>
             <GoogleLogin
               clientId={process.env.CLIENT_ID}
+              scope={process.env.SCOPES}
               buttonText="Login"
               onSuccess={this.authorizationCode}
               responseType="code"
+              accessType="offline"
               cookiePolicy={'single_host_origin'}
               className="login-google-btn">
               Sign up with Google

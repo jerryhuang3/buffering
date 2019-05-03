@@ -40,6 +40,31 @@ async function googleAuth(authCode) {
   return profile;
 }
 
+async function refreshAccessToken(refreshToken) {
+  const body = {
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+    refresh_token: refreshToken,
+    grant_type: 'refresh_token'
+  };
+
+  const res = await fetch('https://www.googleapis.com/oauth2/v4/token', {
+    method: 'post',
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' }
+  });
+
+  //decode data and set constants
+  const fetchToken = await res.json();
+  const newToken = {
+    access_token: fetchToken.access_token,
+    expires_at: moment(Date.now()).valueOf() + 3500000
+  }
+
+  return newToken;
+}
+
 module.exports = {
-  googleAuth: googleAuth
+  googleAuth: googleAuth,
+  refreshAccessToken: refreshAccessToken
 };

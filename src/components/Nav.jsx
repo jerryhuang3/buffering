@@ -20,8 +20,7 @@ class Nav extends Component {
 
     // Sign out of Google on local website
     var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {});
-    auth2.disconnect();
+    auth2.signOut();
 
     if (logout) {
       this.session(null, false, null)
