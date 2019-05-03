@@ -24,25 +24,25 @@ cursor: pointer
   #notfound .notfound {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 40%;
     -webkit-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
   }
   
   .notfound {
-    max-width: 520px;
+    max-width: 800px;
     width: 100%;
     line-height: 1.4;
     text-align: center;
   }
   
-  .notfound .notfound-404 {
+  .notfound .notfound-400 {
     position: relative;
     height: 240px;
   }
   
-  .notfound .notfound-404 h1 {
+  .notfound .notfound-400 h1 {
     font-family: 'Montserrat', sans-serif;
     position: absolute;
     left: 50%;
@@ -57,13 +57,14 @@ cursor: pointer
     text-transform: uppercase;
     letter-spacing: -40px;
     margin-left: -20px;
+    margin-top: 20px;
   }
   
-  .notfound .notfound-404 h1>span {
+  .notfound .notfound-400 h1>span {
     text-shadow: -8px 0px 0px #fff;
   }
   
-  .notfound .notfound-404 h3 {
+  .notfound .notfound-400 h3 {
     font-family: 'Cabin', sans-serif;
     position: relative;
     font-size: 16px;
@@ -86,19 +87,19 @@ cursor: pointer
   }
   
   @media only screen and (max-width: 767px) {
-    .notfound .notfound-404 {
+    .notfound .notfound-400 {
       height: 200px;
     }
-    .notfound .notfound-404 h1 {
+    .notfound .notfound-400 h1 {
       font-size: 200px;
     }
   }
   
   @media only screen and (max-width: 480px) {
-    .notfound .notfound-404 {
+    .notfound .notfound-400 {
       height: 162px;
     }
-    .notfound .notfound-404 h1 {
+    .notfound .notfound-400 h1 {
       font-size: 162px;
       height: 150px;
       line-height: 162px;

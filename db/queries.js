@@ -38,10 +38,10 @@ function checkEmail(email) {
       .where({
         email: email
       })
-      .select('id')
+      .select('password')
   ]).then(result => {
     if (result[0][0]) {
-      return true;
+      return result[0][0];
     } else {
       return false;
     }
@@ -106,12 +106,13 @@ function setTokenNewUser(googleId, accessToken, refreshToken, expiresAt) {
   ]);
 }
 
-function setTokenExistingUser(googleId, accessToken) {
+function setTokenExistingUser(googleId, accessToken, expiresAt) {
   return Promise.all([
     knex('tokens')
       .where('google_id', '=', googleId)
       .update({
-        access_token: accessToken
+        access_token: accessToken,
+        expires_at: expiresAt
       })
   ]);
 }

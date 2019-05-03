@@ -11,23 +11,18 @@ class Login extends Component {
     this.login = this.login.bind(this);
   }
 
-  authorizationCode(response) {
+  async authorizationCode(response) {
     console.log("Sending Google's authorization code to the server...");
-    console.log(response);
-    fetch('/test/login', {
+
+    const res = await fetch('/login', {
       method: 'POST',
       body: JSON.stringify(response),
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-      .then(promise => {
-        return promise.json();
-      })
-      .then(userName => {
-        console.log(userName);
-        this.login(userName.name, userName.access_token);
-      });
+    });
+    const json = await res.json();
+    this.login(json.name, json.access_token);
   }
 
   // Send Login prop to Nav
@@ -63,22 +58,8 @@ class Login extends Component {
             </Header>
             <Form action="/login" method="POST" size="large">
               <Segment stacked>
-                <Form.Input
-                  fluid
-                  icon="paper plane"
-                  iconPosition="left"
-                  placeholder="E-mail address"
-                  name="email"
-                  type="email"
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                />
+                <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
+                <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" />
                 <Button color="teal" fluid size="large">
                   Login
                 </Button>

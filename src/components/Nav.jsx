@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink, Redirect, withRouter } from 'react-router-dom';
 import { Container, Image, Menu } from 'semantic-ui-react';
+import { GoogleLogout } from 'react-google-login';
 import Authentication from './Authentication.jsx';
 
 class Nav extends Component {
@@ -15,10 +16,19 @@ class Nav extends Component {
     this.props.auth(name, bool, access);
   }
 
-  logout() {
-    console.log('Nav: Logging out');
-    fetch('/logout', { method: 'POST' });
-    this.props.history.push('/'); // REDIRECT IS WORKING BUT NAV not refreshing
+  async logout() {
+    const res = await fetch('/logout', { method: 'POST' });
+    const logout = await res.json();
+
+    // Sign out of Google on local website
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {});
+    auth2.disconnect();
+
+    if (logout) {
+      this.session(null, false, null)
+      this.props.history.push('/');
+    }
   }
 
   render() {
@@ -43,9 +53,6 @@ class Nav extends Component {
           <Menu.Item>
             <button onClick={this.logout}>Logout</button>
           </Menu.Item>
-          {/* <Menu.Item>
-            <Authentication session={isUserLoggedIn} logout={this.session} />
-          </Menu.Item> */}
         </Menu.Menu>
       </Container>
     ) : (
@@ -68,9 +75,6 @@ class Nav extends Component {
           <Menu.Item>
             <NavLink to="/signup">Signup</NavLink>
           </Menu.Item>
-          {/* <Menu.Item>
-            <Authentication session={isUserLoggedIn} login={this.session} />
-          </Menu.Item> */}
         </Menu.Menu>
       </Container>
     );

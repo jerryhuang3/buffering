@@ -58,76 +58,80 @@ app.post('/', (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-  const user = req.body.code ? await auth.googleAuth(req.body.code) : {
-    type: 'signup',
-    name: req.body.name,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 10)
-  };
-  console.log(user);
+  const user = req.body.code
+    ? await auth.googleAuth(req.body.code)
+    : {
+        type: 'signup',
+        name: req.body.name,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10)
+      };
+
   const emailExists = await queries.checkEmail(user.email);
-  console.log(emailExists);
+
   if (emailExists) {
-    res.json(true);
+    res.json(false);
   } else {
+    console.log('creating account now....');
+    req.session.user = user.email; //Set user in cookie
     switch (user.type) {
       case 'google':
         console.log('google signup detected');
         await queries.insertUser(user.googleId, user.name, user.email, null, user.picture);
         await queries.setTokenNewUser(user.googleId, user.accessTok, user.refreshTok, user.accessTokExp);
-        break;
+        return res.json({ name: user.name, access_token: user.accessTok });
       case 'signup':
         console.log('web signup detected');
         await queries.insertUser(null, user.name, user.email, user.password, null);
-        break;
+        return res.redirect('/');
     }
-    req.session.user = email; //Set user in cookie
-    res.redirect('/profile');
   }
 });
 
 app.post('/login', async (req, res) => {
-  console.log('RECEIVING LOGIN DATA');
-  const email = req.body.email;
-  const password = req.body.password;
-  const checkPassword = await queries.checkPassword(email, password);
-  if (checkPassword) {
-    req.session.user = email; //Set user in cookie
-    res.redirect('/profile');
-  } else {
-    res
-      .status(400)
-      .send(
-        '<h1>HTTP 400 - BAD REQUEST: E-MAIL OR PASSWORD INCORRECT!</h1><p><a href="/login">Back to Login</a></p>'
-      );
+  const user = req.body.code
+    ? await auth.googleAuth(req.body.code)
+    : {
+        type: 'login',
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+      };
+
+  // Check if user is logging in from google or not
+  switch (user.type) {
+    case 'google':
+      console.log('google login detected');
+      console.log (` ${user.googleId} : ${user.accessTok} : ${user.accessTokExp}`)
+      await queries.setTokenExistingUser(user.googleId, user.accessTok, user.accessTokExp);
+      req.session.user = user.email;
+      return res.json({ name: user.name, access_token: user.accessTok });
+    case 'login':
+      console.log('web login detected');
+      const emailCheck = await queries.checkEmail(user.email);
+      if (emailCheck) {
+        console.log('email found');
+        if (emailCheck.password !== null) {
+          const checkPassword = await queries.checkPassword(user.email, user.password);
+          if (checkPassword) {
+            console.log('password matches');
+            req.session.user = user.email; //Set user in cookie
+            return res.redirect('/');
+          }
+        }
+        console.log('password incorrect');
+        return res.redirect('/400/login');
+      } else {
+        console.log('email not found');
+        return res.redirect('/400/login');
+      }
   }
-});
-
-app.post('/login/google', async function(req, res) {
-  console.log('RECEIVING AUTHORIZATION CODE FROM CLIENT');
-
-  const profile = await auth.googleAuth(req.body.code);
-  console.log(profile);
-
-  // const idExists = await queries.checkGoogleIdExists(googleId);
-  // if (!idExists) {
-  //   console.log('user was not found...so we can make one!');
-
-  //   await queries.insertUser(googleId, name, email, '');
-  //   await queries.setTokenNewUser(googleId, accessToken, refreshToken);
-  //   res.json({ name: user.name, access_token: accessToken });
-  // } else {
-  //   console.log("this user exists and that's fine");
-  //   await queries.setTokenExistingUser(googleId, accessToken);
-  //   res.json({ name: user.name, access_token: accessToken });
-  // }
 });
 
 app.post('/logout', (req, res) => {
   console.log('this is cookie session id: ', req.session.userid);
   req.session = null;
-  res.end();
-  // res.sendStatus(200);
+  return res.json(true);
 });
 
 // GOALS

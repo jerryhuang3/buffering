@@ -8,30 +8,33 @@ class Signup extends Component {
     super(props);
 
     this.authorizationCode = this.authorizationCode.bind(this);
-    // this.login = this.login.bind(this);
+    this.signup = this.signup.bind(this);
   }
 
   async authorizationCode(response) {
     console.log("Sending Google's authorization code to the server...");
-    console.log(response);
+
     const res = await fetch('/signup', {
       method: 'POST',
       body: JSON.stringify(response),
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-    const json = await res.json() ? this.props.history.push('/400') : console.log("THIS IS FALSE");    
-    //     // this.login(userName.name, userName.access_token);
-    
+    });
+    const json = await res.json();
+    if (!json) {
+      this.props.history.push('/400/signup');
+    }
+
+    this.signup(json.name, json.access_token);
   }
 
-  // Send Login prop to Nav
-  // login(name, access) {
-  //   console.log('Authentication.jsx: Logging in', name);
-  //   this.props.login(name, true, access);
-  // }
-  
+  // Send Signup prop to Nav
+  signup(name, access) {
+    console.log('Signup.jsx: Signed up', name);
+    this.props.signup(name, true, access);
+  }
+
   render() {
     if (this.props.session) {
       return <Redirect to="/" />;
@@ -59,29 +62,9 @@ class Signup extends Component {
             </Header>
             <Form action="/signup" method="POST" size="large">
               <Segment stacked>
-                <Form.Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Full Name"
-                  name="name"
-                />
-                <Form.Input
-                  fluid
-                  icon="paper plane"
-                  iconPosition="left"
-                  placeholder="E-mail address"
-                  name="email"
-                  type="email"
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                />
+                <Form.Input fluid icon="user" iconPosition="left" placeholder="Full Name" name="name" />
+                <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
+                <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" required />
                 <Button color="teal" fluid size="large">
                   Sign up
                 </Button>
