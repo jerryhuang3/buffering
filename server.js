@@ -42,15 +42,20 @@ app.use(
 );
 
 // routes
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
   console.log('GET / is RUNNING');
   console.log('req.session.user = ', req.session.user);
+
   if (req.session.user) {
     console.log('There are cookies so querying the database');
-    queries.getUser(req.session.user).then(result => {
-      console.log(result);
-      return res.json(result);
-    });
+    const user = await queries.getUser(req.session.user);
+    if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
+      console.log('TOKEN IS OUTDATED');
+      const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
+      await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
+      return res.json({ name: user.name, google_id: user.google_id, access_token: newAccessToken.access_token });
+    }
+    return res.json({ name: user.name, google_id: user.google_id, access_token: user.access_token });
   } else {
     console.log('No cookies so sending');
     res.send(false);
@@ -102,7 +107,6 @@ app.post('/login', async (req, res) => {
   switch (user.type) {
     case 'google':
       console.log('google login detected');
-      console.log (` ${user.googleId} : ${user.accessTok} : ${user.accessTokExp}`)
       await queries.setTokenExistingUser(user.googleId, user.accessTok, user.accessTokExp);
       req.session.user = user.email;
       return res.json({ name: user.name, access_token: user.accessTok });
