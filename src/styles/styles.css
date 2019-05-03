@@ -32,32 +32,68 @@ body {
   color: #fff;
   background: linear-gradient(45deg, #8d8825, #cb343c, #89258e, #c334cb, #8d252b, #c9c236 );
   background-size: 400% 400%;
-  -webkit-animation: Gradient 15s ease infinite;
-  -moz-animation: Gradient 15s ease infinite;
+  -webkit-animation: Gradient 155s ease infinite;
+  -moz-animation: Gradient 155s ease infinite;
   animation: Gradient 155s ease infinite;
 }
 
 @-webkit-keyframes Gradient {
   0% {
-    background-position: 0% 50%
+    background-position: 0% 0%
   }
-  50% {
-    background-position: 100% 50%
+  14% {
+    background-position: 0% 100%
+  }
+  28% {
+    background-position: 100% 0%
+  }
+  33% {
+    background-position: 100% 100%
+  }
+  42% {
+    background-position: 0% 0%
+  }
+  59% {
+    background-position: 100% 0%
+  }
+  71% {
+    background-position: 0% 100%
+  }
+  86% {
+    background-position: 100% 100%
   }
   100% {
-    background-position: 0% 50%
+    background-position: 0% 0%
   }
 }
 
 @-moz-keyframes Gradient {
   0% {
-    background-position: 0% 50%
+    background-position: 0% 0%
   }
-  50% {
-    background-position: 100% 50%
+  14% {
+    background-position: 0% 100%
+  }
+  28% {
+    background-position: 100% 0%
+  }
+  33% {
+    background-position: 100% 100%
+  }
+  42% {
+    background-position: 0% 0%
+  }
+  59% {
+    background-position: 100% 0%
+  }
+  71% {
+    background-position: 0% 100%
+  }
+  86% {
+    background-position: 100% 100%
   }
   100% {
-    background-position: 0% 50%
+    background-position: 0% 0%
   }
 }
 
@@ -89,5 +125,4 @@ body {
   100% {
     background-position: 0% 0%
   }
-
 }
