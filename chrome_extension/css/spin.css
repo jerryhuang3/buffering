@@ -1,0 +1,107 @@
+span, h1, h3, h5 {
+  -webkit-animation-name: spin !important;
+  -webkit-animation-duration: 1000ms !important;
+  -webkit-animation-iteration-count: infinite !important;
+  -webkit-animation-timing-function: linear !important;
+  animation-name: spin !important;
+  animation-duration: 1000ms !important;
+  animation-iteration-count: infinite !important;
+  animation-timing-function: linear !important;
+}
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(0deg); }
+  to { -ms-transform: rotate(-360deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(-360deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(-360deg); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+img, h2, h4, h6 {
+  -webkit-animation-name: spin !important;
+  -webkit-animation-duration: 5000ms !important;
+  -webkit-animation-iteration-count: infinite !important;
+  -webkit-animation-timing-function: linear !important;
+  animation-name: spin !important;
+  animation-duration: 5000ms !important;
+  animation-iteration-count: infinite !important;
+  animation-timing-function: linear !important;
+}
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(0deg); }
+  to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+p, a {
+  -webkit-animation-name: spin !important;
+  -webkit-animation-duration: 7000ms !important;
+  -webkit-animation-iteration-count: infinite !important;
+  -webkit-animation-timing-function: linear !important;
+  animation-name: spin !important;
+  animation-duration: 7000ms !important;
+  animation-iteration-count: infinite !important;
+  animation-timing-function: linear !important;
+}
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(0deg); }
+  to { -ms-transform: rotate(-360deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(-360deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(-360deg); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+li {
+  -webkit-animation-name: spin !important;
+  -webkit-animation-duration: 10000ms !important;
+  -webkit-animation-iteration-count: infinite !important;
+  -webkit-animation-timing-function: linear !important;
+  animation-name: spin !important;
+  animation-duration: 10000ms !important;
+  animation-iteration-count: infinite !important;
+  animation-timing-function: linear !important;
+}
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(0deg); }
+  to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

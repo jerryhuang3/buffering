@@ -26,12 +26,5 @@
     }
   ],
   "permissions": ["tabs", "activeTab", "<all_urls>", "cookies"],
-  "web_accessible_resources": [
-    "./css/test.css",
-    "./scriptmods/image.js",
-    "./scriptmods/cursor.js",
-    "/vendor/geoBootstrap.css",
-    "https://cdn.jsdelivr.net/npm/jimp@0.6.4/browser/lib/jimp.min.js",
-    "icons/*"
-  ]
+  "web_accessible_resources": ["/vendor/geoBootstrap.css", "icons/*"]
 }
