@@ -29,7 +29,7 @@ class Signup extends Component {
               Create a new account
             </Header>
             <Form action="/signup" method="POST" size="large">
-              <Segment stacked>
+              <Segment >
                 <Form.Input
                   fluid
                   icon="user"

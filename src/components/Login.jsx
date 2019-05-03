@@ -30,7 +30,7 @@ class Login extends Component {
               Log in to your account
             </Header>
             <Form action="/login" method="POST" size="large">
-              <Segment stacked>
+              <Segment >
                 <Form.Input
                   fluid
                   icon="paper plane"
