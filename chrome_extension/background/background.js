@@ -30,9 +30,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.greeting == 'hello') {
     //insert scripts to execute here
     randomifyScript(request.greeting);
-    chrome.tabs.executeScript(null, { file: './scriptmods/scrollToBottom.js' });
-    chrome.tabs.insertCSS(null, { file: './css/pulsate.css' });
-    chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
 
     sendResponse({ farewell: 'goodbye' });
   }
@@ -43,3 +40,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 // chrome.tabs.executeScript(null, { file: './scriptmods/mouseMoveVisibility.js' });
 // chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
 // chrome.tabs.executeScript(null, { file: './scriptmods/image.js' });
+// chrome.tabs.executeScript(null, { file: './scriptmods/scrollToBottom.js' });
+// chrome.tabs.insertCSS(null, { file: './css/pulsate.css' });
+//chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
+//chrome.tabs.insertCSS(null, { file: './css/spin.css' });
