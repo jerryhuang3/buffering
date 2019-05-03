@@ -26,11 +26,13 @@ cursor: pointer
 
 /* pastel colours  #CCFF99, #FF9999, #CC99FF, #66FFFF */
 /* complimentary colours #08b500, #ad00b5, #b50008, #08b500 */
+/* complimentary somewhat unsaturated #8d8825, #cb343c, #89258e, #c334cb, #8d252b, #c9c236 */
+
 body {
   width: 100wh;
   height: 90vh;
   color: #fff;
-  background: linear-gradient(45deg, #8d8825, #cb343c, #89258e, #c334cb, #8d252b, #c9c236 );
+  background: linear-gradient(45deg, #74713e, #a6595d, #713e74, #a259a6, #743e41, #a6a259 );
   background-size: 400% 400%;
   -webkit-animation: Gradient 155s ease infinite;
   -moz-animation: Gradient 155s ease infinite;
