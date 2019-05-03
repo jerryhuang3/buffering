@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
 import { Error, EmailExists, WrongLogin } from './components/Error.jsx';
-import Page400 from './components/Page400.jsx';
 import Nav from './components/Nav.jsx';
 import Widget from './components/Widget';
 import Login from './components/Login.jsx';

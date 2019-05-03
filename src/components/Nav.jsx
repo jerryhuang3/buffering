@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { NavLink, Redirect, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { Container, Image, Menu } from 'semantic-ui-react';
-import { GoogleLogout } from 'react-google-login';
-import Authentication from './Authentication.jsx';
 
 class Nav extends Component {
   constructor(props) {
