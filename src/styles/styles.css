@@ -15,12 +15,13 @@ cursor: pointer
 .login-google-btn svg {
     margin-left: 40px;
 }
+
 /* COLORLIB V3 ERROR CSS */
 #notfound {
     position: relative;
     height: 100vh;
   }
-  
+
   #notfound .notfound {
     position: absolute;
     left: 50%;
@@ -29,19 +30,19 @@ cursor: pointer
         -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
   }
-  
+
   .notfound {
     max-width: 800px;
     width: 100%;
     line-height: 1.4;
     text-align: center;
   }
-  
+
   .notfound .notfound-400 {
     position: relative;
     height: 240px;
   }
-  
+
   .notfound .notfound-400 h1 {
     font-family: 'Montserrat', sans-serif;
     position: absolute;
@@ -59,11 +60,11 @@ cursor: pointer
     margin-left: -20px;
     margin-top: 20px;
   }
-  
+
   .notfound .notfound-400 h1>span {
     text-shadow: -8px 0px 0px #fff;
   }
-  
+
   .notfound .notfound-400 h3 {
     font-family: 'Cabin', sans-serif;
     position: relative;
@@ -75,7 +76,7 @@ cursor: pointer
     letter-spacing: 3px;
     padding-left: 6px;
   }
-  
+
   .notfound h2 {
     font-family: 'Cabin', sans-serif;
     font-size: 20px;
@@ -85,7 +86,7 @@ cursor: pointer
     margin-top: 0px;
     margin-bottom: 25px;
   }
-  
+
   @media only screen and (max-width: 767px) {
     .notfound .notfound-400 {
       height: 200px;
@@ -94,7 +95,7 @@ cursor: pointer
       font-size: 200px;
     }
   }
-  
+
   @media only screen and (max-width: 480px) {
     .notfound .notfound-400 {
       height: 162px;
@@ -108,4 +109,118 @@ cursor: pointer
       font-size: 16px;
     }
   }
-  
+
+
+#ProgressChart {
+    /* width: 60% !important; */
+    /* height: 50% !important; */
+}
+
+
+/* CSS animation */
+
+/* pastel colours  #CCFF99, #FF9999, #CC99FF, #66FFFF */
+/* complimentary colours #08b500, #ad00b5, #b50008, #08b500 */
+/* complimentary somewhat unsaturated #8d8825, #cb343c, #89258e, #c334cb, #8d252b, #c9c236 */
+
+body {
+  width: 100wh;
+  height: 90vh;
+  color: #fff;
+  background: linear-gradient(45deg, #74713e, #a6595d, #713e74, #a259a6, #743e41, #a6a259 );
+  background-size: 400% 400%;
+  -webkit-animation: Gradient 155s ease infinite;
+  -moz-animation: Gradient 155s ease infinite;
+  animation: Gradient 155s ease infinite;
+}
+
+@-webkit-keyframes Gradient {
+  0% {
+    background-position: 0% 0%
+  }
+  14% {
+    background-position: 0% 100%
+  }
+  28% {
+    background-position: 100% 0%
+  }
+  33% {
+    background-position: 100% 100%
+  }
+  42% {
+    background-position: 0% 0%
+  }
+  59% {
+    background-position: 100% 0%
+  }
+  71% {
+    background-position: 0% 100%
+  }
+  86% {
+    background-position: 100% 100%
+  }
+  100% {
+    background-position: 0% 0%
+  }
+}
+
+@-moz-keyframes Gradient {
+  0% {
+    background-position: 0% 0%
+  }
+  14% {
+    background-position: 0% 100%
+  }
+  28% {
+    background-position: 100% 0%
+  }
+  33% {
+    background-position: 100% 100%
+  }
+  42% {
+    background-position: 0% 0%
+  }
+  59% {
+    background-position: 100% 0%
+  }
+  71% {
+    background-position: 0% 100%
+  }
+  86% {
+    background-position: 100% 100%
+  }
+  100% {
+    background-position: 0% 0%
+  }
+}
+
+@keyframes Gradient {
+  0% {
+    background-position: 0% 0%
+  }
+  14% {
+    background-position: 0% 100%
+  }
+  28% {
+    background-position: 100% 0%
+  }
+  33% {
+    background-position: 100% 100%
+  }
+  42% {
+    background-position: 0% 0%
+  }
+  59% {
+    background-position: 100% 0%
+  }
+  71% {
+    background-position: 0% 100%
+  }
+  86% {
+    background-position: 100% 100%
+  }
+  100% {
+    background-position: 0% 0%
+  }
+}
+
