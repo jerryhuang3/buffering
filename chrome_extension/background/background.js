@@ -2,7 +2,8 @@ const hellInjects = [
   './scriptmods/mouseMoveVisibility.js',
   './css/zoom-hell.css',
   './css/pulsate.css',
-  './css/spin.css'
+  './css/spin.css',
+  './css/mirror-horiz.css'
 ];
 const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './css/zoom-awful.css'];
 const badInjects = ['./css/zoom-bad.css', './css/comic-sans.css', './css/papyrus.css'];
@@ -43,16 +44,12 @@ function randomifyScript(status) {
 
 //listener for messages from content script/ executes scripts based on message
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  console.log(
-    sender.tab
-      ? request.greeting + ' from a content script: ' + sender.tab.url
-      : "this shouldn't happen"
-  );
+  console.log(sender.tab ? request.greeting + ' from a content script: ' + sender.tab.url : "this shouldn't happen");
   //eventually this message should be "good, bad, awful, or hell" and it shouldbe passed as params to randomifyScript
   if (request.greeting == 'hello') {
     //insert scripts to execute here
     randomifyScript(request.greeting);
-    // randomifyScript('bad');
+    randomifyScript('hell');
 
     sendResponse({ farewell: 'goodbye' }); //response back to content script
   }
