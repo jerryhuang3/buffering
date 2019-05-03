@@ -1,8 +1,40 @@
 import React, { Component } from 'react';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink, Redirect, withRouter } from 'react-router-dom';
 import { Button, Form, Grid, Message, Segment, Header, Modal } from 'semantic-ui-react';
+import { GoogleLogin } from 'react-google-login';
 
 class Signup extends Component {
+  constructor(props) {
+    super(props);
+
+    this.authorizationCode = this.authorizationCode.bind(this);
+    this.signup = this.signup.bind(this);
+  }
+
+  async authorizationCode(response) {
+    console.log("Sending Google's authorization code to the server...");
+
+    const res = await fetch('/signup', {
+      method: 'POST',
+      body: JSON.stringify(response),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const json = await res.json();
+    if (!json) {
+      this.props.history.push('/400/signup');
+    }
+
+    this.signup(json.name, json.access_token);
+  }
+
+  // Send Signup prop to Nav
+  signup(name, access) {
+    console.log('Signup.jsx: Signed up', name);
+    this.props.signup(name, true, access);
+  }
+
   render() {
     if (this.props.session) {
       return <Redirect to="/" />;
@@ -30,29 +62,9 @@ class Signup extends Component {
             </Header>
             <Form action="/signup" method="POST" size="large">
               <Segment stacked>
-                <Form.Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Full Name"
-                  name="name"
-                />
-                <Form.Input
-                  fluid
-                  icon="paper plane"
-                  iconPosition="left"
-                  placeholder="E-mail address"
-                  name="email"
-                  type="email"
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                />
+                <Form.Input fluid icon="user" iconPosition="left" placeholder="Full Name" name="name" />
+                <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
+                <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" required />
                 <Button color="teal" fluid size="large">
                   Sign up
                 </Button>
@@ -61,10 +73,19 @@ class Signup extends Component {
             <Message>
               Already have an account? <NavLink to="/login">Login</NavLink>
             </Message>
+            <GoogleLogin
+              clientId={process.env.CLIENT_ID}
+              buttonText="Login"
+              onSuccess={this.authorizationCode}
+              responseType="code"
+              cookiePolicy={'single_host_origin'}
+              className="login-google-btn">
+              Sign up with Google
+            </GoogleLogin>
           </Grid.Column>
         </Grid>
       </div>
     );
   }
 }
-export default Signup;
+export default withRouter(Signup);

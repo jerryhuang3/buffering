@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
-import Error from './components/Error.jsx';
+import { Error, EmailExists, WrongLogin } from './components/Error.jsx';
+import Page400 from './components/Page400.jsx';
 import Nav from './components/Nav.jsx';
 import Widget from './components/Widget';
 import Login from './components/Login.jsx';
@@ -74,12 +75,14 @@ class App extends Component {
             />
             <Route
               path="/login"
-              render={props => <Login {...props} session={this.state.session} />}
+              render={props => <Login {...props} login={this.session} session={this.state.session} />}
             />
             <Route
               path="/signup"
-              render={props => <Signup {...props} session={this.state.session} />}
+              render={props => <Signup {...props} signup={this.session} session={this.state.session} />}
             />
+            <Route exact path="/400/signup" component={EmailExists} />
+            <Route path="/400/login" component={WrongLogin} />
             <Route component={Error} />
           </Switch>
         </div>

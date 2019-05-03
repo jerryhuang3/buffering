@@ -4,6 +4,33 @@ import { Button, Form, Grid, Message, Segment, Header, Modal } from 'semantic-ui
 import { GoogleLogin } from 'react-google-login';
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.authorizationCode = this.authorizationCode.bind(this);
+    this.login = this.login.bind(this);
+  }
+
+  async authorizationCode(response) {
+    console.log("Sending Google's authorization code to the server...");
+
+    const res = await fetch('/login', {
+      method: 'POST',
+      body: JSON.stringify(response),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const json = await res.json();
+    this.login(json.name, json.access_token);
+  }
+
+  // Send Login prop to Nav
+  login(name, access) {
+    console.log('Authentication.jsx: Logging in', name);
+    this.props.login(name, true, access);
+  }
+
   render() {
     if (this.props.session) {
       return <Redirect to="/" />;
@@ -31,22 +58,8 @@ class Login extends Component {
             </Header>
             <Form action="/login" method="POST" size="large">
               <Segment stacked>
-                <Form.Input
-                  fluid
-                  icon="paper plane"
-                  iconPosition="left"
-                  placeholder="E-mail address"
-                  name="email"
-                  type="email"
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  name="password"
-                  type="password"
-                />
+                <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
+                <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" />
                 <Button color="teal" fluid size="large">
                   Login
                 </Button>
@@ -57,11 +70,9 @@ class Login extends Component {
             </Message>
             <GoogleLogin
               clientId={process.env.CLIENT_ID}
-              scope={process.env.SCOPES}
               buttonText="Login"
               onSuccess={this.authorizationCode}
               responseType="code"
-              accessType="offline"
               cookiePolicy={'single_host_origin'}
               className="login-google-btn">
               Login With Google
