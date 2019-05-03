@@ -1,22 +1,41 @@
-const hellScripts = ['./scriptmods/mouseMoveVisibility.js'];
-const awfulScripts = ['./scriptmods/geo.js', './scriptmods/image.js'];
-const badScripts = [];
+const hellInjects = [
+  './scriptmods/mouseMoveVisibility.js',
+  './css/zoom-hell.css',
+  './css/pulsate.css',
+  './css/spin.css'
+];
+const awfulInjects = [
+  './scriptmods/geo.js',
+  './scriptmods/image.js',
+  './scriptmods/image.js',
+  './css/zoom-awful.css'
+];
+const badInjects = ['./css/zoom-bad.css'];
+
+function injectJs(fileToInject) {
+  chrome.tabs.executeScript(null, { file: fileToInject });
+}
+function injectCSS(fileToInject) {
+  chrome.tabs.insertCSS(null, { file: fileToInject });
+}
 
 function randomifyScript(status) {
+  let inject;
+
   if (status === 'hell') {
-    return hellScripts[Math.floor(Math.random() * hellScripts.length)];
+    inject = hellInjects[Math.floor(Math.random() * hellInjects.length)];
+    console.log(inject, 'is being injected');
+    inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
   if (status === 'awful') {
-    return awfulScripts[Math.floor(Math.random() * awfulScripts.length)];
+    inject = awfulInjects[Math.floor(Math.random() * awfulInjects.length)];
+    console.log(inject, 'is being injected');
+    inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
   if (status === 'bad') {
-    return badScripts[Math.floor(Math.random() * badScripts.length)];
-  }
-  //the following if block cab be removed it is for testing only.
-  if (status === 'hello') {
-    const testArray = [1, 2, 3, 4, 5, 6, 7, 8];
-    console.log('testing a random awful script based on hello msg');
-    return console.log(testArray[Math.floor(Math.random() * testArray.length)]);
+    inject = badInjects[Math.floor(Math.random() * badInjects.length)];
+    console.log(inject, 'is being injected');
+    inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
 }
 
@@ -30,6 +49,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.greeting == 'hello') {
     //insert scripts to execute here
     randomifyScript(request.greeting);
+    randomifyScript('hell');
+
+    // chrome.tabs.insertCSS(null, { file: './css/zoom-bad.css' });
 
     sendResponse({ farewell: 'goodbye' });
   }
@@ -42,5 +64,3 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 // chrome.tabs.executeScript(null, { file: './scriptmods/image.js' });
 // chrome.tabs.executeScript(null, { file: './scriptmods/scrollToBottom.js' });
 // chrome.tabs.insertCSS(null, { file: './css/pulsate.css' });
-//chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
-//chrome.tabs.insertCSS(null, { file: './css/spin.css' });
