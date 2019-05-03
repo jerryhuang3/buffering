@@ -37,6 +37,9 @@ function randomifyScript(status) {
     console.log(inject, 'is being injected');
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
+  if (status === 'good') {
+    console.log('you may browse normally!');
+  }
 }
 
 //listener for messages from content script/ executes scripts based on message
