@@ -9,6 +9,8 @@ const ENV = process.env.ENV || 'development';
 const cookieSession = require('cookie-session');
 // import express and related libraries
 const express = require('express');
+const bcrypt = require('bcrypt');
+
 const bodyParser = require('body-parser');
 //const sass        = require("node-sass-middleware");
 const path = require('path');
@@ -19,6 +21,10 @@ const queries = require('./db/queries');
 // for generating refresh and access tokens
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
+// store goals by end of day
+const moment = require('moment');
+
+const auth = require('./auth');
 
 // iniitalize express
 const app = express();
@@ -36,85 +42,149 @@ app.use(
 );
 
 // routes
-app.post('/', (req, res) => {
-  console.log('GET / is RUNNING');
-  console.log("req.session.userid = ", req.session.userid);
-  if (req.session.userid) {
+app.post('/', async (req, res) => {
+  // Looks up user info upon loading app
+  if (req.session.user) {
     console.log('There are cookies so querying the database');
-    queries
-      .getUser(req.session.userid)
-      .then(result => {
-        console.log(result);
-        res.json(result);
-      });
+    const user = await queries.getUser(req.session.user);
+    if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
+      const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
+      await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
+      return res.json({ name: user.name, google_id: user.google_id, access_token: newAccessToken.access_token });
+    }
+    return res.json({ name: user.name, google_id: user.google_id, access_token: user.access_token });
   } else {
-    console.log('No cookies so sending Hello');
+    console.log('There are no cookies');
     res.send(false);
   }
 });
 
+app.post('/signup', async (req, res) => {
+  const user = req.body.code
+    ? await auth.googleAuth(req.body.code)
+    : {
+        type: 'signup',
+        name: req.body.name,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10)
+      };
 
-// ASYNC METHOD
-app.post('/login', async function(req, res){
-  console.log('RECEIVING AUTHORIZATION CODE FROM CLIENT');
+  const emailExists = await queries.checkEmail(user.email);
 
-  const data = {
-    code: req.body.code,
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
-    redirect_uri: process.env.REDIRECT_URI,
-    access_type: 'offline',
-    grant_type: 'authorization_code'
-  };
-
-  // Requesting token information from google
-  const fetchRes = await fetch('https://www.googleapis.com/oauth2/v4/token', {
-    method: 'post',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' }
-  })
-
-  //decode data and set constants
-  const fetchJSON = await fetchRes.json();
-  console.log(fetchJSON);
-
-  const user = jwt.decode(fetchJSON.id_token);
-
-  const googleId = user.sub;
-  const name = user.name;
-  const email = user.email;
-  const accessToken = fetchJSON.access_token;
-  const refreshToken = fetchJSON.refresh_token;
-
-  console.log("refreshTOKEN (oooh boy, i hope i get it):", refreshToken);
-
-  req.session.userid = googleId; //set userid in cookie
-  console.log('User query is about to run....');
-
-  const idExists = await queries.checkGoogleIdExists(googleId);
-  if (!idExists) {
-    console.log('user was not found...so we can make one!');
-
-    await queries.insertUser(googleId, name, email, refreshToken);
-    await queries.setTokenNewUser(googleId, accessToken);
-    await res.json({ name: user.name, access_token: accessToken });
-
+  if (emailExists) {
+    res.json(false);
   } else {
-    console.log("this user exists and that's fine");
-    await queries.setTokenExistingUser(googleId, accessToken);
-    await res.json({ name: user.name, access_token: accessToken });
+    console.log('creating account now....');
+    req.session.user = user.email; //Set user in cookie
+    switch (user.type) {
+      case 'google':
+        console.log('google signup detected');
+        await queries.insertUser(user.googleId, user.name, user.email, null, user.picture);
+        await queries.setTokenNewUser(user.googleId, user.accessTok, user.refreshTok, user.accessTokExp);
+        return res.json({ name: user.name, access_token: user.accessTok });
+      case 'signup':
+        console.log('web signup detected');
+        await queries.insertUser(null, user.name, user.email, user.password, null);
+        return res.redirect('/');
+    }
   }
 });
 
+app.post('/login', async (req, res) => {
+  const user = req.body.code
+    ? await auth.googleAuth(req.body.code)
+    : {
+        type: 'login',
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+      };
 
-
-app.post('/logout', (req, res) => {
-  console.log("this is cookie session id: ", req.session.userid);
-  req.session = null;
-  res.end();
-  // res.sendStatus(200);
+  // Check if user is logging in from google or not
+  switch (user.type) {
+    case 'google':
+      console.log('google login detected');
+      await queries.setTokenExistingUser(user.googleId, user.accessTok, user.accessTokExp);
+      req.session.user = user.email;
+      return res.json({ name: user.name, access_token: user.accessTok });
+    case 'login':
+      console.log('web login detected');
+      const emailCheck = await queries.checkEmail(user.email);
+      if (emailCheck) {
+        console.log('email found');
+        if (emailCheck.password !== null) {
+          const checkPassword = await queries.checkPassword(user.email, user.password);
+          if (checkPassword) {
+            console.log('password matches');
+            req.session.user = user.email; //Set user in cookie
+            return res.redirect('/');
+          }
+        }
+        console.log('password incorrect');
+        return res.redirect('/400/login');
+      } else {
+        console.log('email not found');
+        return res.redirect('/400/login');
+      }
+  }
 });
 
+app.post('/logout', (req, res) => {
+  req.session = null;
+  return res.json(true);
+});
+
+// GOALS
+app.post('/set_goal', async function(req, res) {
+  console.log('SET GOAL ROUTE');
+  const googleId = req.body.googleId;
+  const stepsGoal = req.body.stepsGoal;
+  const givenDay = req.body.givenDay; //what happens here??
+  const endOfDay = moment(Date.now())
+    .endOf('day')
+    .valueOf(); //related to above
+
+  // check if this goal exists then insert/update as appropriate
+  const goalExists = await query.checkGoalExists(googleId, endOfDay);
+  if (goalExists) {
+    await query.updateGoal(googleId, stepsGoal, endOfDay);
+    res.sendStatus(200);
+  } else {
+    await query.insertGoal(googleId, stepsGoal, endOfDay);
+    res.sendStatus(200);
+  }
+});
+
+app.post('/goals', async function(req, res) {
+  console.log('GET GOALS ROUTE');
+  const googleId = req.body.googleId;
+  // calculate rounded day and week ago from current time
+  const today = moment(Date.now()).endOf('day');
+  const endOfDay = today.valueOf();
+  // const endOfDay = new Date();
+  // endOfDay.setHours(23, 59, 59, 999);
+
+  // console.log('END OF DAY', endOfDay.getTime());
+  const weekAgo = moment(Date.now())
+    .endOf('day')
+    .subtract(7, 'days')
+    .valueOf();
+
+  const foundGoalsAwait = await queries.pastWeekGoals(googleId, weekAgo, endOfDay);
+  const foundGoals = foundGoalsAwait[0];
+  let pastWeekArray = [endOfDay];
+  for (let i = 1; i < 7; i++) {
+    const ithDayAgo = today.subtract(1, 'days').valueOf();
+    pastWeekArray.push(ithDayAgo);
+  }
+
+  const goalHistory = pastWeekArray.map(day => {
+    const dayGoal = foundGoals.filter(goalObj => parseInt(goalObj.day_rounded) === day)[0]; // errors if no goals
+    return dayGoal ? dayGoal.steps_goal : 0;
+  });
+
+  res.json({ goalHistory: goalHistory });
+});
 
 // TEST
 const testRoutes = require('./test_routes');
@@ -132,8 +202,6 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-
 
 // async error helpers
 

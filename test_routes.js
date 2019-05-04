@@ -9,8 +9,28 @@ router.get("/", cors(), (req, res) =>
   res.json({ message: "Hello From the Server!" })
 );
 
-router.get("/login", (req, res) => {
+router.post("/login", (req, res) => {
   console.log("getting a fetch from test login");
+  
+  const googleId = req.body.profileObj.googleId;
+  const image = req.body.profileObj.imageUrl;
+  const name = req.body.profileObj.name;
+  const email = req.body.profileObj.email;
+  const tokenObj = req.body.tokenObj;
+  const refreshToken = req.body.refresh_token;
+  const accessToken = req.body.tokenObj.access_token;
+  const expiresAt = req.body.tokenObj.expires_at;
+
+  // FIND GOOGLE_ID in req.params
+  // queries.getUserToken(googleId);
+
+  res.sendStatus(200);
+});
+
+router.post("/signup/google", (req, res) => {
+  console.log("getting a fetch from test login");
+  
+console.log(req.body)
 
   // FIND GOOGLE_ID in req.params
   // queries.getUserToken(googleId);

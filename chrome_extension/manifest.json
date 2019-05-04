@@ -26,9 +26,5 @@
     }
   ],
   "permissions": ["tabs", "activeTab", "<all_urls>", "cookies"],
-  "web_accessible_resources": [
-    "./css/test.css",
-    "./scriptmods/cursor.js",
-    "/vendor/geoBootstrap.css"
-  ]
+  "web_accessible_resources": ["/vendor/geoBootstrap.css", "icons/*"]
 }
