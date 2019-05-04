@@ -45,6 +45,7 @@ app.use(
 
 // routes
 app.post('/', async (req, res) => {
+  console.log("Current user: ", req.session.user)
   // Looks up user info upon loading app
   if (req.session.user) {
     console.log('There are cookies so querying the database');
@@ -108,6 +109,8 @@ app.post('/login', async (req, res) => {
       console.log('google login detected');
       await queries.setTokenExistingUser(user.googleId, user.accessTok, user.accessTokExp);
       req.session.user = user.email;
+      queries.runningGoal(req.session.user);
+      console.log('INSERTS COMPLETED SERVER.JS');
       return res.json({ name: user.name, access_token: user.accessTok });
     case 'login':
       console.log('web login detected');
@@ -119,6 +122,8 @@ app.post('/login', async (req, res) => {
           if (checkPassword) {
             console.log('password matches');
             req.session.user = user.email; //Set user in cookie
+            queries.runningGoal(req.session.user);
+            console.log('INSERTS COMPLETED SERVER.JS');
             return res.redirect('/');
           }
         }
@@ -137,23 +142,20 @@ app.post('/logout', (req, res) => {
 });
 
 // GOALS
-app.post('/set_goal', async function(req, res) {
-  console.log('SET GOAL ROUTE');
+app.post('/goals/update', async function(req, res) {
+  console.log('Updating goals now...........');
+  const email = req.session.user;
   const googleId = req.body.googleId;
-  const stepsGoal = req.body.stepsGoal;
-  const givenDay = req.body.givenDay; //what happens here??
-  const endOfDay = moment(Date.now())
-    .endOf('day')
-    .valueOf(); //related to above
-
-  // check if this goal exists then insert/update as appropriate
-  const goalExists = await query.checkGoalExists(googleId, endOfDay);
-  if (goalExists) {
-    await query.updateGoal(googleId, stepsGoal, endOfDay);
-    res.sendStatus(200);
+  const stepsGoal = req.body.steps;
+  console.log("input", stepsGoal)
+  const endOfDay = moment().endOf('day').valueOf();
+  const canUpdate = await queries.canUserUpdateGoal(email);
+  if (canUpdate) {
+    queries.updateGoal(googleId, stepsGoal, endOfDay);
+    return res.json(true)
   } else {
-    await query.insertGoal(googleId, stepsGoal, endOfDay);
-    res.sendStatus(200);
+    console.log("user can not update goal again");
+    return res.json(false)
   }
 });
 

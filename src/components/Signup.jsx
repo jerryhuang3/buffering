@@ -57,7 +57,7 @@ class Signup extends Component {
         </style>
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
+            <Header as="h2" color="white" textAlign="center">
               Create a new account
             </Header>
             <Form action="/signup" method="POST" size="large">
@@ -66,7 +66,7 @@ class Signup extends Component {
                 <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
                 <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" required />
                 <Button color="teal" fluid size="large">
-                  Sign up
+                  Signup
                 </Button>
               </Segment>
             </Form>
@@ -83,7 +83,7 @@ class Signup extends Component {
               accessType="offline"
               cookiePolicy={'single_host_origin'}
               className="login-google-btn">
-              Sign up with Google
+              Signup with Google
             </GoogleLogin>
           </Grid.Column>
         </Grid>

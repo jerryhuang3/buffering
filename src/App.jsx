@@ -67,18 +67,9 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/profile" render={props => <Profile {...props} data={this.state} />} />
-            <Route
-              path="/widget"
-              render={props => <Widget {...props} noNav={this.noNav} data={this.state} />}
-            />
-            <Route
-              path="/login"
-              render={props => <Login {...props} login={this.session} session={this.state.session} />}
-            />
-            <Route
-              path="/signup"
-              render={props => <Signup {...props} signup={this.session} session={this.state.session} />}
-            />
+            <Route path="/widget" render={props => <Widget {...props} noNav={this.noNav} data={this.state} />} />
+            <Route path="/login" render={props => <Login {...props} login={this.session} session={this.state.session} />} />
+            <Route path="/signup" render={props => <Signup {...props} signup={this.session} session={this.state.session} />} />
             <Route exact path="/400/signup" component={EmailExists} />
             <Route path="/400/login" component={WrongLogin} />
             <Route component={Error} />
