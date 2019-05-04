@@ -5,7 +5,13 @@ const hellInjects = [
   './cssmods/spin.css',
   './scriptmods/mouseDraw.js'
 ];
-const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './cssmods/zoom-awful.css', './cssmods/mirror-horiz.css'];
+const awfulInjects = [
+  './scriptmods/geo.js',
+  './scriptmods/image.js',
+  './cssmods/zoom-awful.css',
+  './cssmods/mirror-horiz.css',
+  './cssmods/mirror-vert.css'
+];
 const badInjects = ['./cssmods/zoom-bad.css', './cssmods/comic-sans.css', './cssmods/papyrus.css', './scriptmods/textColor.js'];
 
 function injectJs(fileToInject) {
