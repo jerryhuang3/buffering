@@ -3,10 +3,11 @@ const hellInjects = [
   './css/zoom-hell.css',
   './css/pulsate.css',
   './css/spin.css',
-  './css/mirror-horiz.css'
+  './css/mirror-horiz.css',
+  './scriptmods/mouseDraw.js'
 ];
-const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './css/zoom-awful.css', './scriptmods/mouseDraw.js'];
-const badInjects = ['./css/zoom-bad.css', './css/comic-sans.css', './css/papyrus.css'];
+const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './css/zoom-awful.css'];
+const badInjects = ['./css/zoom-bad.css', './css/comic-sans.css', './css/papyrus.css', './scriptmods/textColor.js'];
 
 function injectJs(fileToInject) {
   chrome.tabs.executeScript(null, { file: fileToInject });
@@ -33,6 +34,7 @@ function randomifyScript(status) {
 
   if (status === 'bad') {
     inject = badInjects[Math.floor(Math.random() * badInjects.length)];
+
     console.log(inject, 'is being injected');
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
@@ -44,34 +46,12 @@ function randomifyScript(status) {
 
 //listener for messages from content script/ executes scripts based on message
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  console.log(sender.tab ? request.greeting + ' from a content script: ' + sender.tab.url : "this shouldn't happen");
-  //eventually this message should be "good, bad, awful, or hell" and it shouldbe passed as params to randomifyScript
-  if (request.greeting == 'hello') {
-    //insert scripts to execute here
-    // randomifyScript(request.greeting);
-    // randomifyScript('hell');
-
-    sendResponse({ farewell: 'goodbye' }); //response back to content script
+  if (request) {
+    let data = JSON.parse(request.response);
+    randomifyScript(data.userStatus);
+    chrome.tabs.executeScript(null, { file: '' });
+    sendResponse(`a ${data.userStatus} script was injected`);
+  } else {
+    console.log('No Data');
   }
 });
-
-// =============Testing=================
-
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-    const response = xhttp.responseText;
-    const status = xhttp.status;
-    const statusText = xhttp.statusText;
-    const responseURL = xhttp.responseURL;
-    // const parsed = JSON.parse(response);
-    console.log('BIG RESPONSE BABY!', response);
-    // console.log('currently logged in user', parsed.name, 'their google id', parsed.google_id);
-
-    // console.log(response, status, statusText, responseURL);
-  }
-};
-xhttp.open('POST', 'http://localhost:3000/extension', true);
-xhttp.send();
-
-console.log('%cHello from BG script', 'background: red; color: yellow; font-size: large');
