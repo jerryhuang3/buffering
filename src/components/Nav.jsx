@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
-import { Container, Image, Menu } from 'semantic-ui-react';
+import { Container, Menu } from 'semantic-ui-react';
 
 class Nav extends Component {
   constructor(props) {
@@ -30,7 +30,6 @@ class Nav extends Component {
 
   render() {
     // Nav receives state of the session from App.jsx
-    console.table(this.props.state);
     const isUserLoggedIn = this.props.state.name;
 
     const session = this.props.state.session ? (

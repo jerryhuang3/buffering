@@ -43,21 +43,18 @@ app.use(
 
 // routes
 app.post('/', async (req, res) => {
-  console.log('GET / is RUNNING');
-  console.log('req.session.user = ', req.session.user);
-
+  // Looks up user info upon loading app
   if (req.session.user) {
     console.log('There are cookies so querying the database');
     const user = await queries.getUser(req.session.user);
     if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
-      console.log('TOKEN IS OUTDATED');
       const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
       await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
       return res.json({ name: user.name, google_id: user.google_id, access_token: newAccessToken.access_token });
     }
     return res.json({ name: user.name, google_id: user.google_id, access_token: user.access_token });
   } else {
-    console.log('No cookies so sending');
+    console.log('There are no cookies');
     res.send(false);
   }
 });
@@ -153,7 +150,6 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  console.log('this is cookie session id: ', req.session.userid);
   req.session = null;
   return res.json(true);
 });

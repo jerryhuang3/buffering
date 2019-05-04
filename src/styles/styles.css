@@ -1,5 +1,5 @@
 .login-google-btn {
-width: 80%;
+width: 100%;
 height: 50px;
 display: flex;
 color: grey;
@@ -9,7 +9,7 @@ cursor: pointer
 }
 
 .login-google-btn span {
-    margin-left: 20px;
+    margin-left: 60px;
 }
 
 .login-google-btn svg {
