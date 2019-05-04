@@ -30,3 +30,9 @@ function getPastDaysIncludingToday(numberDays) {
 
   return pastDaysArray;
 }
+
+module.exports = {
+  computeUserStatus: computeUserStatus,
+  orderGoals: orderGoals,
+  getPastDaysIncludingToday: getPastDaysIncludingToday
+};
