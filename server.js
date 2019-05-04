@@ -18,6 +18,8 @@ const path = require('path');
 const cors = require('cors');
 //import helpers
 const queries = require('./db/queries');
+const utils = require('./utils');
+const dataUtils = require('./src/utils/data-utils');
 // for generating refresh and access tokens
 const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
@@ -59,25 +61,6 @@ app.post('/', async (req, res) => {
   }
 });
 
-app.post('/extension', async (req, res) => {
-  console.log('GET / is RUNNING');
-  console.log('req.session.user = ', req.session.user);
-
-  if (req.session.user) {
-    console.log('There are cookies so querying the database');
-    const user = await queries.getUser(req.session.user);
-    if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
-      console.log('TOKEN IS OUTDATED');
-      const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
-      await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
-      return res.json({ name: user.name, google_id: user.google_id, access_token: newAccessToken.access_token });
-    }
-    return res.json({ name: user.name, google_id: user.google_id, access_token: user.access_token });
-  } else {
-    console.log('No cookies so sending');
-    res.send(false);
-  }
-});
 
 app.post('/signup', async (req, res) => {
   const user = req.body.code
@@ -204,6 +187,46 @@ app.post('/goals', async function(req, res) {
   });
 
   res.json({ goalHistory: goalHistory });
+});
+
+
+app.post('/extension', async (req, res) => {
+  console.log('GET / is RUNNING');
+  console.log('req.session.user = ', req.session.user);
+  // if logged in send user-status else send false
+  if (req.session.user) {
+    console.log('There are cookies so querying the database');
+    const user = await queries.getUser(req.session.user);
+
+    // DOES THIS WORK ????
+    let currentAccessToken = req.session.user.accessToken;
+
+
+    // if token expired get then set new one
+    if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
+      console.log('TOKEN IS OUTDATED');
+      const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
+      await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
+      currentAccessToken = newAccessToken.access_token;
+    }
+
+    // init time constants
+    const pastThreeDays = utils.getPastDaysIncludingToday(3);
+    const today = pastThreeDays[0];
+    const threeDaysAgo = pastThreeDays[pastThreeDays.length - 1];
+    // get goals from db -> order and null check
+    const foundGoalsAwait = await queries.pastWeekGoals(res.session.user, threeDaysAgo, today );
+    const foundGoals = foundGoalsAwait[0];
+    const goalHistory = utils.orderGoals(pastThreeDays, foundGoals);
+    // get steps using token
+    const stepHistory = dataUtils.filterAndFetchSteps(currentAccessToken);
+    const userStatus = utils.computerUserStatus(stepHistory, goalHistory)
+
+    return res.json({ userStatus: userStatus });
+  } else {
+    console.log('No cookies so sending');
+    res.send(false);
+  }
 });
 
 // TEST
