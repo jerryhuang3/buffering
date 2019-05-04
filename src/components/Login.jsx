@@ -53,8 +53,8 @@ class Login extends Component {
         </style>
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              Log in to your account
+            <Header as="h2" color="white" textAlign="center">
+              Login to your account
             </Header>
             <Form action="/login" method="POST" size="large">
               <Segment>
@@ -66,7 +66,7 @@ class Login extends Component {
               </Segment>
             </Form>
             <Message>
-              New to us? <NavLink to="/signup">Sign up</NavLink>
+              New to us? <NavLink to="/signup">Signup</NavLink>
             </Message>
             <hr/><br/>
             <p>Signed up using Google?</p>

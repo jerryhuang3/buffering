@@ -29,9 +29,7 @@ class Nav extends Component {
   }
 
   render() {
-    // Nav receives state of the session from App.jsx
-    const isUserLoggedIn = this.props.state.name;
-
+    // Nav receives state of the session from App.js
     const session = this.props.state.session ? (
       <Container>
         <Menu.Menu position="left">

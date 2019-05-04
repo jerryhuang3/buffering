@@ -16,6 +16,11 @@ cursor: pointer
     margin-left: 40px;
 }
 
+.set_goal {
+  max-width: 450px;
+  text-align: center;
+}
+
 /* COLORLIB V3 ERROR CSS */
 #notfound {
     position: relative;
@@ -110,11 +115,6 @@ cursor: pointer
     }
   }
 
-
-#ProgressChart {
-    /* width: 60% !important; */
-    /* height: 50% !important; */
-}
 
 
 /* CSS animation */
@@ -224,3 +224,14 @@ body {
   }
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+.ui.header.white {
+  color: white;
+}

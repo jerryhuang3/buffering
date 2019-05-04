@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
+import Goal from './Goal.jsx';
 import progressChart from '../utils/progress-chart';
 
 class Profile extends Component {
@@ -31,19 +32,14 @@ class Profile extends Component {
     console.log('STEPS: ', stepsArray);
     console.log('GOALS: ', goalJSON.goalHistory);
 
-    const testData = {
-      goals: [3000, 3500, 3000, 4000, 4000, 4000, 5000],
-      steps: [3748, 4789, 2674, 2489, 6738, 4837, 7682]
-    };
-    progressChart.graphStepData(goalJSON.goalHistory, stepsArray);
+    progressChart.graphStepData(goalJSON.goalHistory.reverse(), stepsArray);
   }
 
   render() {
-    const steps = this.state.activity.map(day => {
-      return <p>{day}</p>;
-    });
+
     return (
       <div>
+        <Goal profileData={this.props} />
         <canvas id="ProgressChart" />
       </div>
     );
