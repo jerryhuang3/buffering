@@ -1,4 +1,4 @@
-import moment from 'moment-es6';
+const moment = require('moment');
 
 function fetchStepData(accessToken) {
   const request = {

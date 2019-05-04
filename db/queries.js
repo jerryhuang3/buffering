@@ -163,6 +163,7 @@ function updateGoal(googleId, stepsGoal, endOfDay) {
   ]).then(() => console.log('Goal update complete!'));
 }
 
+// should be changed to periodGoals
 function pastWeekGoals(googleId, weekAgo, endOfDay) {
   return Promise.all([
     knex('goals')

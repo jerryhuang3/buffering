@@ -23,7 +23,7 @@ exports.seed = async function(knex, Promise) {
     pastWeekArray.forEach(dayRounded => {
       const obj = {
         google_id: userId,
-        steps_goal: 1000 + Math.floor(3000 * Math.random()),
+        steps_goal: 1 + Math.floor(3000 * Math.random()),
         day_rounded: dayRounded
       };
       paramsArray.push(obj);
