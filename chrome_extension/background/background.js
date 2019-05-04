@@ -1,13 +1,12 @@
 const hellInjects = [
   './scriptmods/mouseMoveVisibility.js',
-  './css/zoom-hell.css',
-  './css/pulsate.css',
-  './css/spin.css',
-  './css/mirror-horiz.css',
+  './cssmods/zoom-hell.css',
+  './cssmods/pulsate.css',
+  './cssmods/spin.css',
   './scriptmods/mouseDraw.js'
 ];
-const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './css/zoom-awful.css'];
-const badInjects = ['./css/zoom-bad.css', './css/comic-sans.css', './css/papyrus.css', './scriptmods/textColor.js'];
+const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './cssmods/zoom-awful.css', './cssmods/mirror-horiz.css'];
+const badInjects = ['./cssmods/zoom-bad.css', './cssmods/comic-sans.css', './cssmods/papyrus.css', './scriptmods/textColor.js'];
 
 function injectJs(fileToInject) {
   chrome.tabs.executeScript(null, { file: fileToInject });
@@ -49,7 +48,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request) {
     let data = JSON.parse(request.response);
     randomifyScript(data.userStatus);
-    chrome.tabs.executeScript(null, { file: '' });
+    // chrome.tabs.onUpdated.executeScript(null, { file: '' });
     sendResponse(`a ${data.userStatus} script was injected`);
   } else {
     console.log('No Data');
