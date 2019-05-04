@@ -48,9 +48,31 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   //eventually this message should be "good, bad, awful, or hell" and it shouldbe passed as params to randomifyScript
   if (request.greeting == 'hello') {
     //insert scripts to execute here
-    randomifyScript(request.greeting);
-    randomifyScript('hell');
+    // randomifyScript(request.greeting);
+    // randomifyScript('hell');
 
     sendResponse({ farewell: 'goodbye' }); //response back to content script
   }
 });
+
+//vvv testing vvv
+let cookie;
+chrome.cookies.get({ url: 'http://localhost:3000', name: 'session' }, function(cookie) {
+  cookie = cookie.value;
+});
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    const response = xhttp.responseText;
+    const status = xhttp.status;
+    const statusText = xhttp.statusText;
+    const responseURL = xhttp.responseURL;
+    const parsed = JSON.parse(response);
+    console.log('currently logged in user', parsed.name, 'their google id', parsed.google_id);
+
+    // console.log(response, status, statusText, responseURL);
+  }
+};
+xhttp.open('POST', 'http://localhost:3000/extension', true);
+xhttp.send();

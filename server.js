@@ -62,6 +62,26 @@ app.post('/', async (req, res) => {
   }
 });
 
+app.post('/extension', async (req, res) => {
+  console.log('GET / is RUNNING');
+  console.log('req.session.user = ', req.session.user);
+
+  if (req.session.user) {
+    console.log('There are cookies so querying the database');
+    const user = await queries.getUser(req.session.user);
+    if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
+      console.log('TOKEN IS OUTDATED');
+      const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
+      await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
+      return res.json({ name: user.name, google_id: user.google_id, access_token: newAccessToken.access_token });
+    }
+    return res.json({ name: user.name, google_id: user.google_id, access_token: user.access_token });
+  } else {
+    console.log('No cookies so sending');
+    res.send(false);
+  }
+});
+
 app.post('/signup', async (req, res) => {
   const user = req.body.code
     ? await auth.googleAuth(req.body.code)

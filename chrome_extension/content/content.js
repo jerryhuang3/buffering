@@ -1,7 +1,4 @@
-console.log(
-  "%cHello from content script",
-  "background: red; color: yellow; font-size: large"
-);
+console.log('%cHello from content script', 'background: red; color: yellow; font-size: large');
 
 //make request to server and send response to bg script
 var xhttp = new XMLHttpRequest();
@@ -12,16 +9,15 @@ xhttp.onreadystatechange = function() {
     const statusText = xhttp.statusText;
     const responseURL = xhttp.responseURL;
     const parsed = JSON.parse(response);
-    console.log("message from localhost:", parsed.message);
-    if (parsed.message === "Hello From the Server!") {
+    // console.log("message from localhost:", parsed.message);
+    if (parsed.message === 'Hello From the Server!') {
       //send message to bg script
-      chrome.runtime.sendMessage({ greeting: "hello" }, function(response) {
-        console.log(response.farewell);
+      chrome.runtime.sendMessage({ greeting: 'hello' }, function(response) {
+        // console.log(response.farewell);
       });
     }
-    console.log(response, status, statusText, responseURL);
+    // console.log(response, status, statusText, responseURL);
   }
 };
-xhttp.open("GET", "http://localhost:3000/test", true);
+xhttp.open('POST', 'http://localhost:3000/extension', true);
 xhttp.send();
-console.log("before async request");
