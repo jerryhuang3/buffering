@@ -61,7 +61,6 @@ app.post('/', async (req, res) => {
   }
 });
 
-
 app.post('/signup', async (req, res) => {
   const user = req.body.code
     ? await auth.googleAuth(req.body.code)
@@ -189,18 +188,16 @@ app.post('/goals', async function(req, res) {
   res.json({ goalHistory: goalHistory });
 });
 
-
 app.post('/extension', async (req, res) => {
   console.log('GET / is RUNNING');
-  console.log('req.session.user = ', req.session.user);
+  console.log('req.session.user = ', req.session);
   // if logged in send user-status else send false
   if (req.session.user) {
     console.log('There are cookies so querying the database');
     const user = await queries.getUser(req.session.user);
-
+    console.log('USER HERE BABY:', user);
     // DOES THIS WORK ????
-    let currentAccessToken = req.session.user.accessToken;
-
+    let currentAccessToken = user.access_token;
 
     // if token expired get then set new one
     if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
@@ -213,15 +210,19 @@ app.post('/extension', async (req, res) => {
     // init time constants
     const pastThreeDays = utils.getPastDaysIncludingToday(3);
     const today = pastThreeDays[0];
+    console.log('TODAY', moment(today).calendar());
     const threeDaysAgo = pastThreeDays[pastThreeDays.length - 1];
+    console.log('THREE DAYS AGO', moment(threeDaysAgo).calendar());
     // get goals from db -> order and null check
-    const foundGoalsAwait = await queries.pastWeekGoals(res.session.user, threeDaysAgo, today );
+    const foundGoalsAwait = await queries.pastWeekGoals(user.google_id, threeDaysAgo, today);
     const foundGoals = foundGoalsAwait[0];
     const goalHistory = utils.orderGoals(pastThreeDays, foundGoals);
     // get steps using token
-    const stepHistory = dataUtils.filterAndFetchSteps(currentAccessToken);
-    const userStatus = utils.computerUserStatus(stepHistory, goalHistory)
-
+    const stepHistory = await utils.filterAndFetchSteps(currentAccessToken);
+    console.log('STEP HISTORY BABY!', stepHistory);
+    console.log('GOAL HISTORY BABY!', goalHistory);
+    const userStatus = utils.computeUserStatus(stepHistory, goalHistory);
+    console.log('USER STATUS BABY!', userStatus);
     res.json({ userStatus: userStatus });
   } else {
     console.log('No cookies so sending');

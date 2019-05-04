@@ -64,8 +64,8 @@ xhttp.onreadystatechange = function() {
     const status = xhttp.status;
     const statusText = xhttp.statusText;
     const responseURL = xhttp.responseURL;
-    const parsed = JSON.parse(response);
-    console.log('cookies request', response);
+    // const parsed = JSON.parse(response);
+    console.log('BIG RESPONSE BABY!', response);
     // console.log('currently logged in user', parsed.name, 'their google id', parsed.google_id);
 
     // console.log(response, status, statusText, responseURL);
