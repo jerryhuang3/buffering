@@ -19,5 +19,5 @@ xhttp.onreadystatechange = function() {
     // console.log(response, status, statusText, responseURL);
   }
 };
-xhttp.open('POST', 'http://localhost:3000/extension', true);
+xhttp.open('GET', 'http://localhost:3000/test/testMessage', true);
 xhttp.send();

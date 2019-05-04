@@ -5,7 +5,7 @@ const hellInjects = [
   './css/spin.css',
   './css/mirror-horiz.css'
 ];
-const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './css/zoom-awful.css'];
+const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './css/zoom-awful.css', './scriptmods/mouseDraw.js'];
 const badInjects = ['./css/zoom-bad.css', './css/comic-sans.css', './css/papyrus.css'];
 
 function injectJs(fileToInject) {
@@ -50,16 +50,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     //insert scripts to execute here
     // randomifyScript(request.greeting);
     // randomifyScript('hell');
+    chrome.tabs.executeScript(null, { file: './scriptmods/mouseDraw.js' });
 
     sendResponse({ farewell: 'goodbye' }); //response back to content script
   }
 });
 
-//vvv testing vvv
-let cookie;
-chrome.cookies.get({ url: 'http://localhost:3000', name: 'session' }, function(cookie) {
-  cookie = cookie.value;
-});
+// =============Testing=================
 
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
@@ -69,6 +66,7 @@ xhttp.onreadystatechange = function() {
     const statusText = xhttp.statusText;
     const responseURL = xhttp.responseURL;
     const parsed = JSON.parse(response);
+    console.log('cookies request', response);
     console.log('currently logged in user', parsed.name, 'their google id', parsed.google_id);
 
     // console.log(response, status, statusText, responseURL);
@@ -76,3 +74,5 @@ xhttp.onreadystatechange = function() {
 };
 xhttp.open('POST', 'http://localhost:3000/extension', true);
 xhttp.send();
+
+console.log('%cHello from BG script', 'background: red; color: yellow; font-size: large');

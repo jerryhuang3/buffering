@@ -5,7 +5,7 @@ const queries = require("./db/queries");
 
 // TEST ROUTES
 
-router.get("/", cors(), (req, res) =>
+router.get("/testMessage", cors(), (req, res) =>
   res.json({ message: "Hello From the Server!" })
 );
 
