@@ -15,14 +15,14 @@ function goalRedOrGreen(goalValue, stepValue, idx) {
   let blueAmt = 181;
 
   if (goalValue > stepValue) {
-    redAmt = 0;
-    greenAmt = 99;
-    blueAmt = 181;
+    redAmt = 181;
+    greenAmt = 0;
+    blueAmt = 8;
   }
   else if (goalValue < stepValue) {
-    redAmt = 0;
+    redAmt = 8;
     greenAmt = 181;
-    blueAmt = 83;
+    blueAmt = 0;
   }
 
   return `rgba(${redAmt}, ${greenAmt}, ${blueAmt}, ${alpha}`;

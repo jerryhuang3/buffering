@@ -122,16 +122,18 @@ cursor: pointer
 /* pastel colours  #CCFF99, #FF9999, #CC99FF, #66FFFF */
 /* complimentary colours #08b500, #ad00b5, #b50008, #08b500 */
 /* complimentary somewhat unsaturated #8d8825, #cb343c, #89258e, #c334cb, #8d252b, #c9c236 */
+/* complimentary saturated ~ 30% #74713e, #a6595d, #713e74, #a259a6, #743e41, #a6a259 */
+/* colorbline #f97aff, #bea4bf, #afafaf, #ec99a3, #97aef1, #90aeff, #f08dc4, #ba9bf6, #b69bff */
 
 body {
   width: 100wh;
   height: 90vh;
   color: #fff;
-  background: linear-gradient(45deg, #74713e, #a6595d, #713e74, #a259a6, #743e41, #a6a259 );
-  background-size: 400% 400%;
+  background: linear-gradient(45deg, #f97aff, #d7a2bf, #e4ccff, #ff7ac3, #bba2d7, #fcccff, #b77aff, #d5a2d7, #ffcce8);
+  background-size: 300% 300%;
   -webkit-animation: Gradient 155s ease infinite;
   -moz-animation: Gradient 155s ease infinite;
-  animation: Gradient 155s ease infinite;
+  animation: Gradient 95s ease infinite;
 }
 
 @-webkit-keyframes Gradient {
@@ -224,12 +226,12 @@ body {
   }
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    margin: 0; 
+    margin: 0;
 }
 
 .ui.header.white {
