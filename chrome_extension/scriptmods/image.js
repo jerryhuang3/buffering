@@ -1,6 +1,4 @@
-
 $(document).ready(function() {
-  setTimeout(function())
   var path = chrome.extension.getURL('/icons/static.gif');
   if ($('img')) {
     $('img').each(function() {
