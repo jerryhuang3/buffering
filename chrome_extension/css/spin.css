@@ -8,14 +8,7 @@ span, h1, h3, h5 {
   animation-iteration-count: infinite !important;
   animation-timing-function: linear !important;
 }
-@-ms-keyframes spin {
-  from { -ms-transform: rotate(0deg); }
-  to { -ms-transform: rotate(-360deg); }
-}
-@-moz-keyframes spin {
-  from { -moz-transform: rotate(0deg); }
-  to { -moz-transform: rotate(-360deg); }
-}
+
 @-webkit-keyframes spin {
   from { -webkit-transform: rotate(0deg); }
   to { -webkit-transform: rotate(-360deg); }
@@ -35,14 +28,7 @@ img, h2, h4, h6 {
   animation-iteration-count: infinite !important;
   animation-timing-function: linear !important;
 }
-@-ms-keyframes spin {
-  from { -ms-transform: rotate(0deg); }
-  to { -ms-transform: rotate(360deg); }
-}
-@-moz-keyframes spin {
-  from { -moz-transform: rotate(0deg); }
-  to { -moz-transform: rotate(360deg); }
-}
+
 @-webkit-keyframes spin {
   from { -webkit-transform: rotate(0deg); }
   to { -webkit-transform: rotate(360deg); }
@@ -62,14 +48,7 @@ p, a {
   animation-iteration-count: infinite !important;
   animation-timing-function: linear !important;
 }
-@-ms-keyframes spin {
-  from { -ms-transform: rotate(0deg); }
-  to { -ms-transform: rotate(-360deg); }
-}
-@-moz-keyframes spin {
-  from { -moz-transform: rotate(0deg); }
-  to { -moz-transform: rotate(-360deg); }
-}
+
 @-webkit-keyframes spin {
   from { -webkit-transform: rotate(0deg); }
   to { -webkit-transform: rotate(-360deg); }
@@ -89,14 +68,7 @@ li {
   animation-iteration-count: infinite !important;
   animation-timing-function: linear !important;
 }
-@-ms-keyframes spin {
-  from { -ms-transform: rotate(0deg); }
-  to { -ms-transform: rotate(360deg); }
-}
-@-moz-keyframes spin {
-  from { -moz-transform: rotate(0deg); }
-  to { -moz-transform: rotate(360deg); }
-}
+
 @-webkit-keyframes spin {
   from { -webkit-transform: rotate(0deg); }
   to { -webkit-transform: rotate(360deg); }

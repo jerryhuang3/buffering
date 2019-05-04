@@ -1,46 +1,78 @@
-const hellScripts = ['./scriptmods/mouseMoveVisibility.js'];
-const awfulScripts = ['./scriptmods/geo.js', './scriptmods/image.js'];
-const badScripts = [];
+const hellInjects = [
+  './scriptmods/mouseMoveVisibility.js',
+  './css/zoom-hell.css',
+  './css/pulsate.css',
+  './css/spin.css',
+  './css/mirror-horiz.css'
+];
+const awfulInjects = ['./scriptmods/geo.js', './scriptmods/image.js', './css/zoom-awful.css'];
+const badInjects = ['./css/zoom-bad.css', './css/comic-sans.css', './css/papyrus.css'];
+
+function injectJs(fileToInject) {
+  chrome.tabs.executeScript(null, { file: fileToInject });
+}
+
+function injectCSS(fileToInject) {
+  chrome.tabs.insertCSS(null, { file: fileToInject });
+}
 
 function randomifyScript(status) {
+  let inject;
+
   if (status === 'hell') {
-    return hellScripts[Math.floor(Math.random() * hellScripts.length)];
+    inject = hellInjects[Math.floor(Math.random() * hellInjects.length)];
+    console.log(inject, 'is being injected');
+    inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
+
   if (status === 'awful') {
-    return awfulScripts[Math.floor(Math.random() * awfulScripts.length)];
+    inject = awfulInjects[Math.floor(Math.random() * awfulInjects.length)];
+    console.log(inject, 'is being injected');
+    inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
+
   if (status === 'bad') {
-    return badScripts[Math.floor(Math.random() * badScripts.length)];
+    inject = badInjects[Math.floor(Math.random() * badInjects.length)];
+    console.log(inject, 'is being injected');
+    inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
   }
-  //the following if block cab be removed it is for testing only.
-  if (status === 'hello') {
-    const testArray = [1, 2, 3, 4, 5, 6, 7, 8];
-    console.log('testing a random awful script based on hello msg');
-    return console.log(testArray[Math.floor(Math.random() * testArray.length)]);
+
+  if (status === 'good') {
+    console.log('you may browse normally!');
   }
 }
 
 //listener for messages from content script/ executes scripts based on message
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  console.log(
-    sender.tab
-      ? request.greeting + ' from a content script: ' + sender.tab.url
-      : "this shouldn't happen"
-  );
+  console.log(sender.tab ? request.greeting + ' from a content script: ' + sender.tab.url : "this shouldn't happen");
+  //eventually this message should be "good, bad, awful, or hell" and it shouldbe passed as params to randomifyScript
   if (request.greeting == 'hello') {
     //insert scripts to execute here
-    randomifyScript(request.greeting);
+    // randomifyScript(request.greeting);
+    // randomifyScript('hell');
 
-    sendResponse({ farewell: 'goodbye' });
+    sendResponse({ farewell: 'goodbye' }); //response back to content script
   }
 });
 
-//some scripts/css to inject
-// chrome.tabs.insertCSS(null, { file: './css/spin.css' });
-// chrome.tabs.executeScript(null, { file: './scriptmods/mouseMoveVisibility.js' });
-// chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
-// chrome.tabs.executeScript(null, { file: './scriptmods/image.js' });
-// chrome.tabs.executeScript(null, { file: './scriptmods/scrollToBottom.js' });
-// chrome.tabs.insertCSS(null, { file: './css/pulsate.css' });
-//chrome.tabs.executeScript(null, { file: './scriptmods/geo.js' });
-//chrome.tabs.insertCSS(null, { file: './css/spin.css' });
+//vvv testing vvv
+let cookie;
+chrome.cookies.get({ url: 'http://localhost:3000', name: 'session' }, function(cookie) {
+  cookie = cookie.value;
+});
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    const response = xhttp.responseText;
+    const status = xhttp.status;
+    const statusText = xhttp.statusText;
+    const responseURL = xhttp.responseURL;
+    const parsed = JSON.parse(response);
+    console.log('currently logged in user', parsed.name, 'their google id', parsed.google_id);
+
+    // console.log(response, status, statusText, responseURL);
+  }
+};
+xhttp.open('POST', 'http://localhost:3000/extension', true);
+xhttp.send();
