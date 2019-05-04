@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
-import { Button, Form, Grid, Message, Segment, Header, Modal } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Segment, Header } from 'semantic-ui-react';
 import { GoogleLogin } from 'react-google-login';
 
 class Login extends Component {
@@ -68,6 +68,8 @@ class Login extends Component {
             <Message>
               New to us? <NavLink to="/signup">Sign up</NavLink>
             </Message>
+            <hr/><br/>
+            <p>Signed up using Google?</p>
             <GoogleLogin
               clientId={process.env.CLIENT_ID}
               scope={process.env.SCOPES}
