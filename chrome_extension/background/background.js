@@ -50,7 +50,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     //insert scripts to execute here
     // randomifyScript(request.greeting);
     // randomifyScript('hell');
-    chrome.tabs.executeScript(null, { file: './scriptmods/mouseDraw.js' });
 
     sendResponse({ farewell: 'goodbye' }); //response back to content script
   }
@@ -67,7 +66,7 @@ xhttp.onreadystatechange = function() {
     const responseURL = xhttp.responseURL;
     const parsed = JSON.parse(response);
     console.log('cookies request', response);
-    console.log('currently logged in user', parsed.name, 'their google id', parsed.google_id);
+    // console.log('currently logged in user', parsed.name, 'their google id', parsed.google_id);
 
     // console.log(response, status, statusText, responseURL);
   }
