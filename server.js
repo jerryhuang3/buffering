@@ -188,7 +188,7 @@ app.post('/goals', async function(req, res) {
   res.json({ goalHistory: goalHistory });
 });
 
-app.post('/extension', async (req, res) => {
+app.post('/extension', cors(), async (req, res) => {
   console.log('GET / is RUNNING');
   console.log('req.session.user = ', req.session);
   // if logged in send user-status else send false
