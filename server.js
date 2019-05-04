@@ -222,7 +222,7 @@ app.post('/extension', async (req, res) => {
     const stepHistory = dataUtils.filterAndFetchSteps(currentAccessToken);
     const userStatus = utils.computerUserStatus(stepHistory, goalHistory)
 
-    return res.json({ userStatus: userStatus });
+    res.json({ userStatus: userStatus });
   } else {
     console.log('No cookies so sending');
     res.send(false);
