@@ -61,7 +61,7 @@ class Signup extends Component {
               Create a new account
             </Header>
             <Form action="/signup" method="POST" size="large">
-              <Segment stacked>
+              <Segment>
                 <Form.Input fluid icon="user" iconPosition="left" placeholder="Full Name" name="name" />
                 <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
                 <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" required />

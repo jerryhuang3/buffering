@@ -57,7 +57,7 @@ class Login extends Component {
               Log in to your account
             </Header>
             <Form action="/login" method="POST" size="large">
-              <Segment stacked>
+              <Segment>
                 <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
                 <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" />
                 <Button color="teal" fluid size="large">

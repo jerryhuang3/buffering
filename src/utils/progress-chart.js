@@ -7,13 +7,25 @@ const testData = {
 
 function goalRedOrGreen(goalValue, stepValue, idx) {
   if (goalValue === 0 || stepValue === 0) {
-    return 'rgba(100,100,100,0.5)';
+    return 'rgb(173,0,181, 0.5)';
+  }
+  const alpha = 0.3 + (0.5 * (idx + 1)) / 7;
+  let redAmt = 173;
+  let greenAmt = 0;
+  let blueAmt = 181;
+
+  if (goalValue > stepValue) {
+    redAmt = 0;
+    greenAmt = 99;
+    blueAmt = 181;
+  }
+  else if (goalValue < stepValue) {
+    redAmt = 0;
+    greenAmt = 181;
+    blueAmt = 83;
   }
 
-  const alpha = (0.5 * (idx + 1)) / 7;
-  const redAmt = goalValue < stepValue ? 255 - parseInt(goalValue / stepValue) : 0;
-  const greenAmt = goalValue > stepValue ? Math.max(255, 100 + (5 * stepValue) / goalValue) : 0;
-  return `rgba(${redAmt}, ${greenAmt}, 1, ${alpha}`;
+  return `rgba(${redAmt}, ${greenAmt}, ${blueAmt}, ${alpha}`;
 }
 
 function graphStepData(goalArray, stepArray) {
@@ -45,13 +57,34 @@ function graphStepData(goalArray, stepArray) {
           label: 'Steps',
           type: 'line',
           data: stepArray,
-          backgroundColor: 'rgba(0, 181, 173, .5)',
-          fill: true
+          backgroundColor: 'rgba(0, 181, 173, 1)',
+          borderColor: 'rgba(0, 181, 173, 1)',
+          fill: false,
+          borderWidth: 8
         }
       ]
     },
     options: {
-      scales: { yAxes: [{ ticks: { fontSize: 25 } }], xAxes: [{ ticks: { fontSize: 25 } }] }
+      legend: {
+        labels: {
+          fontSize: 25,
+          fontColor: 'white'
+        }
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontSize: 25,
+            fontColor: 'white',
+            beginAtZero: true }
+          }],
+        xAxes: [{
+          ticks: {
+            fontSize: 25,
+            fontColor: 'white'
+          }
+        }]
+      }
     }
   });
   //return mixedChart
