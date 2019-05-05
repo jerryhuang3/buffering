@@ -6,10 +6,6 @@ import progressChart from '../utils/progress-chart';
 class Profile extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      activity: []
-    };
   }
 
   async componentDidMount() {
@@ -36,7 +32,6 @@ class Profile extends Component {
   }
 
   render() {
-
     return (
       <div>
         <Goal profileData={this.props} />

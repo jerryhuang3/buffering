@@ -5,7 +5,8 @@ class Goal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: null
+      value: null,
+      success: true
     };
   }
 
@@ -21,20 +22,21 @@ class Goal extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ steps: this.state.value, googleId: this.props.profileData.data.google_id })
+      body: JSON.stringify({ steps: this.state.value, googleId: this.props.data.google_id })
     });
     const json = await response.json();
-    console.log(json);
+
+    this.setState({success: json})
+    
   };
 
-  componentDidMount() {}
   render() {
     return (
       <Form size="large">
         <Form.Field className="set_goal">
-          <label>Update your goal: {this.state.value}</label>
+          <label>Update your goal</label>
           <Form.Input onChange={this.onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          <button onClick={this.onSubmit}>Submit</button>
+          <button onClick={this.onSubmit}>Update</button>
         </Form.Field>
       </Form>
     );

@@ -235,3 +235,6 @@ input[type=number]::-webkit-outer-spin-button {
 .ui.header.white {
   color: white;
 }
+.ui.form .field > label {
+  color: white;
+}

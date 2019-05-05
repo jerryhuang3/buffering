@@ -137,6 +137,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
+  console.log("This post is running");
   req.session = null;
   return res.json(true);
 });
