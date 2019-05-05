@@ -5,25 +5,23 @@ import { Container, Menu } from 'semantic-ui-react';
 class Nav extends Component {
   constructor(props) {
     super(props);
-    this.session = this.session.bind(this);
-    this.logout = this.logout.bind(this);
   }
-
+ 
   // Receives session prop after clicking Login or Logout button
-  session(name, bool, access) {
+  session = (name, bool, access) => {
     this.props.auth(name, bool, access);
   }
 
-  async logout() {
+  logout = async() => {
     const res = await fetch('/logout', { method: 'POST' });
     const logout = await res.json();
+    console.log('LOGOUT RECEIVED JSON');
 
     // Sign out of Google on local website
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut();
+    gapi.auth2.getAuthInstance().signOut();
 
     if (logout) {
-      this.session(null, false, null)
+      this.session(null, false, null);
       this.props.history.push('/');
     }
   }

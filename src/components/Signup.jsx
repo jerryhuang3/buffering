@@ -6,12 +6,9 @@ import { GoogleLogin } from 'react-google-login';
 class Signup extends Component {
   constructor(props) {
     super(props);
-
-    this.authorizationCode = this.authorizationCode.bind(this);
-    this.signup = this.signup.bind(this);
   }
 
-  async authorizationCode(response) {
+  authCode = async(response) => {
     console.log("Sending Google's authorization code to the server...");
 
     const res = await fetch('/signup', {
@@ -25,12 +22,11 @@ class Signup extends Component {
     if (!json) {
       this.props.history.push('/400/signup');
     }
-
     this.signup(json.name, json.access_token);
   }
 
   // Send Signup prop to Nav
-  signup(name, access) {
+  signup = (name, access) => {
     console.log('Signup.jsx: Signed up', name);
     this.props.signup(name, true, access);
   }
@@ -78,7 +74,7 @@ class Signup extends Component {
               clientId={process.env.CLIENT_ID}
               scope={process.env.SCOPES}
               buttonText="Login"
-              onSuccess={this.authorizationCode}
+              onSuccess={this.authCode}
               responseType="code"
               accessType="offline"
               cookiePolicy={'single_host_origin'}

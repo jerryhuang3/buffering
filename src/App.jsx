@@ -19,38 +19,35 @@ class App extends Component {
       show_nav: true,
       google_id: null
     };
-
-    this.session = this.session.bind(this);
   }
 
   async componentDidMount() {
+    window.gapi.load('auth2', function() {
+      gapi.auth2.init({
+        client_id: '677038605397-j26crueetoelsf8vh5f9pde9l93707r7.apps.googleusercontent.com'
+      });
+    });
+
     // Check for cookie session
-    try {
-      const response = await fetch('/', { method: 'POST' });
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const json = await response.json();
-      if (!json) {
-        console.log('No cookie');
-      } else {
-        console.log('COOKIE EXISTS! SETTING SESSION TO TRUE');
-        console.table(json);
-        this.test;
-        this.setState({
-          name: json.name,
-          session: true,
-          access_token: json.access_token,
-          google_id: json.google_id
-        });
-      }
-    } catch (err) {
-      console.log(err);
+    const response = await fetch('/', { method: 'POST' });
+    const json = await response.json();
+    if (!json) {
+      console.log('No cookie');
+    } else {
+      console.log('COOKIE EXISTS! SETTING SESSION TO TRUE');
+      console.table(json);
+      this.test;
+      this.setState({
+        name: json.name,
+        session: true,
+        access_token: json.access_token,
+        google_id: json.google_id
+      });
     }
   }
 
   // Receives session prop from Nav component which receives session prop from Authentication component
-  session(name, bool, access) {
+  session = (name, bool, access) => {
     this.setState({ name: name, session: bool, access_token: access });
   }
 

@@ -6,12 +6,9 @@ import { GoogleLogin } from 'react-google-login';
 class Login extends Component {
   constructor(props) {
     super(props);
-
-    this.authorizationCode = this.authorizationCode.bind(this);
-    this.login = this.login.bind(this);
   }
 
-  async authorizationCode(response) {
+  authCode = async(response) => {
     console.log("Sending Google's authorization code to the server...");
 
     const res = await fetch('/login', {
@@ -26,7 +23,7 @@ class Login extends Component {
   }
 
   // Send Login prop to Nav
-  login(name, access) {
+  login = (name, access) => {
     console.log('Authentication.jsx: Logging in', name);
     this.props.login(name, true, access);
   }
@@ -74,7 +71,7 @@ class Login extends Component {
               clientId={process.env.CLIENT_ID}
               scope={process.env.SCOPES}
               buttonText="Login"
-              onSuccess={this.authorizationCode}
+              onSuccess={this.authCode}
               responseType="code"
               accessType="offline"
               cookiePolicy={'single_host_origin'}
