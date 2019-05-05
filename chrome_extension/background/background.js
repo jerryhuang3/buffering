@@ -16,7 +16,8 @@ const awfulInjects = [
   './cssmods/zoom-awful.css',
   './cssmods/pulsate.css',
   './cssmods/mirror-vert.css',
-  './cssmods/hover-disappear.css'
+  './cssmods/hover-disappear.css',
+  './scriptmods/redactHell.js'
 ];
 const badInjects = [
   './scriptmods/textColor.js',
@@ -82,7 +83,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
     //use the below two lines for testing scrips
     // chrome.tabs.insertCSS(null, { file: './cssmods/blur-hell.css' });
-    // chrome.tabs.executeScript(null, { file: './scriptmods/redact.js' });
+    chrome.tabs.executeScript(null, { file: './scriptmods/redactHell.js' });
 
     sendResponse(`a ${data.userStatus} script was injected`);
   } else {
