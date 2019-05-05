@@ -124,7 +124,7 @@ app.post('/login', async (req, res) => {
       };
 
   const userId = await queries.getUserId(user.email);
-  
+
   // Case when user signs up with website, connects account to google, and tries to use google login
   if (!userId) {
     console.log('user not found');
@@ -226,12 +226,8 @@ app.post('/extension', cors(), async (req, res) => {
   // if logged in send user-status else send false
   if (req.session.user) {
     console.log('There are cookies so querying the database');
-<<<<<<< HEAD
-    const user = await queries.getUser(req.session.user);
-=======
     const user = await queries.getUserWithToken(req.session.user);
     console.log('USER HERE BABY:', user);
->>>>>>> f2f0604a3e29dd7fd7fc50ee345e7e0fa9ee7133
     // DOES THIS WORK ????
     let currentAccessToken = user.access_token;
 
@@ -256,12 +252,8 @@ app.post('/extension', cors(), async (req, res) => {
     // get steps using token
     const stepHistory = await utils.filterAndFetchSteps(currentAccessToken);
     const userStatus = utils.computeUserStatus(stepHistory, goalHistory);
-<<<<<<< HEAD
-    res.json({ userStatus: userStatus });
-=======
     console.log('USER STATUS BABY!', userStatus);
     return res.json({ userStatus: userStatus });
->>>>>>> f2f0604a3e29dd7fd7fc50ee345e7e0fa9ee7133
   } else {
     console.log('No cookies so sending');
     return res.send(false);
