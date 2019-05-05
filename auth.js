@@ -36,7 +36,7 @@ async function googleAuth(authCode) {
       accessTokExp: moment(Date.now()).valueOf() + 3500000,
       refreshTok: fetchJSON.refresh_token
   }
-  
+  console.log(typeof profile.googleId)
   return profile;
 }
 

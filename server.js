@@ -48,8 +48,15 @@ app.post('/', async (req, res) => {
   console.log('Current user: ', req.session.user);
   // Looks up user info upon loading app
   if (req.session.user) {
-    console.log('There are cookies so querying the database');
-    const user = await queries.getUser(req.session.user);
+    const user = await queries.getUserWithToken(req.session.user); // Works if user is connected to google
+    console.log(user);
+    // For users not connected to google
+    if (!user) {
+      console.log('web user detected');
+      const user = await queries.getUser(req.session.user);
+      return res.json({ name: user.name, google_id: user.google_id });
+    }
+    // Check if access_token is expired
     if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
       const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
       await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
@@ -58,7 +65,7 @@ app.post('/', async (req, res) => {
     return res.json({ name: user.name, google_id: user.google_id, access_token: user.access_token });
   } else {
     console.log('There are no cookies');
-    res.send(false);
+    return res.send(false);
   }
 });
 
@@ -78,19 +85,32 @@ app.post('/signup', async (req, res) => {
     res.json(false);
   } else {
     console.log('creating account now....');
-    req.session.user = user.email; //Set user in cookie
-    switch (user.type) {
-      case 'google':
-        console.log('google signup detected');
-        await queries.insertUser(user.googleId, user.name, user.email, null, user.picture);
-        await queries.setTokenNewUser(user.googleId, user.accessTok, user.refreshTok, user.accessTokExp);
-        return res.json({ name: user.name, access_token: user.accessTok });
-      case 'signup':
-        console.log('web signup detected');
-        await queries.insertUser(null, user.name, user.email, user.password, null);
-        return res.redirect('/');
+    if (user.type === 'google') {
+      console.log('google signup detected');
+      await queries.insertUser(user.googleId, user.name, user.email, null, user.picture);
+      const id = await queries.getUserId(user.email);
+      req.session.user = id.id;
+      await queries.setTokenNewUser(id.id, user.accessTok, user.refreshTok, user.accessTokExp);
+      return res.json({ name: user.name, access_token: user.accessTok });
+    } else if (user.type === 'signup') {
+      console.log('web signup detected');
+      await queries.insertUser(null, user.name, user.email, user.password, null);
+      const id = await queries.getUserId(user.email);
+      req.session.user = id.id;
+      return res.redirect('/');
     }
   }
+});
+
+app.post('/connect', async (req, res) => {
+  console.log('THE CONNECT ROUTE IS WORKING~');
+
+  const user = await auth.googleAuth(req.body.code);
+
+  console.log('adding google info to existing account');
+  await queries.connectGoogle(req.session.user, user.googleId, user.picture);
+  await queries.setTokenNewUser(user.googleId, user.accessTok, user.refreshTok, user.accessTokExp);
+  return res.json({ name: user.name, access_token: user.accessTok });
 });
 
 app.post('/login', async (req, res) => {
@@ -103,12 +123,20 @@ app.post('/login', async (req, res) => {
         password: req.body.password
       };
 
+  const userId = await queries.getUserId(user.email);
+  
+  // Case when user signs up with website, connects account to google, and tries to use google login
+  if (!userId) {
+    console.log('user not found');
+    return res.json(false);
+  }
+
   // Check if user is logging in from google or not
   switch (user.type) {
     case 'google':
       console.log('google login detected');
-      await queries.setTokenExistingUser(user.googleId, user.accessTok, user.accessTokExp);
-      req.session.user = user.email;
+      queries.setTokenExistingUser(userId.id, user.accessTok, user.accessTokExp);
+      req.session.user = userId.id;
       queries.runningGoal(req.session.user);
       console.log('INSERTS COMPLETED SERVER.JS');
       return res.json({ name: user.name, access_token: user.accessTok });
@@ -121,7 +149,7 @@ app.post('/login', async (req, res) => {
           const checkPassword = await queries.checkPassword(user.email, user.password);
           if (checkPassword) {
             console.log('password matches');
-            req.session.user = user.email; //Set user in cookie
+            req.session.user = userId.id; //Set user in cookie
             queries.runningGoal(req.session.user);
             console.log('INSERTS COMPLETED SERVER.JS');
             return res.redirect('/');
@@ -164,7 +192,7 @@ app.post('/goals/update', async function(req, res) {
 
 app.post('/goals', async function(req, res) {
   console.log('GET GOALS ROUTE');
-  const googleId = req.body.googleId;
+  const id = req.session.user;
   // calculate rounded day and week ago from current time
   const today = moment(Date.now()).endOf('day');
   const endOfDay = today.valueOf();
@@ -177,7 +205,7 @@ app.post('/goals', async function(req, res) {
     .subtract(7, 'days')
     .valueOf();
 
-  const foundGoalsAwait = await queries.pastWeekGoals(googleId, weekAgo, endOfDay);
+  const foundGoalsAwait = await queries.pastWeekGoals(id, weekAgo, endOfDay);
   const foundGoals = foundGoalsAwait[0];
   let pastWeekArray = [endOfDay];
   for (let i = 1; i < 7; i++) {
@@ -190,16 +218,20 @@ app.post('/goals', async function(req, res) {
     return dayGoal ? dayGoal.steps_goal : 0;
   });
 
-  res.json({ goalHistory: goalHistory });
+  return res.json({ goalHistory: goalHistory });
 });
 
 app.post('/extension', cors(), async (req, res) => {
-  console.log('GET / is RUNNING');
-  console.log('req.session.user = ', req.session);
+  console.log('EXTENSION ROUTE IS WORKING');
   // if logged in send user-status else send false
   if (req.session.user) {
     console.log('There are cookies so querying the database');
+<<<<<<< HEAD
     const user = await queries.getUser(req.session.user);
+=======
+    const user = await queries.getUserWithToken(req.session.user);
+    console.log('USER HERE BABY:', user);
+>>>>>>> f2f0604a3e29dd7fd7fc50ee345e7e0fa9ee7133
     // DOES THIS WORK ????
     let currentAccessToken = user.access_token;
 
@@ -207,7 +239,7 @@ app.post('/extension', cors(), async (req, res) => {
     if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
       console.log('TOKEN IS OUTDATED');
       const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
-      await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
+      await queries.setTokenExistingUser(user.id, newAccessToken.access_token, newAccessToken.expires_at);
       currentAccessToken = newAccessToken.access_token;
     }
 
@@ -218,16 +250,21 @@ app.post('/extension', cors(), async (req, res) => {
     const threeDaysAgo = pastThreeDays[pastThreeDays.length - 1];
     console.log('THREE DAYS AGO', moment(threeDaysAgo).calendar());
     // get goals from db -> order and null check
-    const foundGoalsAwait = await queries.pastWeekGoals(user.google_id, threeDaysAgo, today);
+    const foundGoalsAwait = await queries.pastWeekGoals(user.id, threeDaysAgo, today);
     const foundGoals = foundGoalsAwait[0];
     const goalHistory = utils.orderGoals(pastThreeDays, foundGoals);
     // get steps using token
     const stepHistory = await utils.filterAndFetchSteps(currentAccessToken);
     const userStatus = utils.computeUserStatus(stepHistory, goalHistory);
+<<<<<<< HEAD
     res.json({ userStatus: userStatus });
+=======
+    console.log('USER STATUS BABY!', userStatus);
+    return res.json({ userStatus: userStatus });
+>>>>>>> f2f0604a3e29dd7fd7fc50ee345e7e0fa9ee7133
   } else {
     console.log('No cookies so sending');
-    res.send(false);
+    return res.send(false);
   }
 });
 

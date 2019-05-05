@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
 import Goal from './Goal.jsx';
 import progressChart from '../utils/progress-chart';
+import Connect from './Connect.jsx';
+
 
 class Profile extends Component {
   constructor(props) {
@@ -9,32 +11,38 @@ class Profile extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch('/', { method: 'POST' });
-    if (!response.ok) {
-      throw Error(response.statusText);
+    console.log(this.props.data);
+    if (!this.props.data.access_token) {
+      console.log('umm u nid to knex to gogle plz');
+    } else {
+      const response = await fetch('/', { method: 'POST' });
+
+      const accessData = await response.json();
+
+      const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
+      const goalFetch = await fetch('/goals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: accessData.id })
+      });
+      const goalJSON = await goalFetch.json();
+      console.log('STEPS: ', stepsArray);
+      console.log('GOALS: ', goalJSON.goalHistory);
+
+      progressChart.graphStepData(goalJSON.goalHistory.reverse(), stepsArray);
     }
-    const accessData = await response.json();
-
-    const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
-    const goalFetch = await fetch('/goals', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-        // "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: JSON.stringify({ googleId: accessData.google_id })
-    });
-    const goalJSON = await goalFetch.json();
-    console.log('STEPS: ', stepsArray);
-    console.log('GOALS: ', goalJSON.goalHistory);
-
-    progressChart.graphStepData(goalJSON.goalHistory.reverse(), stepsArray);
   }
 
   render() {
+    let connected;
+    if (!this.props.data.access_token) {
+      connected = <Connect profileData={this.props} />;
+    } else {
+      connected = <Goal profileData={this.props} />;
+    }
     return (
       <div>
-        <Goal profileData={this.props} />
+        {connected}
         <canvas id="ProgressChart" />
       </div>
     );

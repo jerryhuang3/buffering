@@ -5,25 +5,31 @@ const knex = require('knex')(knexConfig.development);
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-function testIsWorking() {
-  return Promise.all([knex.select().from('users')]);
-}
-
-function getUserProfile(username) {
+function getUserId(email) {
   return Promise.all([
     knex('users')
-      .where({
-        username: username
-      })
+      .where('email', email)
       .select()
-  ]);
+  ]).then(result => {
+    return result[0][0];
+  });
 }
 
-function getUser(email) {
+function getUser(id) {
   return Promise.all([
-    knex('google_users')
-      .join('tokens', { 'google_users.google_id': 'tokens.google_id' })
-      .where('google_users.email', email)
+    knex('users')
+      .where('users.id', id)
+      .select()
+  ]).then(result => {
+    return result[0][0];
+  });
+}
+
+function getUserWithToken(id) {
+  return Promise.all([
+    knex('users')
+      .join('tokens', { 'users.id': 'tokens.id' })
+      .where('users.id', id)
       .select()
   ]).then(result => {
     return result[0][0];
@@ -32,7 +38,7 @@ function getUser(email) {
 
 function checkEmail(email) {
   return Promise.all([
-    knex('google_users')
+    knex('users')
       .where({
         email: email
       })
@@ -48,7 +54,7 @@ function checkEmail(email) {
 
 function checkPassword(email, password) {
   return Promise.all([
-    knex('google_users')
+    knex('users')
       .where({
         email: email
       })
@@ -62,11 +68,11 @@ function checkPassword(email, password) {
   });
 }
 
-function checkGoogleIdExists(googleId) {
+function checkGoogleIdExists(id) {
   return Promise.all([
-    knex('google_users')
+    knex('users')
       .where({
-        google_id: googleId
+        id: id
       })
       .select('google_id')
   ]).then(result => {
@@ -80,7 +86,7 @@ function checkGoogleIdExists(googleId) {
 
 function insertUser(googleId, name, email, password, imageUrl) {
   return Promise.all([
-    knex('google_users').insert({
+    knex('users').insert({
       google_id: googleId,
       name: name,
       email: email,
@@ -90,10 +96,10 @@ function insertUser(googleId, name, email, password, imageUrl) {
   ]);
 }
 
-function setTokenNewUser(googleId, accessToken, refreshToken, expiresAt) {
+function setTokenNewUser(id, accessToken, refreshToken, expiresAt) {
   return Promise.all([
     knex('tokens').insert({
-      google_id: googleId,
+      id: id,
       access_token: accessToken,
       refresh_token: refreshToken,
       expires_at: expiresAt
@@ -101,10 +107,10 @@ function setTokenNewUser(googleId, accessToken, refreshToken, expiresAt) {
   ]);
 }
 
-function setTokenExistingUser(googleId, accessToken, expiresAt) {
+function setTokenExistingUser(id, accessToken, expiresAt) {
   return Promise.all([
     knex('tokens')
-      .where('google_id', '=', googleId)
+      .where('id', '=', id)
       .update({
         access_token: accessToken,
         expires_at: expiresAt
@@ -112,11 +118,11 @@ function setTokenExistingUser(googleId, accessToken, expiresAt) {
   ]);
 }
 
-function insertUserIfNotFound(googleId, name, email, password) {
+function insertUserIfNotFound(id, name, email, password) {
   return checkGoogleIdExists(googleId).then(idExists => {
     if (!idExists) {
       return Promise.all([
-        knex('google_users').insert({
+        knex('users').insert({
           google_id: googleId,
           name: name,
           email: email,
@@ -127,11 +133,11 @@ function insertUserIfNotFound(googleId, name, email, password) {
   });
 }
 
-function canUserUpdateGoal(email) {
+function canUserUpdateGoal(id) {
   return Promise.all([
     knex('goals')
-      .join('google_users', { 'google_users.google_id': 'goals.google_id' })
-      .where('email', email)
+      .join('users', { 'users.id': 'goals.id' })
+      .where('users.id', id)
       .orderBy('day_rounded', 'desc')
       .select('day_rounded', 'steps_goal')
       .limit(2)
@@ -141,11 +147,11 @@ function canUserUpdateGoal(email) {
   });
 }
 
-function insertGoal(googleId, stepsGoal, endOfDay) {
+function insertGoal(id, stepsGoal, endOfDay) {
   return Promise.all([
     knex('goals')
       .insert({
-        google_id: googleId,
+        id: id,
         steps_goal: stepsGoal,
         day_rounded: endOfDay
       })
@@ -153,10 +159,10 @@ function insertGoal(googleId, stepsGoal, endOfDay) {
   ]);
 }
 
-function updateGoal(googleId, stepsGoal, endOfDay) {
+function updateGoal(id, stepsGoal, endOfDay) {
   return Promise.all([
     knex('goals')
-      .where({ google_id: googleId, day_rounded: endOfDay })
+      .where({ id: id, day_rounded: endOfDay })
       .update({
         steps_goal: stepsGoal
       })
@@ -164,24 +170,28 @@ function updateGoal(googleId, stepsGoal, endOfDay) {
 }
 
 // should be changed to periodGoals
-function pastWeekGoals(googleId, weekAgo, endOfDay) {
+function pastWeekGoals(id, weekAgo, endOfDay) {
   return Promise.all([
     knex('goals')
-      .where('google_id', '=', googleId)
+      .where('id', '=', id)
       .whereBetween('day_rounded', [weekAgo, endOfDay])
       .select('steps_goal', 'day_rounded')
   ]);
 }
 
 // Keeps steps_goal the same from last recorded day to current day
-function runningGoal(email) {
+function runningGoal(id) {
   return Promise.all([
     knex('goals')
-      .join('google_users', { 'google_users.google_id': 'goals.google_id' })
-      .where('email', email)
+      .join('users', { 'users.id': 'goals.id' })
+      .where('users.id', id)
       .orderBy('day_rounded', 'desc')
-      .select('goals.google_id', 'day_rounded', 'steps_goal')
+      .select('goals.id', 'day_rounded', 'steps_goal')
   ]).then(result => {
+    console.log(result[0][0]);
+    if (!result[0][0]) {
+      return;
+    }
     const googleId = result[0][0].google_id;
     const stepsGoal = result[0][0].steps_goal;
     const lastEndOfDay = result[0][0].day_rounded;
@@ -198,10 +208,21 @@ function runningGoal(email) {
   });
 }
 
+function connectGoogle(id, googleId, imageUrl) {
+  return Promise.all([
+    knex('users')
+      .where('id', '=', id)
+      .update({
+        google_id: googleId,
+        image_url: imageUrl
+      })
+  ]);
+}
+
 module.exports = {
-  testIsWorking: testIsWorking,
-  getUserProfile: getUserProfile,
+  getUserId: getUserId,
   getUser: getUser,
+  getUserWithToken: getUserWithToken,
   checkGoogleIdExists: checkGoogleIdExists,
   insertUserIfNotFound: insertUserIfNotFound,
   insertUser: insertUser,
@@ -213,7 +234,8 @@ module.exports = {
   canUserUpdateGoal: canUserUpdateGoal,
   updateGoal: updateGoal,
   insertGoal: insertGoal,
-  runningGoal: runningGoal
+  runningGoal: runningGoal,
+  connectGoogle: connectGoogle
 };
 
 // DATABASE STRUCTURE

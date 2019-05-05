@@ -16,9 +16,11 @@ class Nav extends Component {
     const res = await fetch('/logout', { method: 'POST' });
     const logout = await res.json();
     console.log('LOGOUT RECEIVED JSON');
-
+    let auth2 = gapi.auth2.getAuthInstance()
     // Sign out of Google on local website
-    gapi.auth2.getAuthInstance().signOut();
+    auth2.signOut()
+    auth2.disconnect()
+    console.log(gapi.auth2.getAuthInstance().currentUser.get())
 
     if (logout) {
       this.session(null, false, null);
