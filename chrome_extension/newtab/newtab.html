@@ -9,12 +9,40 @@
         font-size: 100vh;
         padding: 0;
         margin: 0;
+        animation: change2 10s infinite linear;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+      }
+
+      body {
+        background-color: white;
+        animation: change 10s infinite linear;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+      }
+
+      @keyframes change {
+        from {
+          background-color: white;
+        }
+        to {
+          background-color: black;
+        }
+      }
+
+      @keyframes change2 {
+        from {
+          color: black;
+        }
+        to {
+          color: white;
+        }
       }
     </style>
     <title>Buffering</title>
   </head>
   <body>
-    <marquee>
+    <marquee scrollamount="50">
       <h1>BUFFERING</h1>
     </marquee>
   </body>

@@ -1,10 +1,12 @@
 const hellInjects = [
   './scriptmods/mouseMoveVisibility.js',
   './scriptmods/mouseDraw.js',
+  './scriptmods/redactHell.js',
   './scriptmods/marquee.js',
   './cssmods/zoom-hell.css',
   './cssmods/mirror-horiz.css',
-  './cssmods/spin.css'
+  './cssmods/spin.css',
+  './cssmods/blur-hell.css'
 ];
 const awfulInjects = [
   './scriptmods/clown.js',
@@ -21,7 +23,9 @@ const badInjects = [
   './cssmods/zoom-bad.css',
   './cssmods/comic-sans.css',
   './cssmods/papyrus.css',
-  './cssmods/contrast.css'
+  './cssmods/contrast.css',
+  './cssmods/invert.css',
+  './cssmods/image-opacity.css'
 ];
 
 function injectJs(fileToInject) {
@@ -77,8 +81,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     // randomifyScript(data.userStatus);
 
     //use the below two lines for testing scrips
-    // chrome.tabs.insertCSS(null, { file: /*your file here*/ });
-    // chrome.tabs.executeScript(null, { file: './scriptmods/clown.js' });
+    // chrome.tabs.insertCSS(null, { file: './cssmods/blur-hell.css' });
+    // chrome.tabs.executeScript(null, { file: './scriptmods/redact.js' });
 
     sendResponse(`a ${data.userStatus} script was injected`);
   } else {

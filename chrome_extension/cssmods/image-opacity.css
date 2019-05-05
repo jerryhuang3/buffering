@@ -1,0 +1,9 @@
+img {
+  filter: opacity(0.08) !important;
+  -webkit-filter: opacity(0.08) !important;
+}
+
+video {
+  filter: opacity(0.1) !important;
+  -webkit-filter: opacity(0.08) !important;
+}

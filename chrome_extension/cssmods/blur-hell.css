@@ -1,0 +1,4 @@
+body {
+  filter: blur(4px) !important;
+  -webkit-filter: blur(4px) !important;
+}
