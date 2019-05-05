@@ -22,7 +22,7 @@ class Goal extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ steps: this.state.value, googleId: this.props.data.google_id })
+      body: JSON.stringify({ steps: this.state.value, googleId: this.props.profileData.data.google_id })
     });
     const json = await response.json();
 
