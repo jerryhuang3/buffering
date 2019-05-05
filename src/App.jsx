@@ -5,6 +5,7 @@ import Profile from './components/Profile.jsx';
 import { Error, EmailExists, WrongLogin } from './components/Error.jsx';
 import Nav from './components/Nav.jsx';
 import Widget from './components/Widget';
+import Connect from './components/Connect';
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
 
@@ -22,10 +23,17 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    window.gapi.load('auth2', function() {
-      gapi.auth2.init({
-        client_id: '677038605397-j26crueetoelsf8vh5f9pde9l93707r7.apps.googleusercontent.com'
+    window.gapi.load('auth2', async function() {
+      let auth2 = gapi.auth2.init({
+        apiKey: 'AIzaSyAvxeOb22g-FUMwG6oyIgOjeLUNF6jn55U',
+        client_id: '677038605397-j26crueetoelsf8vh5f9pde9l93707r7.apps.googleusercontent.com',
+        cookie_policy: 'single_host_origin',
+        scope: 'https://www.googleapis.com/auth/fitness.activity.read'
       });
+      // const test = await gapi.auth2.getAuthInstance();
+      // console.log(auth2);
+      console.log("YO! Is user signed in to google already??", auth2.isSignedIn.get())
+     
     });
 
     // Check for cookie session
@@ -65,6 +73,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/profile" render={props => <Profile {...props} data={this.state} />} />
             <Route path="/widget" render={props => <Widget {...props} noNav={this.noNav} data={this.state} />} />
+            <Route path="/connect" render={props => <Connect {...props} login={this.session} session={this.state.session} />} />
             <Route path="/login" render={props => <Login {...props} login={this.session} session={this.state.session} />} />
             <Route path="/signup" render={props => <Signup {...props} signup={this.session} session={this.state.session} />} />
             <Route exact path="/400/signup" component={EmailExists} />

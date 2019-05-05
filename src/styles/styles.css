@@ -1,19 +1,19 @@
 .login-google-btn {
-width: 100%;
-height: 50px;
-display: flex;
-color: grey;
-padding: 0 20px;
-font-size: 16px;
-cursor: pointer
+  width: 100%;
+  height: 50px;
+  display: flex;
+  color: grey;
+  padding: 0 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .login-google-btn span {
-    margin-left: 60px;
+  margin-left: 60px;
 }
 
 .login-google-btn svg {
-    margin-left: 40px;
+  margin-left: 40px;
 }
 
 .set_goal {
@@ -23,99 +23,97 @@ cursor: pointer
 
 /* COLORLIB V3 ERROR CSS */
 #notfound {
-    position: relative;
-    height: 100vh;
-  }
+  position: relative;
+  height: 100vh;
+}
 
-  #notfound .notfound {
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-  }
+#notfound .notfound {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 
-  .notfound {
-    max-width: 800px;
-    width: 100%;
-    line-height: 1.4;
-    text-align: center;
-  }
+.notfound {
+  max-width: 800px;
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
+}
 
+.notfound .notfound-400 {
+  position: relative;
+  height: 240px;
+}
+
+.notfound .notfound-400 h1 {
+  font-family: 'Montserrat', sans-serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 252px;
+  font-weight: 900;
+  margin: 0px;
+  color: #262626;
+  text-transform: uppercase;
+  letter-spacing: -40px;
+  margin-left: -20px;
+  margin-top: 20px;
+}
+
+.notfound .notfound-400 h1 > span {
+  text-shadow: -8px 0px 0px #fff;
+}
+
+.notfound .notfound-400 h3 {
+  font-family: 'Cabin', sans-serif;
+  position: relative;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #262626;
+  margin: 0px;
+  letter-spacing: 3px;
+  padding-left: 6px;
+}
+
+.notfound h2 {
+  font-family: 'Cabin', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #000;
+  margin-top: 0px;
+  margin-bottom: 25px;
+}
+
+@media only screen and (max-width: 767px) {
   .notfound .notfound-400 {
-    position: relative;
-    height: 240px;
+    height: 200px;
   }
-
   .notfound .notfound-400 h1 {
-    font-family: 'Montserrat', sans-serif;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-    font-size: 252px;
-    font-weight: 900;
-    margin: 0px;
-    color: #262626;
-    text-transform: uppercase;
-    letter-spacing: -40px;
-    margin-left: -20px;
-    margin-top: 20px;
+    font-size: 200px;
   }
+}
 
-  .notfound .notfound-400 h1>span {
-    text-shadow: -8px 0px 0px #fff;
+@media only screen and (max-width: 480px) {
+  .notfound .notfound-400 {
+    height: 162px;
   }
-
-  .notfound .notfound-400 h3 {
-    font-family: 'Cabin', sans-serif;
-    position: relative;
-    font-size: 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #262626;
-    margin: 0px;
-    letter-spacing: 3px;
-    padding-left: 6px;
+  .notfound .notfound-400 h1 {
+    font-size: 162px;
+    height: 150px;
+    line-height: 162px;
   }
-
   .notfound h2 {
-    font-family: 'Cabin', sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: #000;
-    margin-top: 0px;
-    margin-bottom: 25px;
+    font-size: 16px;
   }
-
-  @media only screen and (max-width: 767px) {
-    .notfound .notfound-400 {
-      height: 200px;
-    }
-    .notfound .notfound-400 h1 {
-      font-size: 200px;
-    }
-  }
-
-  @media only screen and (max-width: 480px) {
-    .notfound .notfound-400 {
-      height: 162px;
-    }
-    .notfound .notfound-400 h1 {
-      font-size: 162px;
-      height: 150px;
-      line-height: 162px;
-    }
-    .notfound h2 {
-      font-size: 16px;
-    }
-  }
-
-
+}
 
 /* CSS animation */
 
@@ -138,100 +136,100 @@ body {
 
 @-webkit-keyframes Gradient {
   0% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
   14% {
-    background-position: 0% 100%
+    background-position: 0% 100%;
   }
   28% {
-    background-position: 100% 0%
+    background-position: 100% 0%;
   }
   33% {
-    background-position: 100% 100%
+    background-position: 100% 100%;
   }
   42% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
   59% {
-    background-position: 100% 0%
+    background-position: 100% 0%;
   }
   71% {
-    background-position: 0% 100%
+    background-position: 0% 100%;
   }
   86% {
-    background-position: 100% 100%
+    background-position: 100% 100%;
   }
   100% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
 }
 
 @-moz-keyframes Gradient {
   0% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
   14% {
-    background-position: 0% 100%
+    background-position: 0% 100%;
   }
   28% {
-    background-position: 100% 0%
+    background-position: 100% 0%;
   }
   33% {
-    background-position: 100% 100%
+    background-position: 100% 100%;
   }
   42% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
   59% {
-    background-position: 100% 0%
+    background-position: 100% 0%;
   }
   71% {
-    background-position: 0% 100%
+    background-position: 0% 100%;
   }
   86% {
-    background-position: 100% 100%
+    background-position: 100% 100%;
   }
   100% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
 }
 
 @keyframes Gradient {
   0% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
   14% {
-    background-position: 0% 100%
+    background-position: 0% 100%;
   }
   28% {
-    background-position: 100% 0%
+    background-position: 100% 0%;
   }
   33% {
-    background-position: 100% 100%
+    background-position: 100% 100%;
   }
   42% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
   59% {
-    background-position: 100% 0%
+    background-position: 100% 0%;
   }
   71% {
-    background-position: 0% 100%
+    background-position: 0% 100%;
   }
   86% {
-    background-position: 100% 100%
+    background-position: 100% 100%;
   }
   100% {
-    background-position: 0% 0%
+    background-position: 0% 0%;
   }
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0;
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 
 .ui.header.white {
@@ -239,4 +237,51 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .ui.form .field > label {
   color: white;
+}
+
+.google-button {
+  height: 40px;
+  border-width: 0;
+  background: white;
+  color: #737373;
+  border-radius: 5px;
+  white-space: nowrap;
+  box-shadow: 1px 1px 0px 1px rgba(0,0,0,0.05);
+  transition-property: background-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+  padding: 0;
+  
+  &:focus,
+  &:hover {
+    box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
+  }
+  
+  &:active {
+    background-color: #e5e5e5;
+    box-shadow: none;
+    transition-duration: 10ms;
+  }
+}
+    
+.google-button__icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 8px 0 8px 8px;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+}
+
+.google-button__icon--plus {
+  width: 27px;
+}
+
+.google-button__text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Roboto',arial,sans-serif;
 }

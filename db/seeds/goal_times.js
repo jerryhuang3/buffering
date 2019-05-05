@@ -1,5 +1,5 @@
 const moment = require('moment');
-const today = moment(Date.now()).endOf('day');
+const today = moment().endOf('day');
 const endOfDay = today.valueOf();
 
 let pastWeekArray = [endOfDay];
@@ -15,14 +15,14 @@ exports.seed = async function(knex, Promise) {
   await knex('goals').del();
   let paramsArray = [];
 
-  const currentUsers = await knex('google_users').select();
+  const currentUsers = await knex('users').select();
 
-  const userArray = currentUsers.map(userObj => userObj.google_id);
+  const userArray = currentUsers.map(userObj => userObj.id);
 
   userArray.forEach(userId => {
     pastWeekArray.forEach(dayRounded => {
       const obj = {
-        google_id: userId,
+        id: userId,
         steps_goal: 4500 + Math.floor(3000 * Math.random()),
         day_rounded: dayRounded
       };
@@ -32,7 +32,7 @@ exports.seed = async function(knex, Promise) {
 
   const insertsToRun = paramsArray.map(obj => {
     return knex('goals').insert({
-      google_id: obj.google_id,
+      id: obj.id,
       steps_goal: obj.steps_goal,
       day_rounded: obj.day_rounded
     });

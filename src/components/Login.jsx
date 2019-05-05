@@ -14,9 +14,7 @@ class Login extends Component {
     const res = await fetch('/login', {
       method: 'POST',
       body: JSON.stringify(response),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' }
     });
     const json = await res.json();
     this.login(json.name, json.access_token);
