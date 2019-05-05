@@ -12,7 +12,7 @@ class Profile extends Component {
 
   async componentDidMount() {
     console.log(this.props.data);
-    if (!this.props.data.google_id) {
+    if (!this.props.data.access_token) {
       console.log('umm u nid to knex to gogle plz');
     } else {
       const response = await fetch('/', { method: 'POST' });
@@ -35,7 +35,7 @@ class Profile extends Component {
 
   render() {
     let connected;
-    if (!this.props.data.google_id) {
+    if (!this.props.data.access_token) {
       connected = <Connect profileData={this.props} />;
     } else {
       connected = <Goal profileData={this.props} />;

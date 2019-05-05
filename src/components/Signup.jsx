@@ -77,9 +77,10 @@ class Signup extends Component {
               onSuccess={this.authCode}
               responseType="code"
               accessType="offline"
+              prompt="consent"
               cookiePolicy={'single_host_origin'}
               className="login-google-btn">
-              Signup with Google
+              Sign up with Google
             </GoogleLogin>
           </Grid.Column>
         </Grid>

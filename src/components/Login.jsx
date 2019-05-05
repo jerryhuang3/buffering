@@ -17,6 +17,10 @@ class Login extends Component {
       headers: { 'Content-Type': 'application/json' }
     });
     const json = await res.json();
+    if (!json) {
+      console.log(this.props)
+      this.props.history.push('/400/login')
+    }
     this.login(json.name, json.access_token);
   }
 

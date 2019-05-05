@@ -48,11 +48,12 @@ app.post('/', async (req, res) => {
   console.log('Current user: ', req.session.user);
   // Looks up user info upon loading app
   if (req.session.user) {
-    const user = await queries.getUser(req.session.user); // Works if user is connected to google
+    const user = await queries.getUserWithToken(req.session.user); // Works if user is connected to google
+    console.log(user);
     // For users not connected to google
     if (!user) {
       console.log('web user detected');
-      const id = await queries.getUser(req.session.user);
+      const user = await queries.getUser(req.session.user);
       return res.json({ name: user.name, google_id: user.google_id });
     }
     // Check if access_token is expired
@@ -123,6 +124,12 @@ app.post('/login', async (req, res) => {
       };
 
   const userId = await queries.getUserId(user.email);
+  
+  // Case when user signs up with website, connects account to google, and tries to use google login
+  if (!userId) {
+    console.log('user not found');
+    return res.json(false);
+  }
 
   // Check if user is logging in from google or not
   switch (user.type) {

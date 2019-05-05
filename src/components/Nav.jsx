@@ -18,7 +18,9 @@ class Nav extends Component {
     console.log('LOGOUT RECEIVED JSON');
     let auth2 = gapi.auth2.getAuthInstance()
     // Sign out of Google on local website
-    auth2.signOut().then(() => auth2.disconnect() );
+    auth2.signOut()
+    auth2.disconnect()
+    console.log(gapi.auth2.getAuthInstance().currentUser.get())
 
     if (logout) {
       this.session(null, false, null);
