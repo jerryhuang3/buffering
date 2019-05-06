@@ -8,6 +8,7 @@ xhttp.onreadystatechange = function() {
       console.log(response.status, response.script);
       const status = response.status;
       const script = response.script;
+
       //listens for when popup opens, sends response with status and script
       chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         console.log(sender, request.message);

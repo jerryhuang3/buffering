@@ -38,10 +38,7 @@ function injectCSS(fileToInject) {
 
 function notify(name, status) {
   let fileName = name.substring(name.lastIndexOf('/') + 1);
-  console.log('this is the fucking file...', fileName, status);
-  chrome.runtime.sendMessage({ name: fileName, status: status }, function(response) {
-    console.log(response);
-  });
+  chrome.runtime.sendMessage({ name: fileName, status: status }, function(response) {});
 }
 
 function randomifyScript(status) {
@@ -52,6 +49,7 @@ function randomifyScript(status) {
     console.log(inject, 'is being injected');
     notify(inject, status);
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
+    return inject.substring(inject.lastIndexOf('/') + 1);
   }
 
   if (status === 'awful') {
@@ -59,6 +57,7 @@ function randomifyScript(status) {
     console.log(inject, 'is being injected');
     notify(inject, status);
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
+    return inject.substring(inject.lastIndexOf('/') + 1);
   }
 
   if (status === 'bad') {
@@ -70,7 +69,7 @@ function randomifyScript(status) {
   }
 
   if (status === 'good') {
-    console.log('you may browse normally!');
+    return;
   }
 }
 
