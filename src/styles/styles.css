@@ -1,3 +1,21 @@
+@font-face {
+  font-family: 'big-bear';
+  src: url('/fonts/big-black-bear-italic.otf');
+  font-style: normal;
+}
+
+/* hero and tagline: homepage splash */
+.hero {
+  font-family: big-bear, sans-serif;
+  font-size: 10rem;
+  letter-spacing: 0.25rem;
+}
+
+.tagline {
+  font-family: big-bear, sans-serif;
+  letter-spacing: 0.25rem;
+}
+
 .login-google-btn {
   width: 100%;
   height: 50px;
@@ -246,24 +264,24 @@ input[type='number']::-webkit-outer-spin-button {
   color: #737373;
   border-radius: 5px;
   white-space: nowrap;
-  box-shadow: 1px 1px 0px 1px rgba(0,0,0,0.05);
+  box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
   transition-property: background-color, box-shadow;
   transition-duration: 150ms;
   transition-timing-function: ease-in-out;
   padding: 0;
-  
+
   &:focus,
   &:hover {
-    box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
+    box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.1);
   }
-  
+
   &:active {
     background-color: #e5e5e5;
     box-shadow: none;
     transition-duration: 10ms;
   }
 }
-    
+
 .google-button__icon {
   display: inline-block;
   vertical-align: middle;
@@ -283,5 +301,5 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 0 24px;
   font-size: 14px;
   font-weight: bold;
-  font-family: 'Roboto',arial,sans-serif;
+  font-family: 'Roboto', arial, sans-serif;
 }
