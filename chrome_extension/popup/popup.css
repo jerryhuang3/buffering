@@ -1,36 +1,59 @@
+@font-face {
+  font-family: 'big-bear';
+  src: url('../fonts/big-black-bear-italic.otf');
+  font-style: normal;
+}
+
 body {
   width: 20rem;
-  height: 20rem;
+  height: 10rem;
+  background: black;
+  color: white;
 }
 
 #message {
+  letter-spacing: 0.25rem;
   text-align: center;
-  width: 100%;
-  height: 10%;
 }
 
 #status {
   text-align: center;
-  text-transform: capitalize;
+  font-size: 5rem;
+  height: 50%;
   width: 100%;
-  height: 45%;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+}
+
+#status-message {
+  font-family: big-bear, sans-serif;
+  margin: 0;
 }
 
 #script {
   text-transform: capitalize;
   text-align: center;
-  height: 45%;
+  height: 30%;
   width: 100%;
+  padding: 2rem 0 0 0;
+}
+
+#script-messge {
+  font-family: big-bear, sans-serif;
+  margin: 0 1rem;
 }
 
 .hell {
+  background-image: url('../vendor/img/hell.gif');
+  background-size: 100% 100%;
 }
 .awful {
+  color: white;
+  background-image: url('../vendor/img/awful.gif');
+  background-size: 100% 100%;
 }
 .bad {
+  background-image: url('../vendor/img/bad.gif');
+  background-size: 100% 100%;
 }
 .good {
+  background-size: 100% 100%;
 }
