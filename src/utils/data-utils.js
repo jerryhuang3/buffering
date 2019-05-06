@@ -12,11 +12,14 @@ function fetchStepData(accessToken) {
       ],
 
       bucketByTime: { durationMillis: 86400000 },
-      startTimeMillis: moment(Date.now()).endOf('day').subtract(7, 'days').valueOf(),
+      startTimeMillis: moment(Date.now())
+        .endOf('day')
+        .subtract(7, 'days')
+        .valueOf(),
       endTimeMillis: Date.now()
     }),
     headers: {
-      token_type: "Bearer",
+      token_type: 'Bearer',
       'Content-Type': 'application/json;encoding=utf-8',
       Host: 'www.googleapis.com',
       Authorization: `Bearer ${accessToken}`
@@ -29,23 +32,26 @@ async function filterAndFetchSteps(accessToken) {
   const fetchResponse = await fetchStepData(accessToken);
   const dataAgg = await fetchResponse.json();
 
-  console.log("DataAgg is: ", dataAgg);
-
-  let stepsTaken = [];
-  //check for empty data
-  for (let i = 0; i < dataAgg.bucket.length; i++) {
-    if (dataAgg.bucket[i].dataset[0].point[0] !== undefined) {
-      const stepVal = dataAgg.bucket[i].dataset[0].point[0].value[0].intVal;
-      stepsTaken.push(stepVal);
-    } else {
-      stepsTaken.push(0);
+  if (dataAgg.error) {
+    console.log('You have no steps!');
+    return false
+  } else {
+    let stepsTaken = [];
+    //check for empty data
+    for (let i = 0; i < dataAgg.bucket.length; i++) {
+      if (dataAgg.bucket[i].dataset[0].point[0] !== undefined) {
+        const stepVal = dataAgg.bucket[i].dataset[0].point[0].value[0].intVal;
+        stepsTaken.push(stepVal);
+      } else {
+        stepsTaken.push(0);
+      }
     }
-  }
-  console.log(stepsTaken);
+    console.log(stepsTaken);
 
-  return stepsTaken
+    return stepsTaken;
+  }
 }
 
 module.exports = {
   filterAndFetchSteps: filterAndFetchSteps
-}
+};

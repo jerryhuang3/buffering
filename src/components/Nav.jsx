@@ -15,11 +15,10 @@ class Nav extends Component {
   logout = async() => {
     const res = await fetch('/logout', { method: 'POST' });
     const logout = await res.json();
-    console.log('LOGOUT RECEIVED JSON');
+ 
     let auth2 = gapi.auth2.getAuthInstance()
     // Sign out of Google on local website
-    auth2.signOut()
-    auth2.disconnect()
+    auth2.signOut().then(() => auth2.disconnect())
     console.log(gapi.auth2.getAuthInstance().currentUser.get())
 
     if (logout) {
@@ -30,7 +29,7 @@ class Nav extends Component {
 
   render() {
     // Nav receives state of the session from App.js
-    const session = this.props.state.session ? (
+    const session = this.props.state.google_session ? (
       <Container>
         <Menu.Menu position="left">
           <Menu.Item>
@@ -41,7 +40,7 @@ class Nav extends Component {
           </Menu.Item>
         </Menu.Menu>
         <Menu.Menu>
-          <h3>Hey {this.props.state.name}! You are logged in!</h3>
+          <h3 style={{color:'black'}}>Hey {this.props.state.name}! You are logged in!</h3>
         </Menu.Menu>
         <Menu.Menu position="right">
           <Menu.Item>

@@ -10,6 +10,7 @@ class Goal extends Component {
     };
   }
 
+  
   onChange = event => {
     this.setState({ value: event.target.value });
   };
