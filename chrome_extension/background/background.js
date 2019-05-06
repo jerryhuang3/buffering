@@ -36,10 +36,9 @@ function injectCSS(fileToInject) {
   chrome.tabs.insertCSS(null, { file: fileToInject });
 }
 
-function notify(name) {
+function notify(name, status) {
   let fileName = name.substring(name.lastIndexOf('/') + 1);
-
-  chrome.runtime.sendMessage({ name: fileName });
+  chrome.runtime.sendMessage({ name: fileName, status: status }, function(response) {});
 }
 
 function randomifyScript(status) {
@@ -48,26 +47,29 @@ function randomifyScript(status) {
   if (status === 'hell') {
     inject = hellInjects[Math.floor(Math.random() * hellInjects.length)];
     console.log(inject, 'is being injected');
-    notify(inject);
+    notify(inject, status);
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
+    return inject.substring(inject.lastIndexOf('/') + 1);
   }
 
   if (status === 'awful') {
     inject = awfulInjects[Math.floor(Math.random() * awfulInjects.length)];
     console.log(inject, 'is being injected');
-    notify(inject);
+    notify(inject, status);
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
+    return inject.substring(inject.lastIndexOf('/') + 1);
   }
 
   if (status === 'bad') {
     inject = badInjects[Math.floor(Math.random() * badInjects.length)];
+    notify(inject, status);
     console.log(inject, 'is being injected');
-    notify(inject);
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
+    return inject.substring(inject.lastIndexOf('/') + 1);
   }
 
   if (status === 'good') {
-    console.log('you may browse normally!');
+    return;
   }
 }
 
@@ -77,14 +79,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     let data = JSON.parse(request.response);
     console.log('the current logged in user status is: ', data.userStatus);
 
-    //next line take user status and execute a bad, awful or hell punishment
-    // randomifyScript(data.userStatus);
-
     //use the below two lines for testing scrips
     // chrome.tabs.insertCSS(null, { file: './cssmods/mirror-vert.css' });
     // chrome.tabs.executeScript(null, { file: './scriptmods/redactHell.js' });
 
-    sendResponse(`a ${data.userStatus} script was injected`);
+    //the script to execut is run with this response to the content script.
+    sendResponse({ status: data.userStatus, script: randomifyScript(data.userStatus) });
   } else {
     console.log('No Data');
   }

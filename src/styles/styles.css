@@ -1,6 +1,13 @@
+/* declaring our own local fonts for use */
 @font-face {
   font-family: 'big-bear';
   src: url('/fonts/big-black-bear-italic.otf');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'cassette';
+  src: url('/fonts/alphabetized-cassette-tapes.ttf');
   font-style: normal;
 }
 
@@ -12,8 +19,9 @@
 }
 
 .tagline {
-  font-family: big-bear, sans-serif;
-  letter-spacing: 0.25rem;
+  font-family: cassette, sans-serif;
+  letter-spacing: 1rem;
+  font-size: 3rem;
 }
 
 .login-google-btn {

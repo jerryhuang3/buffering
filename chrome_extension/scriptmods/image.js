@@ -1,7 +1,7 @@
 $(document).ready(function() {
   var path = chrome.extension.getURL('/icons/static.gif');
-  if ($('img')) {
-    $('img').each(function() {
+  if ($('img, video')) {
+    $('img, video').each(function() {
       imgsrc = this.src;
       $(this).attr('src', path);
       $(this).attr('srcset', path);
