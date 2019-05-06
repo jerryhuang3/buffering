@@ -1,0 +1,40 @@
+@font-face {
+  font-family: 'big-bear';
+  src: url('../fonts/big-black-bear-italic.otf');
+  font-style: normal;
+}
+h1 {
+  font-family: big-bear, sans-serif;
+  letter-spacing: 1rem;
+  font-size: 100vh;
+  padding: 0;
+  margin: 0;
+  animation: change2 10s infinite linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+body {
+  background-color: white;
+  animation: change 10s infinite linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes change {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: black;
+  }
+}
+
+@keyframes change2 {
+  from {
+    color: black;
+  }
+  to {
+    color: white;
+  }
+}
