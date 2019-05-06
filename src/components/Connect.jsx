@@ -20,12 +20,12 @@ class Connect extends Component {
     const json = await res.json();
     console.log(json.name, json.access);
     this.connect(json.name, json.access_token);
-    
   };
 
   connect = (name, access) => {
     console.log('CONNECT.JSX WOOOOO', name, access);
     this.props.connect(name, true, access);
+    Location.reload();
   };
 
   render() {

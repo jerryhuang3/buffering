@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
 import Goal from './Goal.jsx';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Divider, Card, Icon, Image } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
 import Connect from './Connect.jsx';
 
@@ -26,6 +26,7 @@ class Profile extends Component {
 
     console.log('STEPS: ', stepsArray);
     console.log('GOALS: ', goalJSON.goalHistory);
+    const userStatus = utils.computeUserStatus(stepHistory, goalHistory);
 
     progressChart.graphStepData(goalJSON.goalHistory.reverse(), stepsArray);
   }
@@ -46,10 +47,33 @@ class Profile extends Component {
     } else {
       connected = (
         <Grid centered>
-          <Grid.Column width={9}>
-            <Goal profileData={this.props} />
-          </Grid.Column>
-          <canvas id="ProgressChart" />
+          <Grid.Row divided>
+            <Grid.Column width={4}>
+              <Card>
+                <Image src="https://react.semantic-ui.com/images/avatar/large/daniel.jpg" wrapped ui={false} />
+                <Card.Content>
+                  <Card.Header>Daniel</Card.Header>
+                  <Card.Meta>Joined in 2016</Card.Meta>
+                  <Card.Description>Daniel is a comedian living in Nashville.</Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                  <a>
+                    <Icon name="user" />
+                    10 Friends
+                  </a>
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Goal profileData={this.props} />
+            </Grid.Column>
+          </Grid.Row>
+          <Divider />
+          <Grid.Row>
+            <Grid.Column width={12}>
+              <canvas id="ProgressChart" />
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       );
     }

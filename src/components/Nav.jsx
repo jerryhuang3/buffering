@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
-import { Container, Menu } from 'semantic-ui-react';
+import { Container, Menu, Button } from 'semantic-ui-react';
 
 class Nav extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class Nav extends Component {
         </Menu.Menu>
         <Menu.Menu position="right">
           <Menu.Item>
-            <button onClick={this.logout}>Logout</button>
+            <Button onClick={this.logout}>Logout</Button>
           </Menu.Item>
         </Menu.Menu>
       </Container>

@@ -81,7 +81,15 @@ app.post('/signup', async (req, res) => {
   const emailExists = await queries.checkEmail(user.email);
 
   if (emailExists) {
-    res.json(false);
+    console.log('SIGNASGHKSADJGKASJGKSA FALSE');
+    switch (user.type) {
+      case 'google':
+        return res.json(false);
+        break;
+      case 'signup':
+        return res.redirect('/400/signup');
+        break;
+    }
   } else {
     console.log('creating account now....');
     if (user.type === 'google') {
@@ -174,16 +182,16 @@ app.post('/logout', (req, res) => {
 // GOALS
 app.post('/goals/update', async function(req, res) {
   console.log('Updating goals now...........');
-  const email = req.session.user;
-  const googleId = req.body.googleId;
+  const id = req.session.user;
   const stepsGoal = req.body.steps;
   console.log('input', stepsGoal);
   const endOfDay = moment()
     .endOf('day')
     .valueOf();
-  const canUpdate = await queries.canUserUpdateGoal(email);
+  const canUpdate = await queries.canUserUpdateGoal(id);
   if (canUpdate) {
-    queries.updateGoal(googleId, stepsGoal, endOfDay);
+    console.log('user can update their goal')
+    queries.updateGoal(id, stepsGoal, endOfDay);
     return res.json(true);
   } else {
     console.log('user can not update goal again');
@@ -227,8 +235,8 @@ app.post('/goals/check', async (req, res) => {
   const goalExists = await queries.checkGoalExists(req.session.user);
   if (goalExists !== 0) {
     return res.json(true);
-  } 
-  return res.json(false)
+  }
+  return res.json(false);
 });
 
 app.post('/initialize', async (req, res) => {
@@ -282,6 +290,7 @@ app.post('/extension', cors(), async (req, res) => {
     const goalHistory = utils.orderGoals(pastThreeDays, foundGoals);
     // get steps using token
     const stepHistory = await utils.filterAndFetchSteps(currentAccessToken);
+    console.log('STEPHISTORY', stepHistory, goalHistory)
     const userStatus = utils.computeUserStatus(stepHistory, goalHistory);
     console.log('USER STATUS BABY!', userStatus);
     return res.json({ userStatus: userStatus });

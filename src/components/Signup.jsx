@@ -8,7 +8,7 @@ class Signup extends Component {
     super(props);
   }
 
-  authCode = async(response) => {
+  authCode = async response => {
     console.log("Sending Google's authorization code to the server...");
 
     const res = await fetch('/signup', {
@@ -19,18 +19,20 @@ class Signup extends Component {
       }
     });
     const json = await res.json();
+
     if (!json) {
       this.props.history.push('/400/signup');
+    } else {
+      this.signup(json.name, json.access_token);
     }
-    this.signup(json.name, json.access_token);
-  }
+  };
 
   // Send Signup prop to Nav
   signup = (name, access) => {
     console.log('Signup.jsx: Signed up', name);
-    this.props.history.push('/initialize')
+    this.props.history.push('/initialize');
     this.props.signup(name, true, access);
-  }
+  };
 
   render() {
     if (this.props.google_session) {
@@ -63,14 +65,15 @@ class Signup extends Component {
                 <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
                 <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" required />
                 <Button color="teal" fluid size="large">
-                  Signup
+                  Sign up
                 </Button>
               </Segment>
             </Form>
             <Message>
               Already have an account? <NavLink to="/login">Login</NavLink>
             </Message>
-            <hr/><br/>
+            <hr />
+            <br />
             <GoogleLogin
               clientId={process.env.CLIENT_ID}
               scope={process.env.SCOPES}

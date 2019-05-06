@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 
 class Goal extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class Goal extends Component {
         <Form.Field className="set_goal">
           <label>Update your goal</label>
           <Form.Input onChange={this.onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          <button onClick={this.onSubmit}>Update</button>
+          <Button onClick={this.onSubmit}>Update</Button>
         </Form.Field>
       </Form>
     );
