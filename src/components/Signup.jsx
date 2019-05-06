@@ -28,12 +28,13 @@ class Signup extends Component {
   // Send Signup prop to Nav
   signup = (name, access) => {
     console.log('Signup.jsx: Signed up', name);
+    this.props.history.push('/initialize')
     this.props.signup(name, true, access);
   }
 
   render() {
-    if (this.props.session) {
-      return <Redirect to="/" />;
+    if (this.props.google_session) {
+      return <Redirect to="/profile" />;
     }
     return (
       <div className="login-form">

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
 import Goal from './Goal.jsx';
+import { Grid } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
 import Connect from './Connect.jsx';
-
 
 class Profile extends Component {
   constructor(props) {
@@ -11,41 +11,49 @@ class Profile extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.props.data);
-    if (!this.props.data.access_token) {
-      console.log('umm u nid to knex to gogle plz');
-    } else {
-      const response = await fetch('/', { method: 'POST' });
+    const response = await fetch('/', { method: 'POST' });
 
-      const accessData = await response.json();
+    const accessData = await response.json();
 
-      const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
-      const goalFetch = await fetch('/goals', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: accessData.id })
-      });
-      const goalJSON = await goalFetch.json();
-      console.log('STEPS: ', stepsArray);
-      console.log('GOALS: ', goalJSON.goalHistory);
+    const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
+    console.log('steps array');
+    const goalFetch = await fetch('/goals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: accessData.id })
+    });
+    const goalJSON = await goalFetch.json();
 
-      progressChart.graphStepData(goalJSON.goalHistory.reverse(), stepsArray);
-    }
+    console.log('STEPS: ', stepsArray);
+    console.log('GOALS: ', goalJSON.goalHistory);
+
+    progressChart.graphStepData(goalJSON.goalHistory.reverse(), stepsArray);
   }
+
+  connect = (name, bool, access) => {
+    console.log(name, bool, access);
+    this.props.connect(name, bool, access);
+  };
 
   render() {
     let connected;
     if (!this.props.data.access_token) {
-      connected = <Connect profileData={this.props} />;
+      connected = (
+        <Grid centered>
+          <Connect profileData={this.props} connect={this.connect} />
+        </Grid>
+      );
     } else {
-      connected = <Goal profileData={this.props} />;
+      connected = (
+        <Grid centered>
+          <Grid.Column width={9}>
+            <Goal profileData={this.props} />
+          </Grid.Column>
+          <canvas id="ProgressChart" />
+        </Grid>
+      );
     }
-    return (
-      <div>
-        {connected}
-        <canvas id="ProgressChart" />
-      </div>
-    );
+    return <div>{connected}</div>;
   }
 }
 

@@ -18,7 +18,6 @@ class Login extends Component {
     });
     const json = await res.json();
     if (!json) {
-      console.log(this.props)
       this.props.history.push('/400/login')
     }
     this.login(json.name, json.access_token);
@@ -31,8 +30,9 @@ class Login extends Component {
   }
 
   render() {
+    console.log(this.props)
     if (this.props.session) {
-      return <Redirect to="/" />;
+      return <Redirect to="/profile" />;
     }
     return (
       <div className="login-form">

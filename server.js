@@ -49,7 +49,6 @@ app.post('/', async (req, res) => {
   // Looks up user info upon loading app
   if (req.session.user) {
     const user = await queries.getUserWithToken(req.session.user); // Works if user is connected to google
-    console.log(user);
     // For users not connected to google
     if (!user) {
       console.log('web user detected');
@@ -97,7 +96,7 @@ app.post('/signup', async (req, res) => {
       await queries.insertUser(null, user.name, user.email, user.password, null);
       const id = await queries.getUserId(user.email);
       req.session.user = id.id;
-      return res.redirect('/');
+      return res.redirect('/initialize');
     }
   }
 });
@@ -109,7 +108,7 @@ app.post('/connect', async (req, res) => {
 
   console.log('adding google info to existing account');
   await queries.connectGoogle(req.session.user, user.googleId, user.picture);
-  await queries.setTokenNewUser(user.googleId, user.accessTok, user.refreshTok, user.accessTokExp);
+  await queries.setTokenNewUser(req.session.user, user.accessTok, user.refreshTok, user.accessTokExp);
   return res.json({ name: user.name, access_token: user.accessTok });
 });
 
@@ -128,7 +127,7 @@ app.post('/login', async (req, res) => {
   // Case when user signs up with website, connects account to google, and tries to use google login
   if (!userId) {
     console.log('user not found');
-    return res.json(false);
+    return res.redirect('/400/login');
   }
 
   // Check if user is logging in from google or not
@@ -140,6 +139,7 @@ app.post('/login', async (req, res) => {
       queries.runningGoal(req.session.user);
       console.log('INSERTS COMPLETED SERVER.JS');
       return res.json({ name: user.name, access_token: user.accessTok });
+      break;
     case 'login':
       console.log('web login detected');
       const emailCheck = await queries.checkEmail(user.email);
@@ -161,6 +161,7 @@ app.post('/login', async (req, res) => {
         console.log('email not found');
         return res.redirect('/400/login');
       }
+      break;
   }
 });
 
@@ -194,13 +195,13 @@ app.post('/goals', async function(req, res) {
   console.log('GET GOALS ROUTE');
   const id = req.session.user;
   // calculate rounded day and week ago from current time
-  const today = moment(Date.now()).endOf('day');
+  const today = moment().endOf('day');
   const endOfDay = today.valueOf();
   // const endOfDay = new Date();
   // endOfDay.setHours(23, 59, 59, 999);
 
   // console.log('END OF DAY', endOfDay.getTime());
-  const weekAgo = moment(Date.now())
+  const weekAgo = moment()
     .endOf('day')
     .subtract(7, 'days')
     .valueOf();
@@ -219,6 +220,36 @@ app.post('/goals', async function(req, res) {
   });
 
   return res.json({ goalHistory: goalHistory });
+});
+
+app.post('/goals/check', async (req, res) => {
+  console.log('checking if goal exists now');
+  const goalExists = await queries.checkGoalExists(req.session.user);
+  if (goalExists !== 0) {
+    return res.json(true);
+  } 
+  return res.json(false)
+});
+
+app.post('/initialize', async (req, res) => {
+  console.log('goals initialize working');
+  const id = req.session.user;
+  const stepsGoal = req.body.steps;
+  const today = moment().endOf('day');
+  const endOfDay = today.valueOf();
+
+  let pastWeekArray = [endOfDay];
+  for (let i = 1; i < 7; i++) {
+    const ithDayAgo = today.subtract(1, 'days').valueOf();
+    pastWeekArray.push(ithDayAgo);
+  }
+
+  for (let k = 0; k < pastWeekArray.length; k++) {
+    await queries.initializeGoal(id, stepsGoal, pastWeekArray[k]);
+  }
+
+  console.log('end of goals initialize');
+  return res.json(true);
 });
 
 app.post('/extension', cors(), async (req, res) => {

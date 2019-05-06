@@ -147,16 +147,24 @@ function canUserUpdateGoal(id) {
   });
 }
 
-function insertGoal(id, stepsGoal, endOfDay) {
+function initializeGoal(id, stepsGoal, endOfDay) {
+  return Promise.all([
+    knex('goals').insert({
+      id: id,
+      steps_goal: stepsGoal,
+      day_rounded: endOfDay
+    })
+  ]).then(() => console.log('Goal initialization complete!'));
+}
+
+function checkGoalExists(id) {
   return Promise.all([
     knex('goals')
-      .insert({
-        id: id,
-        steps_goal: stepsGoal,
-        day_rounded: endOfDay
-      })
-      .then(() => console.log('INSERT COMPLETE'))
-  ]);
+      .where('id', id)
+      .select()
+  ]).then( result => {
+    return result[0].length;
+  })
 }
 
 function updateGoal(id, stepsGoal, endOfDay) {
@@ -192,7 +200,7 @@ function runningGoal(id) {
     if (!result[0][0]) {
       return;
     }
-    const googleId = result[0][0].google_id;
+    const id = result[0][0].id;
     const stepsGoal = result[0][0].steps_goal;
     const lastEndOfDay = result[0][0].day_rounded;
     const currentEndOfDay = moment()
@@ -203,7 +211,7 @@ function runningGoal(id) {
     let day = parseInt(lastEndOfDay);
     for (let i = 0; i < numOfDays; i++) {
       day = day + 86400000;
-      insertGoal(googleId, stepsGoal, day);
+      insertGoal(id, stepsGoal, day);
     }
   });
 }
@@ -233,7 +241,8 @@ module.exports = {
   pastWeekGoals: pastWeekGoals,
   canUserUpdateGoal: canUserUpdateGoal,
   updateGoal: updateGoal,
-  insertGoal: insertGoal,
+  initializeGoal: initializeGoal,
+  checkGoalExists: checkGoalExists,
   runningGoal: runningGoal,
   connectGoogle: connectGoogle
 };
