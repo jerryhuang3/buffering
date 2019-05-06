@@ -5,7 +5,14 @@ xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
     const response = xhttp.responseText;
     chrome.runtime.sendMessage({ response }, function(response) {
-      console.log(response);
+      console.log(response.status, response.script);
+      const status = response.status;
+      const script = response.script;
+      //listens for when popup opens, sends response with status and script
+      chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+        console.log(sender, request.message);
+        sendResponse({ status, script });
+      });
     });
 
     // console.log(response, status, statusText, responseURL);
