@@ -56,7 +56,7 @@ class Signup extends Component {
         </style>
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="white" textAlign="center">
+            <Header as="h2" color="grey" textAlign="center">
               Create a new account
             </Header>
             <Form action="/signup" method="POST" size="large">

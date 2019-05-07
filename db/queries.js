@@ -127,7 +127,6 @@ function canUserUpdateGoal(id) {
       .select('day_rounded', 'steps_goal')
       .limit(2)
   ]).then(result => {
-    console.log(result);
     return result[0][0].steps_goal === result[0][1].steps_goal ? true : false;
   });
 }
@@ -181,7 +180,6 @@ function runningGoal(id) {
       .orderBy('day_rounded', 'desc')
       .select('goals.id', 'day_rounded', 'steps_goal')
   ]).then(result => {
-    console.log(result[0][0]);
     if (!result[0][0]) {
       return;
     }
@@ -201,13 +199,12 @@ function runningGoal(id) {
   });
 }
 
-function connectGoogle(id, googleId, imageUrl) {
+function connectGoogle(id, googleId) {
   return Promise.all([
     knex('users')
       .where('id', '=', id)
       .update({
-        google_id: googleId,
-        image_url: imageUrl
+        google_id: googleId
       })
   ]);
 }

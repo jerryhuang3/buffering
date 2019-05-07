@@ -87,10 +87,8 @@ function graphStepData(goalArray, stepArray) {
       }
     }
   });
-  //return mixedChart
 }
 
 module.exports = {
   graphStepData: graphStepData
 };
-// graphStepData(testData.goals, testData.steps);

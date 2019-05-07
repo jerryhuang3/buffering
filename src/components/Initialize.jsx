@@ -15,9 +15,7 @@ class Initialize extends Component {
     const response = await fetch('/goals/check', { method: 'POST' });
     const json = await response.json();
 
-    console.log("DOES THE USER HAVE STEPS?", json)
     if (json) {
-      console.log(json)
       this.setState({success: json});
     }
   }

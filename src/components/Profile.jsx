@@ -22,24 +22,23 @@ class Profile extends Component {
     const accessData = await response.json();
 
     const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
-    console.log('steps array');
+    console.log('steps array')
+  
     const goalFetch = await fetch('/goals', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: accessData.id })
-    });
+    })
+
+
     const goalJSON = await goalFetch.json();
     const goalArray = goalJSON.goalHistory.reverse();
-    console.log('STEPS: ', stepsArray);
-    console.log('GOALS: ', goalArray);
+
     const pastThreeSteps = stepsArray.slice(4);
     const pastThreeGoals = goalArray.slice(4);
 
-    console.log('STEPS', pastThreeSteps);
-    console.log('GOALS', pastThreeGoals);
     const userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
 
-    console.log(userStatus);
     this.dayProgress(stepsArray[6], goalArray[6]);
     progressChart.graphStepData(goalArray, stepsArray);
     this.setState({ status: userStatus });
@@ -47,11 +46,9 @@ class Profile extends Component {
 
   dayProgress = (steps, goal) => {
     if (steps / goal > 1) {
-      console.log('Congrats! You met your goal today!');
       this.setState({ progress: 100 });
     } else {
-      console.log('You still have steps to reach today!');
-      this.setState({ progress: (steps / goal) * 100 });
+      this.setState({ progress: ((steps / goal) * 100).toFixed(2) });
     }
   };
 
@@ -71,13 +68,17 @@ class Profile extends Component {
     if (!this.props.data.access_token) {
       connected = (
         <Grid centered>
-          <Connect profileData={this.props} connect={this.connect} />
+          <Grid.Row>
+            <Grid.Column>
+              <Connect profileData={this.props} connect={this.connect} />
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       );
     } else {
       connected = (
         <Grid centered>
-          <Grid.Row divided>
+          <Grid.Row>
             <Grid.Column width={4}>
               <Card>
                 <Image src={this.props.data.picture} wrapped ui={false} circular />
@@ -108,11 +109,13 @@ class Profile extends Component {
           <Divider />
           <Grid.Row>
             <Grid.Column width={12}>
+              <p className="progress">Today's Progress</p>
               <Progress percent={this.state.progress} indicating progress>
                 {progress}
               </Progress>
             </Grid.Column>
           </Grid.Row>
+          <Divider />
           <Grid.Row>
             <Grid.Column width={12}>
               <canvas id="ProgressChart" />

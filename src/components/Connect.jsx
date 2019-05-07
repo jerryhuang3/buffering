@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class Connect extends Component {
   constructor(props) {
@@ -7,9 +7,8 @@ class Connect extends Component {
   }
 
   onClick = async () => {
-    console.log('HELLO');
     let googleAuth = gapi.auth2.getAuthInstance();
-    console.log(googleAuth.isSignedIn.get());
+
     let code = await googleAuth.grantOfflineAccess();
 
     const res = await fetch('/connect', {
@@ -18,19 +17,18 @@ class Connect extends Component {
       body: JSON.stringify(code)
     });
     const json = await res.json();
-    console.log(json.name, json.access);
+  
     this.connect(json.name, json.access_token);
   };
 
   connect = (name, access) => {
-    console.log('CONNECT.JSX WOOOOO', name, access);
     this.props.connect(name, true, access);
-    Location.reload();
+    window.location.reload();
   };
 
   render() {
     return (
-      <div>
+        <div className="connect">
         <button onClick={this.onClick} type="button" className="google-button">
           <span className="google-button__icon">
             <svg viewBox="0 0 366 372" xmlns="http://www.w3.org/2000/svg">
@@ -57,7 +55,7 @@ class Connect extends Component {
           </span>
           <span className="google-button__text">Sign in to Google</span>
         </button>
-      </div>
+        </div>
     );
   }
 }
