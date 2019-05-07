@@ -23,16 +23,17 @@ $(document).ready(function() {
     });
 
     function circles(x, y) {
+      context.globalCompositeOperation = 'source-over';
       context.beginPath();
       context.fillStyle = '#000';
-      context.arc(x, y, 30, 0, Math.PI * 2);
+      context.arc(x, y, 40, 0, Math.PI * 2);
       context.fill();
       context.closePath();
     }
   }
 
   function addStyle() {
-    $('head').append('<style>#canvas {position: fixed; top: 0; }</style>');
+    $('head').append('<style>#canvas {position: fixed !important; top: 0; }</style>');
   }
 
   function addCanvas() {
