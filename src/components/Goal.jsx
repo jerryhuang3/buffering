@@ -6,7 +6,6 @@ class Goal extends Component {
     super(props);
     this.state = {
       value: null,
-      success: true
     };
   }
 
@@ -27,7 +26,7 @@ class Goal extends Component {
     });
     const json = await response.json();
 
-    this.setState({success: json})
+    window.location.reload();
     
   };
 

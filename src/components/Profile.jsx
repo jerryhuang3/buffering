@@ -22,8 +22,8 @@ class Profile extends Component {
     const accessData = await response.json();
 
     const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
-    console.log('steps array')
-  
+    console.log('steps array', stepsArray)
+    
     const goalFetch = await fetch('/goals', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -33,13 +33,18 @@ class Profile extends Component {
 
     const goalJSON = await goalFetch.json();
     const goalArray = goalJSON.goalHistory.reverse();
+    let userStatus;
+    if (stepsArray) {
+      const pastThreeSteps = stepsArray.slice(4);
+      const pastThreeGoals = goalArray.slice(4);
+      userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
+      this.dayProgress(stepsArray[6], goalArray[6]);
+    }
+    
 
-    const pastThreeSteps = stepsArray.slice(4);
-    const pastThreeGoals = goalArray.slice(4);
+    
 
-    const userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
-
-    this.dayProgress(stepsArray[6], goalArray[6]);
+    
     progressChart.graphStepData(goalArray, stepsArray);
     this.setState({ status: userStatus });
   }
