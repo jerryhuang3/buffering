@@ -7,8 +7,11 @@ class Home extends Component {
     return (
       <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
         <Grid.Column>
-          <h1 className="hero">Buff_r_ng</h1>
-          <h1 className="tagline">Plz end my suffering</h1>
+          <h1 className="hero">Buffering</h1>
+          <h2 className="info">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate nobis repellendus dolore nostrum ut quaerat nihil laudantium
+            officiis tempore at.
+          </h2>
         </Grid.Column>
       </Grid>
     );
