@@ -1,19 +1,20 @@
 const hellInjects = [
   './scriptmods/mouseMoveVisibility.js',
-  './scriptmods/mouseDraw.js',
   './scriptmods/redactHell.js',
   './scriptmods/marquee.js',
   './cssmods/zoom-hell.css',
+  './cssmods/pulsate.css',
   './cssmods/mirror-horiz.css',
   './cssmods/spin.css',
   './cssmods/blur-hell.css'
 ];
 const awfulInjects = [
   './scriptmods/clown.js',
+  './scriptmods/mouseDraw.js',
   './scriptmods/geo.js',
   './scriptmods/image.js',
   './cssmods/zoom-awful.css',
-  './cssmods/pulsate.css',
+
   './cssmods/upside-down.css',
   './cssmods/hover-disappear.css',
   './scriptmods/redactAwful.js'
@@ -27,6 +28,7 @@ const badInjects = [
   './cssmods/invert.css',
   './cssmods/image-opacity.css'
 ];
+
 let counter = 0;
 
 function increment(arr) {
@@ -58,7 +60,6 @@ function randomifyScript(status) {
   let inject;
 
   if (status === 'hell') {
-    // inject = hellInjects[Math.floor(Math.random() * hellInjects.length)];
     inject = increment(hellInjects);
     console.log(inject, 'is being injected');
     notify(inject, status);
@@ -67,7 +68,6 @@ function randomifyScript(status) {
   }
 
   if (status === 'awful') {
-    // inject = awfulInjects[Math.floor(Math.random() * awfulInjects.length)];
     inject = increment(awfulInjects);
     console.log(inject, 'is being injected');
     notify(inject, status);
@@ -76,7 +76,6 @@ function randomifyScript(status) {
   }
 
   if (status === 'bad') {
-    // inject = badInjects[Math.floor(Math.random() * badInjects.length)];
     inject = increment(badInjects);
     notify(inject, status);
     console.log(inject, 'is being injected');
