@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
 import utils from '../../utils.js';
 import Goal from './Goal.jsx';
-import { Grid, Divider, Card, Icon, Image } from 'semantic-ui-react';
+import { Grid, Divider, Card, Icon, Image, Progress } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
 import Connect from './Connect.jsx';
 
@@ -11,7 +11,8 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      status: null
+      status: null,
+      progress: null
     };
   }
 
@@ -39,10 +40,20 @@ class Profile extends Component {
     const userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
 
     console.log(userStatus);
-
+    this.dayProgress(stepsArray[6], goalArray[6]);
     progressChart.graphStepData(goalArray, stepsArray);
     this.setState({ status: userStatus });
   }
+
+  dayProgress = (steps, goal) => {
+    if (steps / goal > 1) {
+      console.log('Congrats! You met your goal today!');
+      this.setState({ progress: 100 });
+    } else {
+      console.log('You still have steps to reach today!');
+      this.setState({ progress: (steps / goal) * 100 });
+    }
+  };
 
   connect = (name, bool, access) => {
     console.log(name, bool, access);
@@ -50,7 +61,12 @@ class Profile extends Component {
   };
 
   render() {
-    console.log("Props: ", this.props)
+    let progress;
+    if (this.state.progress === 100) {
+      progress = "Congratulations! You've reached your goal for today!";
+    } else {
+      progress = "You've still got more walking to do bud!";
+    }
     let connected;
     if (!this.props.data.access_token) {
       connected = (
@@ -90,6 +106,13 @@ class Profile extends Component {
             </Grid.Column>
           </Grid.Row>
           <Divider />
+          <Grid.Row>
+            <Grid.Column width={12}>
+              <Progress percent={this.state.progress} indicating progress>
+                {progress}
+              </Progress>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Row>
             <Grid.Column width={12}>
               <canvas id="ProgressChart" />
