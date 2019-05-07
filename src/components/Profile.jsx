@@ -71,7 +71,7 @@ class Profile extends Component {
 
   render() {
     let progress;
-    if (this.state.progress === 100) {
+    if (this.state.day_progress === 100) {
       progress = "Congratulations! You've reached your goal for today!";
     } else {
       progress = "You've still got more walking to do bud!";
@@ -130,7 +130,7 @@ class Profile extends Component {
           <Grid.Row>
             <Grid.Column width={12}>
               <p className="progress">Today's Progress</p>
-              <Progress percent={this.state.progress} indicating progress>
+              <Progress percent={this.state.day_progress} indicating progress>
                 {progress}
               </Progress>
             </Grid.Column>
