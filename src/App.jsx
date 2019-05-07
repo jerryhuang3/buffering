@@ -31,18 +31,13 @@ class App extends Component {
         client_id: '677038605397-j26crueetoelsf8vh5f9pde9l93707r7.apps.googleusercontent.com',
         cookie_policy: 'single_host_origin',
         scope: 'https://www.googleapis.com/auth/fitness.activity.read'
-      });
-     
-      console.log("YO! Is user signed in to google already??", auth2.isSignedIn.get());
-      
+      });      
     });
   
     const response = await fetch('/', { method: 'POST' });
     const json = await response.json();
     if (!json) {
-      console.log('No cookie');
     } else {
-      console.log('COOKIE EXISTS! SETTING SESSION TO TRUE');
       console.table(json);
       this.setState({
         name: json.name,

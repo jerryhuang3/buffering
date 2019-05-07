@@ -23,7 +23,6 @@ class Profile extends Component {
     const accessData = await response.json();
 
     const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
-    console.log('steps array', stepsArray);
 
     const goalFetch = await fetch('/goals', {
       method: 'POST',
@@ -55,12 +54,10 @@ class Profile extends Component {
   };
 
   weekProgress = stepsArray => {
-    console.log(stepsArray);
     let sumOfSteps = 0;
     for (let i = 0; i < stepsArray.length; i++) {
       sumOfSteps = sumOfSteps + stepsArray[i];
     }
-    console.log(sumOfSteps);
     this.setState({ week_progress: sumOfSteps });
   };
 
@@ -69,7 +66,6 @@ class Profile extends Component {
   };
 
   connect = (name, bool, access) => {
-    console.log(name, bool, access);
     this.props.connect(name, bool, access);
   };
 
