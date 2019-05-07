@@ -278,6 +278,15 @@ input[type='number']::-webkit-outer-spin-button {
   text-align: center;
 }
 
+.semantic {
+  font-family: big-bear !important;
+  color: white !important;
+  letter-spacing: 4px;
+}
+
+.slabel {
+  color: white !important;
+}
 .google-button {
   height: 40px;
   border-width: 0;

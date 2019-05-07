@@ -38,6 +38,9 @@ class Nav extends Component {
           <Menu.Item>
             <NavLink to="/profile">Profile</NavLink>
           </Menu.Item>
+          <Menu.Item>
+            <NavLink to="/demo">Demo</NavLink>
+          </Menu.Item>
         </Menu.Menu>
         <Menu.Menu position="right">
           <Menu.Item>

@@ -28,6 +28,8 @@ const moment = require('moment');
 
 const auth = require('./auth');
 
+const demo = require('./status-script');
+
 // iniitalize express
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -305,9 +307,37 @@ app.post('/extension', cors(), async (req, res) => {
   }
 });
 
-// TEST
-const testRoutes = require('./test_routes');
-app.use('/test', testRoutes);
+app.post('/demo', (req, res) => {
+  console.log('Demo is running and user clicked: ', req.body.status);
+  switch (req.body.status) {
+    case 'good':
+      console.log('good');
+      demo.makeUsersGood().then(() => {
+        return res.json('All users are now good');
+      })
+    break;
+    case 'bad':
+      console.log('bad');
+      demo.makeUsersBad().then(() => {
+        return res.json('All users are now bad');
+      })
+    break;
+    case 'awful':
+      console.log('awful');
+      demo.makeUsersAwful().then(() => {
+        return res.json('All users are now awful');
+      })
+    break;
+    case 'hell':
+      console.log('hell');
+      demo.makeUsersHell().then(() => {
+        return res.json('All users are now hell');
+      })
+    break;
+  }
+
+
+})
 
 // Catch-all routes
 app.get('/*', (req, res) => {
@@ -321,16 +351,3 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-// async error helpers
-
-// const asyncMiddleware = fn =>
-//   (req, res, next) => {
-//     Promise.resolve(fn(req, res, next))
-//       .catch(next);
-//   };
-
-// app.use(function(err, req, res, next) {
-//   console.error(err)
-//   res.status(500).json({message: 'an error occurred'})
-// })

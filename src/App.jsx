@@ -9,6 +9,7 @@ import Connect from './components/Connect';
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
 import Initialize from './components/Initialize.jsx';
+import Demo from './components/Demo.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -76,6 +77,7 @@ class App extends Component {
             <Route path="/login" render={props => <Login {...props} login={this.connect} session={this.state.google_session} />} />
             <Route path="/signup" render={props => <Signup {...props} signup={this.connect} session={this.state.google_session} />} />
             <Route path="/initialize" render={props => <Initialize {...props} data={this.state} />} />
+            <Route path="/demo" render={props => <Demo {...props} />} />
             <Route exact path="/400/signup" component={EmailExists} />
             <Route path="/400/login" component={WrongLogin} />
             <Route component={Error} />
