@@ -16,10 +16,10 @@ class App extends Component {
 
     this.state = {
       name: null,
-      session: false,
       google_session: false,
       access_token: null,
-      show_nav: true
+      show_nav: true,
+      picture: null
     };
   }
 
@@ -47,8 +47,8 @@ class App extends Component {
         name: json.name,
         google_session: true,
         access_token: json.access_token,
-        google_id: json.google_id
-      });
+        picture: json.image_url
+      }); 
     }
   }
 

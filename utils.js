@@ -8,7 +8,6 @@ function computeUserStatus(stepArray, goalArray) {
     if (stepArray[i] < goalArray[i]) {
       negativePoints += 1;
     }
-    console.log('NEGATIVE POINTS', negativePoints, i);
   }
   return userStatusMap[negativePoints];
 }

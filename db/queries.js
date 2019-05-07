@@ -118,21 +118,6 @@ function setTokenExistingUser(id, accessToken, expiresAt) {
   ]);
 }
 
-function insertUserIfNotFound(id, name, email, password) {
-  return checkGoogleIdExists(googleId).then(idExists => {
-    if (!idExists) {
-      return Promise.all([
-        knex('users').insert({
-          google_id: googleId,
-          name: name,
-          email: email,
-          password: password
-        })
-      ]);
-    }
-  });
-}
-
 function canUserUpdateGoal(id) {
   return Promise.all([
     knex('goals')
@@ -142,7 +127,6 @@ function canUserUpdateGoal(id) {
       .select('day_rounded', 'steps_goal')
       .limit(2)
   ]).then(result => {
-    console.log(result);
     return result[0][0].steps_goal === result[0][1].steps_goal ? true : false;
   });
 }
@@ -196,7 +180,6 @@ function runningGoal(id) {
       .orderBy('day_rounded', 'desc')
       .select('goals.id', 'day_rounded', 'steps_goal')
   ]).then(result => {
-    console.log(result[0][0]);
     if (!result[0][0]) {
       return;
     }
@@ -216,13 +199,12 @@ function runningGoal(id) {
   });
 }
 
-function connectGoogle(id, googleId, imageUrl) {
+function connectGoogle(id, googleId) {
   return Promise.all([
     knex('users')
       .where('id', '=', id)
       .update({
-        google_id: googleId,
-        image_url: imageUrl
+        google_id: googleId
       })
   ]);
 }
@@ -232,7 +214,6 @@ module.exports = {
   getUser: getUser,
   getUserWithToken: getUserWithToken,
   checkGoogleIdExists: checkGoogleIdExists,
-  insertUserIfNotFound: insertUserIfNotFound,
   insertUser: insertUser,
   setTokenNewUser: setTokenNewUser,
   setTokenExistingUser: setTokenExistingUser,

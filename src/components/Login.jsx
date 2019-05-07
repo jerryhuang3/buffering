@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
-import { Button, Form, Grid, Message, Segment, Header } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Segment, Header, Divider } from 'semantic-ui-react';
 import { GoogleLogin } from 'react-google-login';
 
 class Login extends Component {
@@ -52,7 +52,7 @@ class Login extends Component {
         </style>
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="white" textAlign="center">
+            <Header as="h2" color="grey" textAlign="center">
               Login to your account
             </Header>
             <Form action="/login" method="POST" size="large">
@@ -65,10 +65,9 @@ class Login extends Component {
               </Segment>
             </Form>
             <Message>
-              New to us? <NavLink to="/signup">Signup</NavLink>
+              New to us? <NavLink to="/signup">Sign up</NavLink>
             </Message>
-            <hr/><br/>
-            <p>Signed up using Google?</p>
+            <Divider horizontal style={{color:'white'}}>Signed up using Google?</Divider>
             <GoogleLogin
               clientId={process.env.CLIENT_ID}
               scope={process.env.SCOPES}

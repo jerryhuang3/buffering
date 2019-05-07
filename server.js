@@ -50,18 +50,20 @@ app.post('/', async (req, res) => {
   if (req.session.user) {
     const user = await queries.getUserWithToken(req.session.user); // Works if user is connected to google
     // For users not connected to google
+
     if (!user) {
       console.log('web user detected');
       const user = await queries.getUser(req.session.user);
-      return res.json({ name: user.name, google_id: user.google_id });
+      return res.json({ name: user.name });
     }
-    // Check if access_token is expired
+    // For users connected to google
+    // First check if access token is expired and generate a new one if it is
     if (moment(Date.now()).valueOf() >= user.expires_at + 3500000) {
       const newAccessToken = await auth.refreshAccessToken(user.refresh_token);
-      await queries.setTokenExistingUser(user.google_id, newAccessToken.access_token, newAccessToken.expires_at);
-      return res.json({ name: user.name, google_id: user.google_id, access_token: newAccessToken.access_token });
+      await queries.setTokenExistingUser(req.session.user, newAccessToken.access_token, newAccessToken.expires_at);
+      return res.json({ name: user.name, access_token: newAccessToken.access_token, image_url: user.image_url });
     }
-    return res.json({ name: user.name, google_id: user.google_id, access_token: user.access_token });
+    return res.json({ name: user.name, access_token: user.access_token, image_url: user.image_url });
   } else {
     console.log('There are no cookies');
     return res.send(false);
@@ -75,25 +77,36 @@ app.post('/signup', async (req, res) => {
         type: 'signup',
         name: req.body.name,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10)
+        password: bcrypt.hashSync(req.body.password, 10),
+        picture: `https://avatars.dicebear.com/v2/avataaars/${req.body.name.replace(/ /g, '')}.svg`
       };
 
+  console.log(user);
   const emailExists = await queries.checkEmail(user.email);
 
   if (emailExists) {
-    res.json(false);
+    switch (user.type) {
+      case 'google':
+        return res.json(false);
+        break;
+      case 'signup':
+        return res.redirect('/400/signup');
+        break;
+    }
   } else {
     console.log('creating account now....');
     if (user.type === 'google') {
       console.log('google signup detected');
+      // Google sign up
       await queries.insertUser(user.googleId, user.name, user.email, null, user.picture);
       const id = await queries.getUserId(user.email);
       req.session.user = id.id;
       await queries.setTokenNewUser(id.id, user.accessTok, user.refreshTok, user.accessTokExp);
       return res.json({ name: user.name, access_token: user.accessTok });
     } else if (user.type === 'signup') {
+      // Web sign up
       console.log('web signup detected');
-      await queries.insertUser(null, user.name, user.email, user.password, null);
+      await queries.insertUser(null, user.name, user.email, user.password, user.picture);
       const id = await queries.getUserId(user.email);
       req.session.user = id.id;
       return res.redirect('/initialize');
@@ -102,12 +115,12 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/connect', async (req, res) => {
-  console.log('THE CONNECT ROUTE IS WORKING~');
+  console.log('Using the connect route');
 
   const user = await auth.googleAuth(req.body.code);
 
   console.log('adding google info to existing account');
-  await queries.connectGoogle(req.session.user, user.googleId, user.picture);
+  await queries.connectGoogle(req.session.user, user.googleId);
   await queries.setTokenNewUser(req.session.user, user.accessTok, user.refreshTok, user.accessTokExp);
   return res.json({ name: user.name, access_token: user.accessTok });
 });
@@ -174,16 +187,16 @@ app.post('/logout', (req, res) => {
 // GOALS
 app.post('/goals/update', async function(req, res) {
   console.log('Updating goals now...........');
-  const email = req.session.user;
-  const googleId = req.body.googleId;
+  const id = req.session.user;
   const stepsGoal = req.body.steps;
   console.log('input', stepsGoal);
   const endOfDay = moment()
     .endOf('day')
     .valueOf();
-  const canUpdate = await queries.canUserUpdateGoal(email);
+  const canUpdate = await queries.canUserUpdateGoal(id);
   if (canUpdate) {
-    queries.updateGoal(googleId, stepsGoal, endOfDay);
+    console.log('user can update their goal');
+    queries.updateGoal(id, stepsGoal, endOfDay);
     return res.json(true);
   } else {
     console.log('user can not update goal again');
@@ -227,8 +240,8 @@ app.post('/goals/check', async (req, res) => {
   const goalExists = await queries.checkGoalExists(req.session.user);
   if (goalExists !== 0) {
     return res.json(true);
-  } 
-  return res.json(false)
+  }
+  return res.json(false);
 });
 
 app.post('/initialize', async (req, res) => {
@@ -280,9 +293,10 @@ app.post('/extension', cors(), async (req, res) => {
     const foundGoalsAwait = await queries.pastWeekGoals(user.id, threeDaysAgo, today);
     const foundGoals = foundGoalsAwait[0];
     const goalHistory = utils.orderGoals(pastThreeDays, foundGoals);
+    const goalReverse = goalHistory.reverse();
     // get steps using token
     const stepHistory = await utils.filterAndFetchSteps(currentAccessToken);
-    const userStatus = utils.computeUserStatus(stepHistory, goalHistory);
+    const userStatus = utils.computeUserStatus(stepHistory, goalReverse);
     console.log('USER STATUS BABY!', userStatus);
     return res.json({ userStatus: userStatus });
   } else {

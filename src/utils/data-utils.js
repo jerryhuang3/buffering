@@ -33,8 +33,7 @@ async function filterAndFetchSteps(accessToken) {
   const dataAgg = await fetchResponse.json();
 
   if (dataAgg.error) {
-    console.log('You have no steps!');
-    return false
+    return false;
   } else {
     let stepsTaken = [];
     //check for empty data
@@ -46,7 +45,6 @@ async function filterAndFetchSteps(accessToken) {
         stepsTaken.push(0);
       }
     }
-    console.log(stepsTaken);
 
     return stepsTaken;
   }
