@@ -12,19 +12,18 @@ const awfulInjects = [
   './scriptmods/clown.js',
   './scriptmods/mouseDraw.js',
   './scriptmods/geo.js',
-  './scriptmods/image.js',
+  './cssmods/contrast.css',
   './cssmods/zoom-awful.css',
-
   './cssmods/upside-down.css',
   './cssmods/hover-disappear.css',
   './scriptmods/redactAwful.js'
 ];
 const badInjects = [
   './scriptmods/textColor.js',
+  './scriptmods/image.js',
   './cssmods/zoom-bad.css',
   './cssmods/comic-sans.css',
   './cssmods/papyrus.css',
-  './cssmods/contrast.css',
   './cssmods/invert.css',
   './cssmods/image-opacity.css'
 ];
