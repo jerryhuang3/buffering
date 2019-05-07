@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
+import utils from '../../utils.js';
 import Goal from './Goal.jsx';
 import { Grid, Divider, Card, Icon, Image } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
@@ -8,6 +9,10 @@ import Connect from './Connect.jsx';
 class Profile extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      status: null
+    };
   }
 
   async componentDidMount() {
@@ -23,12 +28,20 @@ class Profile extends Component {
       body: JSON.stringify({ id: accessData.id })
     });
     const goalJSON = await goalFetch.json();
-
+    const goalArray = goalJSON.goalHistory.reverse();
     console.log('STEPS: ', stepsArray);
-    console.log('GOALS: ', goalJSON.goalHistory);
-    const userStatus = utils.computeUserStatus(stepHistory, goalHistory);
+    console.log('GOALS: ', goalArray);
+    const pastThreeSteps = stepsArray.slice(4);
+    const pastThreeGoals = goalArray.slice(4);
 
-    progressChart.graphStepData(goalJSON.goalHistory.reverse(), stepsArray);
+    console.log('STEPS', pastThreeSteps);
+    console.log('GOALS', pastThreeGoals);
+    const userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
+
+    console.log(userStatus);
+
+    progressChart.graphStepData(goalArray, stepsArray);
+    this.setState({ status: userStatus });
   }
 
   connect = (name, bool, access) => {
@@ -37,6 +50,7 @@ class Profile extends Component {
   };
 
   render() {
+    console.log("Props: ", this.props)
     let connected;
     if (!this.props.data.access_token) {
       connected = (
@@ -50,9 +64,9 @@ class Profile extends Component {
           <Grid.Row divided>
             <Grid.Column width={4}>
               <Card>
-                <Image src="https://react.semantic-ui.com/images/avatar/large/daniel.jpg" wrapped ui={false} />
+                <Image src={this.props.data.picture} wrapped ui={false} circular />
                 <Card.Content>
-                  <Card.Header>Daniel</Card.Header>
+                  <Card.Header>{this.props.data.name}</Card.Header>
                   <Card.Meta>Joined in 2016</Card.Meta>
                   <Card.Description>Daniel is a comedian living in Nashville.</Card.Description>
                 </Card.Content>
@@ -64,7 +78,14 @@ class Profile extends Component {
                 </Card.Content>
               </Card>
             </Grid.Column>
-            <Grid.Column width={4}>
+            <Grid.Column width={4} verticalAlign="middle">
+              <Grid.Row divided style={{ textAlign: 'center' }}>
+                <h3>Your current tier of browsing is:</h3>
+                <h1>{this.state.status}</h1>
+              </Grid.Row>
+              <br />
+              <br />
+              <br />
               <Goal profileData={this.props} />
             </Grid.Column>
           </Grid.Row>

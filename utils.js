@@ -5,6 +5,7 @@ function computeUserStatus(stepArray, goalArray) {
   const userStatusMap = ['good', 'bad', 'awful', 'hell'];
   let negativePoints = 0;
   for (let i = 0; i < goalArray.length; i++) {
+    console.log(goalArray[i])
     if (stepArray[i] < goalArray[i]) {
       negativePoints += 1;
     }

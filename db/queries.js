@@ -118,21 +118,6 @@ function setTokenExistingUser(id, accessToken, expiresAt) {
   ]);
 }
 
-function insertUserIfNotFound(id, name, email, password) {
-  return checkGoogleIdExists(googleId).then(idExists => {
-    if (!idExists) {
-      return Promise.all([
-        knex('users').insert({
-          google_id: googleId,
-          name: name,
-          email: email,
-          password: password
-        })
-      ]);
-    }
-  });
-}
-
 function canUserUpdateGoal(id) {
   return Promise.all([
     knex('goals')
@@ -232,7 +217,6 @@ module.exports = {
   getUser: getUser,
   getUserWithToken: getUserWithToken,
   checkGoogleIdExists: checkGoogleIdExists,
-  insertUserIfNotFound: insertUserIfNotFound,
   insertUser: insertUser,
   setTokenNewUser: setTokenNewUser,
   setTokenExistingUser: setTokenExistingUser,
