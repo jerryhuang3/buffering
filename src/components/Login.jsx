@@ -9,8 +9,6 @@ class Login extends Component {
   }
 
   authCode = async(response) => {
-    console.log("Sending Google's authorization code to the server...");
-
     const res = await fetch('/login', {
       method: 'POST',
       body: JSON.stringify(response),
@@ -25,12 +23,10 @@ class Login extends Component {
 
   // Send Login prop to Nav
   login = (name, access) => {
-    console.log('Authentication.jsx: Logging in', name);
     this.props.login(name, true, access);
   }
 
   render() {
-    console.log(this.props)
     if (this.props.session) {
       return <Redirect to="/profile" />;
     }

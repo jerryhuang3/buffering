@@ -19,7 +19,6 @@ class Nav extends Component {
     let auth2 = gapi.auth2.getAuthInstance();
     // Sign out of Google on local website
     auth2.signOut().then(() => auth2.disconnect());
-    console.log(gapi.auth2.getAuthInstance().currentUser.get());
 
     if (logout) {
       this.session(null, false, null);
@@ -37,6 +36,9 @@ class Nav extends Component {
           </Menu.Item>
           <Menu.Item>
             <NavLink to="/profile">Profile</NavLink>
+          </Menu.Item>
+          <Menu.Item>
+            <NavLink to="/demo">Demo</NavLink>
           </Menu.Item>
         </Menu.Menu>
         <Menu.Menu position="right">

@@ -9,8 +9,6 @@ class Signup extends Component {
   }
 
   authCode = async response => {
-    console.log("Sending Google's authorization code to the server...");
-
     const res = await fetch('/signup', {
       method: 'POST',
       body: JSON.stringify(response),
@@ -29,7 +27,6 @@ class Signup extends Component {
 
   // Send Signup prop to Nav
   signup = (name, access) => {
-    console.log('Signup.jsx: Signed up', name);
     this.props.history.push('/initialize');
     this.props.signup(name, true, access);
   };

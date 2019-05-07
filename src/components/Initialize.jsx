@@ -25,8 +25,6 @@ class Initialize extends Component {
   };
 
   onSubmit = async () => {
-    console.log('This submit for goals button registered');
-    console.log(`About to update the value to ${this.state.value}`);
     const response = await fetch('/initialize', {
       method: 'POST',
       headers: {
