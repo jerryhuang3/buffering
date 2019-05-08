@@ -96,8 +96,8 @@ class Profile extends Component {
                 <Image src={this.props.data.picture} wrapped ui={false} circular />
                 <Card.Content>
                   <Card.Header>{this.props.data.name}</Card.Header>
-                  <Card.Meta>Joined in 2016</Card.Meta>
-                  <Card.Description>Daniel is a comedian living in Nashville.</Card.Description>
+                  <Card.Meta>Joined in 2019</Card.Meta>
+                  <Card.Description>{this.props.data.name} is a web developer.</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                   <a>

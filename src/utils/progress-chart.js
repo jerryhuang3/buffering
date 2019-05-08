@@ -68,7 +68,7 @@ function graphStepData(goalArray, stepArray) {
       title: {
         display: true,
         text: 'Weekly Chart',
-        fontSize: 40,
+        fontSize: 30,
         fontColor: 'white'
       },
       legend: {

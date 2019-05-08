@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Popup, Message } from 'semantic-ui-react';
+import { Form, Button, Popup, Label } from 'semantic-ui-react';
 
 class Goal extends Component {
   constructor(props) {
@@ -10,13 +10,11 @@ class Goal extends Component {
   }
 
   onChange = event => {
-    if (this.state.value < 5000) {
-      console.log('you need more!');
-    }
     this.setState({ value: event.target.value });
   };
 
-  onSubmit = async () => {
+  onSubmit = async() => {
+    console.log('running normally');
     const response = await fetch('/goals/update', {
       method: 'POST',
       headers: {
@@ -30,19 +28,13 @@ class Goal extends Component {
   };
 
   render() {
-    let input;
-    if (this.state.value < 5000) {
-      input = (<Message error header="Action Forbidden" content="You need to have a goal of at least 5000 steps." />);
-    } 
     return (
       <Form size="large">
         <Form.Field className="set_goal">
           <label>Update your goal</label>
           <Form.Input onChange={this.onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          
-          <Popup content="Add users to your feed" trigger={<Button onClick={this.onSubmit}>Update</Button>} />
+          <Button onSubmit={this.onSubmit}>Update</Button>
         </Form.Field>
-        <div>{input}</div>
       </Form>
     );
   }

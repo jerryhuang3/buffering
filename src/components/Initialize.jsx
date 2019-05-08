@@ -48,7 +48,7 @@ class Initialize extends Component {
         {this.redirect()}
           <Form size="large">
             <Form.Field className="set_goal">
-              <label>Set your goal {this.state.value}</label>
+              <label>Set your goal:</label>
               <Form.Input onChange={this.onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
               <button onClick={this.onSubmit}>Update</button>
             </Form.Field>

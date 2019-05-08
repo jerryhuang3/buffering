@@ -161,6 +161,17 @@ function updateGoal(id, stepsGoal, endOfDay) {
   ]);
 }
 
+function insertGoal(id, stepsGoal, endOfDay) {
+  return Promise.all([
+    knex('goals')
+      .insert({
+        id: id,
+        steps_goal: stepsGoal,
+        day_rounded: endOfDay
+      })
+  ]);
+}
+
 // should be changed to periodGoals
 function pastWeekGoals(id, weekAgo, endOfDay) {
   return Promise.all([
@@ -222,6 +233,7 @@ module.exports = {
   pastWeekGoals: pastWeekGoals,
   canUserUpdateGoal: canUserUpdateGoal,
   updateGoal: updateGoal,
+  insertGoal: insertGoal,
   initializeGoal: initializeGoal,
   checkGoalExists: checkGoalExists,
   runningGoal: runningGoal,

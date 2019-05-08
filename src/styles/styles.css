@@ -238,8 +238,14 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .progress {
-  color: rgb(44, 42, 42);
+  color: white;
+  font-size: 24px;
   text-align: center;
+}
+
+.label {
+  color: white !important;
+  font-size: 1.25em !important;
 }
 
 .connect {
