@@ -148,102 +148,72 @@
 
 body {
   width: 100wh;
-  height: 90vh;
+  height: 100wh;
   color: #fff;
   background: linear-gradient(45deg, #f97aff, #d7a2bf, #e4ccff, #ff7ac3, #bba2d7, #fcccff, #b77aff, #d5a2d7, #ffcce8);
-  background-size: 300% 300%;
+  background-size: 400% 400%;
   -webkit-animation: Gradient 155s ease infinite;
-  -moz-animation: Gradient 155s ease infinite;
-  animation: Gradient 95s ease infinite;
+  animation: Gradient 120s ease infinite;
+}
+
+
+@keyframes Gradient {
+  0% {
+    background-position: 20% 20%;
+  }
+  14% {
+    background-position: 20% 80%;
+  }
+  28% {
+    background-position: 80% 20%;
+  }
+  33% {
+    background-position: 80% 80%;
+  }
+  42% {
+    background-position: 20% 20%;
+  }
+  59% {
+    background-position: 80% 20%;
+  }
+  71% {
+    background-position: 20% 80%;
+  }
+  86% {
+    background-position: 80% 80%;
+  }
+  100% {
+    background-position: 20% 20%;
+  }
 }
 
 @-webkit-keyframes Gradient {
   0% {
-    background-position: 0% 0%;
+    background-position: 20% 20%;
   }
   14% {
-    background-position: 0% 100%;
+    background-position: 20% 80%;
   }
   28% {
-    background-position: 100% 0%;
+    background-position: 80% 20%;
   }
   33% {
-    background-position: 100% 100%;
+    background-position: 80% 80%;
   }
   42% {
-    background-position: 0% 0%;
+    background-position: 20% 20%;
   }
   59% {
-    background-position: 100% 0%;
+    background-position: 80% 20%;
   }
   71% {
-    background-position: 0% 100%;
+    background-position: 20% 80%;
   }
   86% {
-    background-position: 100% 100%;
+    background-position: 80% 80%;
   }
   100% {
-    background-position: 0% 0%;
-  }
-}
-
-@-moz-keyframes Gradient {
-  0% {
-    background-position: 0% 0%;
-  }
-  14% {
-    background-position: 0% 100%;
-  }
-  28% {
-    background-position: 100% 0%;
-  }
-  33% {
-    background-position: 100% 100%;
-  }
-  42% {
-    background-position: 0% 0%;
-  }
-  59% {
-    background-position: 100% 0%;
-  }
-  71% {
-    background-position: 0% 100%;
-  }
-  86% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-
-@keyframes Gradient {
-  0% {
-    background-position: 0% 0%;
-  }
-  14% {
-    background-position: 0% 100%;
-  }
-  28% {
-    background-position: 100% 0%;
-  }
-  33% {
-    background-position: 100% 100%;
-  }
-  42% {
-    background-position: 0% 0%;
-  }
-  59% {
-    background-position: 100% 0%;
-  }
-  71% {
-    background-position: 0% 100%;
-  }
-  86% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
+    background-position: 20% 20%;
   }
 }
 
@@ -328,4 +298,32 @@ input[type='number']::-webkit-outer-spin-button {
   font-size: 14px;
   font-weight: bold;
   font-family: 'Roboto', arial, sans-serif;
+}
+
+.info {
+  padding: 80px;
+  color: white;
+  font-size: 30px;
+  background-color: rgba(0,181,83,0.15);
+}
+
+.extra-info {
+  padding: 80px;
+  color: white;
+  font-size: 26px;
+  background-color: rgba(0,99,181,0.15);
+}
+
+.explanation {
+  font-size: 20px;
+  background-color: rgba(0,181,173,0.15);
+}
+
+.question {
+  font-size: 20px;
+  font-family: big-bear;
+}
+
+.answer {
+  font-size: 22px;
 }
