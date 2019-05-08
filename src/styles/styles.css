@@ -305,6 +305,7 @@ input[type='number']::-webkit-outer-spin-button {
   color: white;
   font-size: 30px;
   background-color: rgba(0,181,83,0.15);
+  box-shadow: 8px -8px rgba(0,181,83,0.10);
 }
 
 .extra-info {
@@ -312,18 +313,37 @@ input[type='number']::-webkit-outer-spin-button {
   color: white;
   font-size: 26px;
   background-color: rgba(0,99,181,0.15);
+  box-shadow: 8px -8px rgba(0,99,181,0.10);
 }
 
-.explanation {
-  font-size: 20px;
+
+.description {
   background-color: rgba(0,181,173,0.15);
+  padding: 20px;
+  box-shadow: 8px -8px rgba(0,181,173,0.10);
+}
+
+.q-n-a {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  margin: 10px;
 }
 
 .question {
   font-size: 20px;
   font-family: big-bear;
+  width: 30%;
+  margin: 10px;
 }
 
 .answer {
   font-size: 22px;
+  width: 70%;
+  margin: 10px;
+}
+
+.status {
+  font-family: cassette;
+  font-size: 40px;
 }
