@@ -12,11 +12,11 @@ function fetchStepData(accessToken) {
       ],
 
       bucketByTime: { durationMillis: 86400000 },
-      startTimeMillis: moment(Date.now())
+      startTimeMillis: moment()
         .endOf('day')
         .subtract(7, 'days')
         .valueOf(),
-      endTimeMillis: Date.now()
+      endTimeMillis: moment().valueOf()
     }),
     headers: {
       token_type: 'Bearer',
@@ -31,6 +31,7 @@ function fetchStepData(accessToken) {
 async function filterAndFetchSteps(accessToken) {
   const fetchResponse = await fetchStepData(accessToken);
   const dataAgg = await fetchResponse.json();
+  console.log(dataAgg)
 
   if (dataAgg.error) {
     return false;
@@ -45,7 +46,7 @@ async function filterAndFetchSteps(accessToken) {
         stepsTaken.push(0);
       }
     }
-
+    console.log('Client fetch', stepsTaken)
     return stepsTaken;
   }
 }

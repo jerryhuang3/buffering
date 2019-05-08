@@ -1,19 +1,20 @@
 const hellInjects = [
   './scriptmods/mouseMoveVisibility.js',
-  './scriptmods/mouseDraw.js',
   './scriptmods/redactHell.js',
   './scriptmods/marquee.js',
   './cssmods/zoom-hell.css',
+  './cssmods/pulsate.css',
   './cssmods/mirror-horiz.css',
   './cssmods/spin.css',
   './cssmods/blur-hell.css'
 ];
 const awfulInjects = [
   './scriptmods/clown.js',
+  './scriptmods/mouseDraw.js',
   './scriptmods/geo.js',
   './scriptmods/image.js',
   './cssmods/zoom-awful.css',
-  './cssmods/pulsate.css',
+
   './cssmods/upside-down.css',
   './cssmods/hover-disappear.css',
   './scriptmods/redactAwful.js'
@@ -27,6 +28,20 @@ const badInjects = [
   './cssmods/invert.css',
   './cssmods/image-opacity.css'
 ];
+
+let counter = 0;
+
+function increment(arr) {
+  if (counter < arr.length - 1) {
+    counter++;
+    console.log(counter);
+    return arr[counter];
+  } else {
+    counter = 0;
+    console.log(counter);
+    return arr[counter];
+  }
+}
 
 function injectJs(fileToInject) {
   chrome.tabs.executeScript(null, { file: fileToInject });
@@ -45,7 +60,7 @@ function randomifyScript(status) {
   let inject;
 
   if (status === 'hell') {
-    inject = hellInjects[Math.floor(Math.random() * hellInjects.length)];
+    inject = increment(hellInjects);
     console.log(inject, 'is being injected');
     notify(inject, status);
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
@@ -53,7 +68,7 @@ function randomifyScript(status) {
   }
 
   if (status === 'awful') {
-    inject = awfulInjects[Math.floor(Math.random() * awfulInjects.length)];
+    inject = increment(awfulInjects);
     console.log(inject, 'is being injected');
     notify(inject, status);
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
@@ -61,7 +76,7 @@ function randomifyScript(status) {
   }
 
   if (status === 'bad') {
-    inject = badInjects[Math.floor(Math.random() * badInjects.length)];
+    inject = increment(badInjects);
     notify(inject, status);
     console.log(inject, 'is being injected');
     inject.endsWith('js') ? injectJs(inject) : injectCSS(inject);
@@ -81,7 +96,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
     //use the below two lines for testing scrips
     // chrome.tabs.insertCSS(null, { file: './cssmods/mirror-vert.css' });
-    // chrome.tabs.executeScript(null, { file: './scriptmods/redactHell.js' });
+    // chrome.tabs.executeScript(null, { file: './scriptmods/mouseDraw.js' });
 
     //the script to execut is run with this response to the content script.
     sendResponse({ status: data.userStatus, script: randomifyScript(data.userStatus) });

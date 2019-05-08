@@ -138,7 +138,7 @@ function initializeGoal(id, stepsGoal, endOfDay) {
       steps_goal: stepsGoal,
       day_rounded: endOfDay
     })
-  ]).then(() => console.log('Goal initialization complete!'));
+  ]);
 }
 
 function checkGoalExists(id) {
@@ -146,9 +146,9 @@ function checkGoalExists(id) {
     knex('goals')
       .where('id', id)
       .select()
-  ]).then( result => {
+  ]).then(result => {
     return result[0].length;
-  })
+  });
 }
 
 function updateGoal(id, stepsGoal, endOfDay) {
@@ -158,7 +158,7 @@ function updateGoal(id, stepsGoal, endOfDay) {
       .update({
         steps_goal: stepsGoal
       })
-  ]).then(() => console.log('Goal update complete!'));
+  ]);
 }
 
 // should be changed to periodGoals

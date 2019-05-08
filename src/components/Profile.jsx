@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
 import utils from '../../utils.js';
 import Goal from './Goal.jsx';
-import { Grid, Divider, Card, Icon, Image, Progress } from 'semantic-ui-react';
+import { Grid, Divider, Card, Icon, Image, Progress, Statistic } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
 import Connect from './Connect.jsx';
 
@@ -12,7 +12,8 @@ class Profile extends Component {
 
     this.state = {
       status: null,
-      progress: null
+      week_progress: null,
+      day_progress: null
     };
   }
 
@@ -22,14 +23,12 @@ class Profile extends Component {
     const accessData = await response.json();
 
     const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
-    console.log('steps array', stepsArray)
-    
+
     const goalFetch = await fetch('/goals', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: accessData.id })
-    })
-
+    });
 
     const goalJSON = await goalFetch.json();
     const goalArray = goalJSON.goalHistory.reverse();
@@ -38,33 +37,41 @@ class Profile extends Component {
       const pastThreeSteps = stepsArray.slice(4);
       const pastThreeGoals = goalArray.slice(4);
       userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
+      this.weekProgress(stepsArray);
       this.dayProgress(stepsArray[6], goalArray[6]);
+      this.status(userStatus);
     }
-    
 
-    
-
-    
     progressChart.graphStepData(goalArray, stepsArray);
-    this.setState({ status: userStatus });
   }
 
   dayProgress = (steps, goal) => {
     if (steps / goal > 1) {
-      this.setState({ progress: 100 });
+      this.setState({ day_progress: 100 });
     } else {
-      this.setState({ progress: ((steps / goal) * 100).toFixed(2) });
+      this.setState({ day_progress: ((steps / goal) * 100).toFixed(2) });
     }
   };
 
+  weekProgress = stepsArray => {
+    let sumOfSteps = 0;
+    for (let i = 0; i < stepsArray.length; i++) {
+      sumOfSteps = sumOfSteps + stepsArray[i];
+    }
+    this.setState({ week_progress: sumOfSteps });
+  };
+
+  status = userStatus => {
+    this.setState({ status: userStatus.toUpperCase() });
+  };
+
   connect = (name, bool, access) => {
-    console.log(name, bool, access);
     this.props.connect(name, bool, access);
   };
 
   render() {
     let progress;
-    if (this.state.progress === 100) {
+    if (this.state.day_progress === 100) {
       progress = "Congratulations! You've reached your goal for today!";
     } else {
       progress = "You've still got more walking to do bud!";
@@ -95,14 +102,14 @@ class Profile extends Component {
                 <Card.Content extra>
                   <a>
                     <Icon name="user" />
-                    10 Friends
+                    No Friends
                   </a>
                 </Card.Content>
               </Card>
             </Grid.Column>
             <Grid.Column width={4} verticalAlign="middle">
               <Grid.Row divided style={{ textAlign: 'center' }}>
-                <h3>Your current tier of browsing is:</h3>
+                <h3>Current tier of browsing:</h3>
                 <h1>{this.state.status}</h1>
               </Grid.Row>
               <br />
@@ -110,12 +117,20 @@ class Profile extends Component {
               <br />
               <Goal profileData={this.props} />
             </Grid.Column>
+            <Grid.Column width={4} verticalAlign="middle">
+              <Grid.Row divided style={{ textAlign: 'center' }}>
+                <Statistic className="semantic">
+                  <Statistic.Value className="semantic">{this.state.week_progress}</Statistic.Value>
+                  <Statistic.Label className="slabel">Steps Taken This Week</Statistic.Label>
+                </Statistic>
+              </Grid.Row>
+            </Grid.Column>
           </Grid.Row>
           <Divider />
           <Grid.Row>
             <Grid.Column width={12}>
               <p className="progress">Today's Progress</p>
-              <Progress percent={this.state.progress} indicating progress>
+              <Progress percent={this.state.day_progress} indicating progress>
                 {progress}
               </Progress>
             </Grid.Column>

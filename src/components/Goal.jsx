@@ -15,8 +15,6 @@ class Goal extends Component {
   };
 
   onSubmit = async () => {
-    console.log('This submit for goals button registered');
-    console.log(`About to update the value to ${this.state.value}`);
     const response = await fetch('/goals/update', {
       method: 'POST',
       headers: {
@@ -27,7 +25,6 @@ class Goal extends Component {
     const json = await response.json();
 
     window.location.reload();
-    
   };
 
   render() {
