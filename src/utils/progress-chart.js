@@ -1,9 +1,6 @@
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { NONAME } from 'dns';
 const Chart = require('chart.js');
-
-const testData = {
-  goals: [3000, 3500, 3000, 4000, 4000, 4000, 5000],
-  steps: [3748, 4789, 2674, 2489, 6738, 4837, 7682]
-};
 
 function goalRedOrGreen(goalValue, stepValue, idx) {
   if (goalValue === 0 || stepValue === 0) {
@@ -18,8 +15,7 @@ function goalRedOrGreen(goalValue, stepValue, idx) {
     redAmt = 181;
     greenAmt = 0;
     blueAmt = 8;
-  }
-  else if (goalValue < stepValue) {
+  } else if (goalValue < stepValue) {
     redAmt = 8;
     greenAmt = 181;
     blueAmt = 0;
@@ -37,21 +33,17 @@ function graphStepData(goalArray, stepArray) {
   const ctx = document.getElementById('ProgressChart');
   const mixedChart = new Chart(ctx, {
     type: 'bar',
+    plugin: [ChartDataLabels],
     data: {
-      labels: [
-        '6 Days Ago',
-        '5 Days Ago',
-        '4 Days Ago',
-        '3 Days Ago',
-        '2 Days Ago',
-        'Yesterday',
-        'Today'
-      ],
+      labels: ['6 Days Ago', '5 Days Ago', '4 Days Ago', '3 Days Ago', '2 Days Ago', 'Yesterday', 'Today'],
       datasets: [
         {
           label: 'Goals',
           data: goalArray,
-          backgroundColor: colorArray
+          backgroundColor: colorArray,
+          datalabels: {
+            display: false
+          }
         },
         {
           label: 'Steps',
@@ -60,11 +52,25 @@ function graphStepData(goalArray, stepArray) {
           backgroundColor: 'rgba(0, 181, 173, 1)',
           borderColor: 'rgba(0, 181, 173, 1)',
           fill: false,
-          borderWidth: 8
+          borderWidth: 8,
+          datalabels: {
+            color: '#fff',
+            align: 'top',
+            offset: 15,
+            font: {
+              size: 20
+            }
+          }
         }
       ]
     },
     options: {
+      title: {
+        display: true,
+        text: 'Weekly Chart',
+        fontSize: 40,
+        fontColor: 'white'
+      },
       legend: {
         labels: {
           fontSize: 25,
@@ -72,18 +78,23 @@ function graphStepData(goalArray, stepArray) {
         }
       },
       scales: {
-        yAxes: [{
-          ticks: {
-            fontSize: 25,
-            fontColor: 'white',
-            beginAtZero: true }
-          }],
-        xAxes: [{
-          ticks: {
-            fontSize: 25,
-            fontColor: 'white'
+        yAxes: [
+          {
+            ticks: {
+              fontSize: 25,
+              fontColor: 'white',
+              beginAtZero: true
+            }
           }
-        }]
+        ],
+        xAxes: [
+          {
+            ticks: {
+              fontSize: 25,
+              fontColor: 'white'
+            }
+          }
+        ]
       }
     }
   });

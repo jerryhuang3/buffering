@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import dataUtils from '../utils/data-utils';
 import utils from '../../utils.js';
 import Goal from './Goal.jsx';
-import { Grid, Divider, Card, Icon, Image, Progress, Statistic } from 'semantic-ui-react';
+import { Grid, Divider, Card, Icon, Image, Progress, Statistic, Popup, Container } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
 import Connect from './Connect.jsx';
 

@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Popup, Message } from 'semantic-ui-react';
 
 class Goal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: null,
+      value: null
     };
   }
 
-  
   onChange = event => {
+    if (this.state.value < 5000) {
+      console.log('you need more!');
+    }
     this.setState({ value: event.target.value });
   };
 
@@ -28,13 +30,19 @@ class Goal extends Component {
   };
 
   render() {
+    let input;
+    if (this.state.value < 5000) {
+      input = (<Message error header="Action Forbidden" content="You need to have a goal of at least 5000 steps." />);
+    } 
     return (
       <Form size="large">
         <Form.Field className="set_goal">
           <label>Update your goal</label>
           <Form.Input onChange={this.onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          <Button onClick={this.onSubmit}>Update</Button>
+          
+          <Popup content="Add users to your feed" trigger={<Button onClick={this.onSubmit}>Update</Button>} />
         </Form.Field>
+        <div>{input}</div>
       </Form>
     );
   }

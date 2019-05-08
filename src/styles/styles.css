@@ -282,6 +282,14 @@ input[type='number']::-webkit-outer-spin-button {
   letter-spacing: 4px;
 }
 
+.error {
+  display: none;
+}
+
+.good {
+  border-color: green;
+}
+
 .slabel {
   color: white !important;
 }
