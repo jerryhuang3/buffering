@@ -19,32 +19,46 @@ Is this an internet diet? Nope. Browse all the internet you desire. Except you w
 
           <p className="extra-info" >This fitness app & chrome extension combo examines your last 3 days' activityand then reduces your status for each day of subpar performance.
           </p>
-          <Grid rows={4} columns={12} className="explanation">
-            <Grid.Row>
-              <Grid.Column width={4} className="question">Meet all your goals?</Grid.Column>
-              <Grid.Column width={8} className="answer">We deem you 'Good'. Feel no guilt that you stayed up watching car crash videos all night. You earned it!
-              </Grid.Column>
-            </Grid.Row>
 
-            <Grid.Row>
-              <Grid.Column width={4} className="question">Miss a day?</Grid.Column>
-              <Grid.Column width={8} className="answer">Now your status is 'Bad'. Experience mild annoyance.
-              </Grid.Column>
-            </Grid.Row>
+          <div className="description">
 
-            <Grid.Row>
-              <Grid.Column width={4} className="question">You've slacked off for two whole days?</Grid.Column>
-              <Grid.Column width={8} className="answer">Yikes! You're now 'Awful' and that's official according to our database.  Browsing kinda sucks.
-              </Grid.Column>
-            </Grid.Row>
+            <div className="q-n-a">
+              <span className="question">
+              Meet all your goals?
+              </span>
+              <span className="answer">
+              We deem you <span className="status">'Good'</span>. Feel no guilt that you stayed up watching car crash videos all night. You earned it!
+              </span>
+            </div>
 
-            <Grid.Row>
-              <Grid.Column width={4} className="question">The past three days you've DONE NOTHING?!?</Grid.Column>
-              <Grid.Column width={8} className="answer">Congratulations, you're in internet 'Hell'! Yikes doesn't even cut it. Ghosts of the 90s on steroids haunt your computer.
-              </Grid.Column>
-            </Grid.Row>
+            <div className="q-n-a">
+              <span className="question">
+              Miss a day?
+              </span>
+              <span className="answer">
+              Now your status is <span className="status">'Bad'</span>. Experience mild annoyance.
+              </span>
+            </div>
 
-          </Grid>
+            <div className="q-n-a">
+              <span className="question">
+              You've slacked off for two whole days?
+              </span>
+              <span className="answer">
+              Yikes! You're now <span className="status">'Awful'</span> and that's official according to our database.  Browsing kinda sucks.
+              </span>
+            </div>
+
+            <div className="q-n-a">
+              <span className="question">
+              The past three days you've DONE NOTHING?!?
+              </span>
+              <span className="answer">
+              Congratulations, you're in internet <span className="status">'Hell'</span>! Yikes doesn't even cut it. Ghosts of the 90s on steroids haunt your computer.
+              </span>
+            </div>
+
+          </div>
         </div>
 
           </Container>
