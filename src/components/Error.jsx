@@ -2,12 +2,23 @@ import React from 'react';
 
 export const Error = () => {
   return (
-    <div>
-      <br />
-      <br />
-      <p>You are attempting to get {window.location.pathname}</p>
-      <p>THIS PAGE DOES NOT FREAKIN EXIST DUDE</p>
-      <img src="https://pics.me.me/you-are-one-stupid-motherfucker-memes-com-17945257.png" />
+    <div id="notfound">
+      <div class="notfound">
+        <div class="notfound-400">
+          <h3>Uh oh, this page doesn't exist!</h3>
+          <h1>
+            <span>4</span>
+            <span>0</span>
+            <span>4</span>
+          </h1>
+        </div>
+        <br />
+        <br />
+        <br />
+        <h2>
+          <a href="/home">Back to Home</a>
+        </h2>
+      </div>
     </div>
   );
 };

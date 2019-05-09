@@ -97,12 +97,12 @@ class Profile extends Component {
                 <Card.Content>
                   <Card.Header>{this.props.data.name}</Card.Header>
                   <Card.Meta>Joined in 2019</Card.Meta>
-                  <Card.Description>{this.props.data.name} is a web developer.</Card.Description>
+                  <Card.Description>{this.props.data.name} is a full stack web developer.</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                   <a>
-                    <Icon name="user" />
-                    No Friends
+                    <Icon name="money bill alternate" />
+                    Points: 15
                   </a>
                 </Card.Content>
               </Card>

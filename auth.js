@@ -31,7 +31,7 @@ async function googleAuth(authCode) {
       googleId: id.sub,
       name: id.name,
       email: id.email,
-      picture: id.picture,
+      picture: `https://avatars.dicebear.com/v2/avataaars/${id.name.replace(/ /g, '')}.svg`,
       accessTok: fetchJSON.access_token,
       accessTokExp: moment(Date.now()).valueOf() + 3500000,
       refreshTok: fetchJSON.refresh_token

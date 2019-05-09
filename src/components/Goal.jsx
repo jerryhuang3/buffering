@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Popup, Label } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 
 class Goal extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class Goal extends Component {
     this.setState({ value: event.target.value });
   };
 
-  onSubmit = async() => {
+  onClick = async() => {
     console.log('running normally');
     const response = await fetch('/goals/update', {
       method: 'POST',
@@ -33,7 +33,7 @@ class Goal extends Component {
         <Form.Field className="set_goal">
           <label>Update your goal</label>
           <Form.Input onChange={this.onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          <Button onSubmit={this.onSubmit}>Update</Button>
+          <Button onClick={this.onClick}>Update</Button>
         </Form.Field>
       </Form>
     );

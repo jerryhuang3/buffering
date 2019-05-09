@@ -40,6 +40,9 @@ class Nav extends Component {
           <Menu.Item>
             <NavLink to="/demo">Demo</NavLink>
           </Menu.Item>
+          <Menu.Item>
+            <NavLink to="/tech">Tech</NavLink>
+          </Menu.Item>
         </Menu.Menu>
         <Menu.Menu position="right">
           <Menu.Item>
@@ -56,14 +59,8 @@ class Nav extends Component {
           <Menu.Item>
             <NavLink to="/">Home</NavLink>
           </Menu.Item>
-          <Menu.Item>
-            <NavLink to="/profile">Profile</NavLink>
-          </Menu.Item>
         </Menu.Menu>
         <Menu.Menu position="right">
-          <Menu.Item>
-            <h3 className="welcome">Hey! You are not logged in!</h3>
-          </Menu.Item>
           <Menu.Item>
             <NavLink to="/login">Login</NavLink>
           </Menu.Item>

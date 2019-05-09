@@ -18,6 +18,10 @@
   letter-spacing: 0.25rem;
 }
 
+.tech {
+  max-width: 150px !important;
+}
+
 .tagline {
   font-size: 3rem;
 }
