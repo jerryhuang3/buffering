@@ -14,17 +14,17 @@ User experience if goal is not met 2 out of the past 3 days.
 
 ## Dependencies
 
-React
-React-router
-Express
-Knex
-Postgres
-JQuery
-Moment
-Bcrypt
-Cookie-session
-Chart JS
-Semantic UI
+- React
+- React-router
+- Express
+- Knex
+- Postgres
+- JQuery
+- Moment
+- Bcrypt
+- Cookie-session
+- Chart JS
+- Semantic UI
 
 ## Starting the dev server
 
