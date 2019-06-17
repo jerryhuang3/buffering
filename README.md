@@ -2,6 +2,8 @@
 
 Buffering is a Fitness app using Google Fit integration that punishes the user for not meeting their daily steps goal. Users must meet their steps goals for the past three days or their internet experience will suffer.
 
+Created in collaboration with [Aleksey Van Leeuwarden](https://github.com/VanLeeuwarden) and [Matt Davey](https://github.com/MattTurnip).
+
 ## Final Product
 Buffering landing page. Requires user to either log in or register.
 !["Buffering Home Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/buffering%20home.png)
