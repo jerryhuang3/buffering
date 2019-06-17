@@ -1,17 +1,32 @@
-BUFF_r_ng
-=====================
+# Buffering
+
+Buffering is a Fitness app using Google Fit integration that punishes the user for not meeting their daily steps goal. Users must meet their steps goals for the past three days or their internet experience will suffer.
 
 ## Final Product
-Walmark landing page. Requires user to either log in or register.
-!["Walmark Landing Page"](https://github.com/jerryhuang3/LHL-Midterm-Project/blob/master/docs/Landing%20Page.png)
+Buffering landing page. Requires user to either log in or register.
+!["Buffering Home Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/buffering%20home.png)
 
-Walmark home page. Displays all submitted links in a randomized order.
-!["Walmark Home Page"](https://github.com/jerryhuang3/LHL-Midterm-Project/blob/master/docs/Home%20Page.png?raw=true)
+User experience if goal is not met 2 out of the past 3 days.
+!["User with Hell status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferinghell.gif)
 
+User experience if goal is not met at all the past 3 days.
+!["User in Awful status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferingawful.gif)
 
-=====================
+## Dependencies
 
-### Starting the dev server
+React
+React-router
+Express
+Knex
+Postgres
+JQuery
+Moment
+Bcrypt
+Cookie-session
+Chart JS
+Semantic UI
+
+## Starting the dev server
 
 Clone the repo to your local machine.
 ```
@@ -24,5 +39,5 @@ npm install
 npm run dev
 ```
 
-go to http://localhost:8000
+go to http://localhost:3000
 
