@@ -6,10 +6,10 @@ Buffering is a Fitness app using Google Fit integration that punishes the user f
 Buffering landing page. Requires user to either log in or register.
 !["Buffering Home Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/buffering%20home.png)
 
-User experience if goal is not met 2 out of the past 3 days.
+User experience if goal is not met at all the past 3 days.
 !["User with Hell status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferinghell.gif)
 
-User experience if goal is not met at all the past 3 days.
+User experience if goal is not met 2 out of the past 3 days.
 !["User in Awful status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferingawful.gif)
 
 ## Dependencies
