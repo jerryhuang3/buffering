@@ -43,3 +43,10 @@ npm run dev
 
 go to http://localhost:3000
 
+
+## Using the Chrome Extension
+
+Go to chrome://extensions/ and turn on developer mode. On the top left, click 'Load unpacked', select the folder chrome_extension from this repo, and turn on the extension. 
+
+On your dev server, sign up (or log in) to your Google account and allow the Google Fit API to access your data. If you do not have any data, your step count will automatically be at 0. Based on the goals you set initially, the extension should alter most websites that you are visiting.
+
