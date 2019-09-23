@@ -14,7 +14,7 @@ const moment = require('moment');
 const auth = require('./auth');
 const demo = require('./status-script');
 
-// iniitalize express
+// Iniitalize express
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -28,7 +28,6 @@ app.use(
   })
 );
 
-// Set's up user's initial state
 app.post('/', async (req, res) => {
   // Looks up user info upon loading app
   if (req.session.user) {
