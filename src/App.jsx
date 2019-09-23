@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home.jsx';
 import Profile from './components/Profile.jsx';
@@ -12,77 +12,75 @@ import Initialize from './components/Initialize.jsx';
 import Demo from './components/Demo.jsx';
 import Tech from './components/Tech.jsx';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  const [state, setState] = useState({
+    name: null,
+    google_session: false,
+    access_token: null,
+    show_nav: true,
+    picture: null
+  });
 
-    this.state = {
-      name: null,
-      google_session: false,
-      access_token: null,
-      show_nav: true,
-      picture: null
-    };
-  }
-
-  async componentDidMount() {
-    await window.gapi.load('auth2', () => {
+  useEffect(() => {
+    window.gapi.load('auth2', () => {
       let auth2 = gapi.auth2.init({
         apiKey: 'AIzaSyAvxeOb22g-FUMwG6oyIgOjeLUNF6jn55U',
         client_id: '677038605397-j26crueetoelsf8vh5f9pde9l93707r7.apps.googleusercontent.com',
         cookie_policy: 'single_host_origin',
         scope: 'https://www.googleapis.com/auth/fitness.activity.read'
-      });      
+      });
     });
-  
-    const response = await fetch('/', { method: 'POST' });
-    const json = await response.json();
-    if (!json) {
-    } else {
-      console.table(json);
-      this.setState({
-        name: json.name,
-        google_session: true,
-        access_token: json.access_token,
-        picture: json.image_url
-      }); 
-    }
-  }
+
+    const fetchData = async () => {
+      const response = await fetch('/', { method: 'POST' });
+      const json = await response.json();
+      if (!json) {
+      } else {
+        console.log("SETTING STATE ON APP")
+        setState({
+          name: json.name,
+          google_session: true,
+          access_token: json.access_token,
+          picture: json.image_url
+        });
+      }
+    };
+    fetchData();
+    console.log("show nav status", state.show_nav)
+  }, []);
 
   // Receives session prop from Nav component which receives session prop from Authentication component
-  connect = (name, bool, access) => {
+  const connect = (name, bool, access) => {
     console.log(name, bool, access);
-    this.setState({ name: name, google_session: bool, access_token: access});
-  }
-
-  noNav = () => {
-    this.setState({ show_nav: false });
+    setState({ name: name, google_session: bool, access_token: access });
   };
 
-  render() {
-    console.table(this.state);
-    return (
-      <Router>
-        <div>
-          {this.state.show_nav ? <Nav state={this.state} auth={this.connect} /> : null}
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/profile" render={props => <Profile {...props} data={this.state} connect={this.connect} />} />
-            <Route path="/widget" render={props => <Widget {...props} noNav={this.noNav} data={this.state} />} />
-            <Route path="/connect" render={props => <Connect {...props} />} />
-            <Route path="/login" render={props => <Login {...props} login={this.connect} session={this.state.google_session} />} />
-            <Route path="/signup" render={props => <Signup {...props} signup={this.connect} session={this.state.google_session} />} />
-            <Route path="/initialize" render={props => <Initialize {...props} data={this.state} />} />
-            <Route path="/demo" render={props => <Demo {...props} />} />
-            <Route path="/tech" render={props => <Tech {...props} />} />
-            <Route exact path="/400/signup" component={EmailExists} />
-            <Route path="/400/login" component={WrongLogin} />
-            <Route component={Error} />
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
-}
+  const noNav = () => {
+    setState({ show_nav: false });
+  };
+
+  return (
+    <Router>
+      <div>
+      <Nav state={state} auth={connect} />
+        {/* {state.show_nav ? <Nav state={state} auth={connect} /> : null} */}
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/profile" render={props => <Profile {...props} data={state} connect={connect} />} />
+          <Route path="/widget" render={props => <Widget {...props} noNav={noNav} data={state} />} />
+          <Route path="/connect" render={props => <Connect {...props} />} />
+          <Route path="/login" render={props => <Login {...props} login={connect} session={state.google_session} />} />
+          <Route path="/signup" render={props => <Signup {...props} signup={connect} session={state.google_session} />} />
+          <Route path="/initialize" render={props => <Initialize {...props} data={state} />} />
+          <Route path="/demo" render={props => <Demo {...props} />} />
+          <Route path="/tech" render={props => <Tech {...props} />} />
+          <Route exact path="/400/signup" component={EmailExists} />
+          <Route path="/400/login" component={WrongLogin} />
+          <Route component={Error} />
+        </Switch>
+      </div>
+    </Router>
+  );
+};
 
 export default App;

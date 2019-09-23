@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 // import .env
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const ENV = process.env.ENV || 'development';
 // local session
 const cookieSession = require('cookie-session');
@@ -98,6 +98,7 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+  console.log(req.body.code)
   const user = req.body.code
     ? await auth.googleAuth(req.body.code)
     : {

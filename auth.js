@@ -12,7 +12,7 @@ async function googleAuth(authCode) {
     access_type: 'offline',
     grant_type: 'authorization_code'
   };
-
+  console.log("COMPLETED BODY", body)
   // Requesting token information from google
   const fetchRes = await fetch('https://www.googleapis.com/oauth2/v4/token', {
     method: 'post',
@@ -25,10 +25,11 @@ async function googleAuth(authCode) {
 
   const id = jwt.decode(fetchJSON.id_token);
   
+  console.log(id)
   // Create user profile object to send to server
   const profile = { 
       type: 'google',
-      googleId: id.sub,
+      googleId: id,
       name: id.name,
       email: id.email,
       picture: `https://avatars.dicebear.com/v2/avataaars/${id.name.replace(/ /g, '')}.svg`,
