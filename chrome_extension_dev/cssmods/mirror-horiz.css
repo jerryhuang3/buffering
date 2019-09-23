@@ -1,0 +1,4 @@
+body {
+  -webkit-transform: scaleX(-1) !important;
+  transform: scaleX(-1) !important;
+}

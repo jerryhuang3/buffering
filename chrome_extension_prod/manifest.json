@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "Buffering",
+  "version": "1.0",
+  "description": "Ruin your browser experience if you haven't achieved your fitness goals",
+  "browser_action": {
+    "default_icon": {
+      "16": "./icons/16.png",
+      "32": "./icons/32.png",
+      "48": "./icons/48.png",
+      "128": "./icons/128.png"
+    },
+    "default_title": "Buffering",
+    "default_popup": "./popup/popup.html"
+  },
+  "chrome_url_overrides": {
+    "newtab": "./newtab/newTab.html"
+  },
+  "background": {
+    "scripts": ["./background/background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "exclude_globs": ["*://localhost:3000/*", "*://accounts.google.com/*"],
+      "js": ["./content/jquery-3.4.0.min.js", "./content/content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": ["tabs", "activeTab", "<all_urls>", "cookies"],
+  "web_accessible_resources": ["/vendor/geoBootstrap.css", "/vendor/img/*", "icons/*", "/fonts/big-black-bear-italic.otf"]
+}

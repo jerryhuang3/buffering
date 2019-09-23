@@ -1,0 +1,70 @@
+@font-face {
+  font-family: 'big-bear';
+  src: url('../fonts/big-black-bear-italic.otf');
+  font-style: normal;
+}
+
+body {
+  width: 20rem;
+  height: 10rem;
+  background: black;
+  color: white;
+}
+
+#message {
+  letter-spacing: 0.1rem;
+  text-align: center;
+}
+
+#status {
+  text-align: center;
+  font-size: 5rem;
+  height: 50%;
+  width: 100%;
+}
+
+#status-message {
+  text-align: center;
+  font-family: big-bear, sans-serif;
+  text-shadow: 1px 1px 2px rgba(150, 150, 150, 1);
+  margin: 0;
+  border-radius: 5px;
+}
+
+#script {
+  text-transform: capitalize;
+  text-align: center;
+  height: 30%;
+  width: fit-content;
+  padding: 1rem 2rem;
+}
+
+#script-messge {
+  font-family: big-bear, sans-serif;
+  margin: 0 2rem;
+}
+
+.loading {
+  background-image: url('../vendor/img/loading.gif');
+  background-size: 100% 100%;
+}
+
+.hell {
+  background-image: url('../vendor/img/hell.gif');
+  background-size: 100% 100%;
+}
+
+.awful {
+  background-image: url('../vendor/img/awful.gif');
+  background-size: 100% 100%;
+}
+
+.bad {
+  background-image: url('../vendor/img/bad.gif');
+  background-size: 100% 100%;
+}
+
+.good {
+  background-image: url('../vendor/img/good.gif');
+  background-size: 100% 100%;
+}

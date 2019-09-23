@@ -1,0 +1,4 @@
+body {
+  filter: invert(1) !important;
+  -webkit-filter: invert(1) !important;
+}
