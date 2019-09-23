@@ -1,7 +1,8 @@
 require('dotenv').config();
 // import knex
-const knexConfig = require('./knexfile');
-const knex = require('knex')(knexConfig.development);
+const env = process.env.NODE_ENV || 'development'; 
+const knexConfig = require('./knexfile')[env];
+const knex = require('knex')(knexConfig);
 const moment = require('moment');
 
 function makeUsersBad() {

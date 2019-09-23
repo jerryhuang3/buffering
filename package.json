@@ -4,10 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel build ./src/index.html && node server.js",
+    "start": "node server.js",
     "nodemon": "nodemon server.js",
-    "parcel": "parcel watch ./src/index.html",
+    "build": "parcel build ./src/index.html",
     "dev": "concurrently --kill-others \"npm run parcel\" \"npm run nodemon\""
   },
   "author": "Aleksey, Ratt, Jerry",
