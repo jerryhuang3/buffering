@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 // import .env
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const ENV = process.env.ENV || 'development';
 // local session
 const cookieSession = require('cookie-session');
@@ -67,7 +67,7 @@ app.post('/signup', async (req, res) => {
         password: bcrypt.hashSync(req.body.password, 10),
         picture: `https://avatars.dicebear.com/v2/avataaars/${req.body.name.replace(/ /g, '')}.svg`
       };
-
+    
   const emailExists = await queries.checkEmail(user.email);
 
   if (emailExists) {
@@ -86,7 +86,7 @@ app.post('/signup', async (req, res) => {
       const id = await queries.getUserId(user.email);
       req.session.user = id.id;
       await queries.setTokenNewUser(id.id, user.accessTok, user.refreshTok, user.accessTokExp);
-      return res.json({ name: user.name, access_token: user.accessTok });
+      return res.json({ name: user.name, access_token: user.accessTok, picture: user.picture });
     } else if (user.type === 'signup') {
       // Web sign up
       await queries.insertUser(null, user.name, user.email, user.password, user.picture);
@@ -121,7 +121,7 @@ app.post('/login', async (req, res) => {
       queries.setTokenExistingUser(userId.id, user.accessTok, user.accessTokExp);
       req.session.user = userId.id;
       queries.runningGoal(req.session.user);
-      return res.json({ name: user.name, access_token: user.accessTok });
+      return res.json({ name: user.name, access_token: user.accessTok, picture: user.picture });
       break;
     case 'login':
       // web login
@@ -155,7 +155,7 @@ app.post('/connect', async (req, res) => {
   // Adding google info to existing account
   await queries.connectGoogle(req.session.user, user.googleId);
   await queries.setTokenNewUser(req.session.user, user.accessTok, user.refreshTok, user.accessTokExp);
-  return res.json({ name: user.name, access_token: user.accessTok });
+  return res.json({ name: user.name, access_token: user.accessTok, picture: user.picture });
 });
 
 // GOALS

@@ -3,8 +3,8 @@ import React from 'react';
 export const Error = () => {
   return (
     <div id="notfound">
-      <div class="notfound">
-        <div class="notfound-400">
+      <div className="notfound">
+        <div className="notfound-400">
           <h3>Uh oh, this page doesn't exist!</h3>
           <h1>
             <span>4</span>
@@ -26,8 +26,8 @@ export const Error = () => {
 export const EmailExists = () => {
   return (
     <div id="notfound">
-      <div class="notfound">
-        <div class="notfound-400">
+      <div className="notfound">
+        <div className="notfound-400">
           <h3>Oops! The email you used already exists!</h3>
           <h1>
             <span>4</span>

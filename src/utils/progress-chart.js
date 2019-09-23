@@ -1,5 +1,4 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { NONAME } from 'dns';
 const Chart = require('chart.js');
 
 function goalRedOrGreen(goalValue, stepValue, idx) {

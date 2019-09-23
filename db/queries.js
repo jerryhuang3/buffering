@@ -163,12 +163,11 @@ function updateGoal(id, stepsGoal, endOfDay) {
 
 function insertGoal(id, stepsGoal, endOfDay) {
   return Promise.all([
-    knex('goals')
-      .insert({
-        id: id,
-        steps_goal: stepsGoal,
-        day_rounded: endOfDay
-      })
+    knex('goals').insert({
+      id: id,
+      steps_goal: stepsGoal,
+      day_rounded: endOfDay
+    })
   ]);
 }
 

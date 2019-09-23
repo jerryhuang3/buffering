@@ -1,31 +1,31 @@
 const hellInjects = [
-  // './scriptmods/mouseMoveVisibility.js',
-  // './scriptmods/redactHell.js',
+  './scriptmods/mouseMoveVisibility.js',
+  './scriptmods/redactHell.js',
   './scriptmods/marquee.js',
-  // './cssmods/zoom-hell.css',
-  // './cssmods/pulsate.css',
-  // './cssmods/mirror-horiz.css',
+  './cssmods/zoom-hell.css',
+  './cssmods/pulsate.css',
+  './cssmods/mirror-horiz.css',
   './cssmods/spin.css',
   './cssmods/blur-hell.css'
 ];
 const awfulInjects = [
   './scriptmods/clown.js',
-  // './scriptmods/mouseDraw.js',
-  // './scriptmods/geo.js',
-  // './cssmods/contrast.css',
-  // './cssmods/zoom-awful.css',
-  './cssmods/upside-down.css'
-  // './cssmods/hover-disappear.css',
-  // './scriptmods/redactAwful.js'
+  './scriptmods/mouseDraw.js',
+  './scriptmods/geo.js',
+  './cssmods/contrast.css',
+  './cssmods/zoom-awful.css',
+  './cssmods/upside-down.css',
+  './cssmods/hover-disappear.css',
+  './scriptmods/redactAwful.js'
 ];
 const badInjects = [
-  // './scriptmods/textColor.js',
-  // './scriptmods/image.js',
+  './scriptmods/textColor.js',
+  './scriptmods/image.js',
   './cssmods/zoom-bad.css',
-  // './cssmods/comic-sans.css'
-  // './cssmods/papyrus.css',
-  './cssmods/invert.css'
-  // './cssmods/image-opacity.css'
+  './cssmods/comic-sans.css',
+  './cssmods/papyrus.css',
+  './cssmods/invert.css',
+  './cssmods/image-opacity.css'
 ];
 
 let counter = 0;
