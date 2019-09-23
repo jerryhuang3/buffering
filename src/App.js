@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './components/Home.jsx';
-import Profile from './components/Profile.jsx';
-import { Error, EmailExists, WrongLogin } from './components/Error.jsx';
-import Nav from './components/Nav.jsx';
+import Home from './components/Home';
+import Profile from './components/Profile';
+import { Error, EmailExists, WrongLogin } from './components/Error';
+import Nav from './components/Nav';
 import Widget from './components/Widget';
 import Connect from './components/Connect';
-import Login from './components/Login.jsx';
-import Signup from './components/Signup.jsx';
-import Initialize from './components/Initialize.jsx';
-import Demo from './components/Demo.jsx';
-import Tech from './components/Tech.jsx';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Initialize from './components/Initialize';
+import Demo from './components/Demo';
+import Tech from './components/Tech';
 
 const App = () => {
   const [state, setState] = useState({
@@ -36,7 +36,7 @@ const App = () => {
       const json = await response.json();
       if (!json) {
       } else {
-        console.log("SETTING STATE ON APP")
+        console.log('SETTING STATE ON APP');
         setState({
           name: json.name,
           google_session: true,
@@ -46,7 +46,7 @@ const App = () => {
       }
     };
     fetchData();
-    console.log("show nav status", state.show_nav)
+    console.log('show nav status', state.show_nav);
   }, []);
 
   // Receives session prop from Nav component which receives session prop from Authentication component
@@ -59,10 +59,20 @@ const App = () => {
     setState({ show_nav: false });
   };
 
+  let nav = '';
+
+  if (state.show_nav) {
+    console.log('NAV EXIETS');
+    nav = <Nav state={state} auth={connect} ></Nav>;
+  } else {
+    nav = null;
+  }
+
   return (
     <Router>
       <div>
-      <Nav state={state} auth={connect} />
+        {nav}
+        <Nav state={state} auth={connect} />
         {/* {state.show_nav ? <Nav state={state} auth={connect} /> : null} */}
         <Switch>
           <Route exact path="/" component={Home} />
