@@ -1,7 +1,6 @@
-require('dotenv').config();
 // import knex
 const knexConfig = require('../knexfile');
-const knex = require('knex')(knexConfig.development);
+const knex = require('knex')(knexConfig.production);
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 

@@ -1,7 +1,10 @@
 node_modules
 .env
 .cache
-dist
 .DS_Store
 chrome_extension/.DS_Store
 chrome_extension/icons/.DS_Store
+.prettierrc
+.babelrc
+.eslintrc
+src

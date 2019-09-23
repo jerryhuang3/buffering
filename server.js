@@ -1,13 +1,8 @@
 'use strict';
 
 require('dotenv').config();
-
-// import .env
 const PORT = process.env.PORT || 3000;
-const ENV = process.env.ENV || 'development';
-// local session
 const cookieSession = require('cookie-session');
-// import express and related libraries
 const express = require('express');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
@@ -67,7 +62,7 @@ app.post('/signup', async (req, res) => {
         password: bcrypt.hashSync(req.body.password, 10),
         picture: `https://avatars.dicebear.com/v2/avataaars/${req.body.name.replace(/ /g, '')}.svg`
       };
-    
+
   const emailExists = await queries.checkEmail(user.email);
 
   if (emailExists) {
