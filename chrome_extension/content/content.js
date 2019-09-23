@@ -15,9 +15,7 @@ xhttp.onreadystatechange = function() {
         sendResponse({ status, script });
       });
     });
-
-    // console.log(response, status, statusText, responseURL);
   }
 };
-xhttp.open('POST', 'http://localhost:3000/extension', true);
+xhttp.open('POST', 'https://buffrng.herokuapp.com/extension', true);
 xhttp.send();

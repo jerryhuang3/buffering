@@ -97,7 +97,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     // chrome.tabs.insertCSS(null, { file: './cssmods/mirror-vert.css' });
     // chrome.tabs.executeScript(null, { file: './scriptmods/mouseDraw.js' });
 
-    //the script to execut is run with this response to the content script.
+    //the script to execute is run with this response to the content script.
     sendResponse({ status: data.userStatus, script: randomifyScript(data.userStatus) });
   } else {
     console.log('No Data');
