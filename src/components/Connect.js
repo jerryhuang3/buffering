@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
+import StateContext from "./StateContext";
 
 const Connect = props => {
+  const context = useContext(StateContext);
+
   const onClick = async () => {
     let googleAuth = gapi.auth2.getAuthInstance();
 
@@ -14,15 +17,11 @@ const Connect = props => {
     });
     const json = await res.json();
 
-    connect(
-      json.name,
-      json.access_token
-    );
-  };
-
-  const connect = (name, access) => {
-    props.connect(name, true, access);
-    window.location.reload();
+    context.setName(json.name);
+    context.setGoogleSession(true);
+    context.setAccessToken(json.access_token);
+    context.setPicture(json.picture);
+    props.history.push('/profile')
   };
 
   return (

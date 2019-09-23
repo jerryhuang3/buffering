@@ -1,6 +1,7 @@
 const moment = require('moment');
 
 function fetchStepData(accessToken) {
+  // Client fetch
   const request = {
     method: 'POST',
     body: JSON.stringify({
@@ -31,7 +32,6 @@ function fetchStepData(accessToken) {
 async function filterAndFetchSteps(accessToken) {
   const fetchResponse = await fetchStepData(accessToken);
   const dataAgg = await fetchResponse.json();
-  console.log(dataAgg)
 
   if (dataAgg.error) {
     return false;
@@ -46,7 +46,6 @@ async function filterAndFetchSteps(accessToken) {
         stepsTaken.push(0);
       }
     }
-    console.log('Client fetch', stepsTaken)
     return stepsTaken;
   }
 }

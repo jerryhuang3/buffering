@@ -11,8 +11,8 @@ function makeUsersBad() {
 
   return Promise.all([
     knex('goals').where({ 'day_rounded': endOfToday }).update({ 'steps_goal': 15000 }),
-    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 1000 }),
-    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 1000 })
+    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 0 }),
+    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 0 })
   ]);
 }
 
@@ -22,9 +22,9 @@ function makeUsersAwful() {
   const endOfBeforeYesterday = moment().endOf('day').subtract(2, 'day').valueOf();
 
   return Promise.all([
-    knex('goals').where({ 'day_rounded': endOfToday }).update({ 'steps_goal': 12000 }),
-    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 12000 }),
-    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 1000 })
+    knex('goals').where({ 'day_rounded': endOfToday }).update({ 'steps_goal': 15000 }),
+    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 15000 }),
+    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 0 })
   ]);
 }
 
@@ -34,9 +34,9 @@ function makeUsersHell() {
   const endOfBeforeYesterday = moment().endOf('day').subtract(2, 'day').valueOf();
 
   return Promise.all([
-    knex('goals').where({ 'day_rounded': endOfToday }).update({ 'steps_goal': 12000 }),
-    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 12000 }),
-    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 12000 })
+    knex('goals').where({ 'day_rounded': endOfToday }).update({ 'steps_goal': 15000 }),
+    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 15000 }),
+    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 15000 })
   ]);
 }
 
@@ -47,8 +47,8 @@ function makeUsersGood() {
 
   return Promise.all([
     knex('goals').where({ 'day_rounded': endOfToday }).update({ 'steps_goal': 0 }),
-    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 1000 }),
-    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 1000 })
+    knex('goals').where({ 'day_rounded': endOfYesterday }).update({ 'steps_goal': 0 }),
+    knex('goals').where({ 'day_rounded': endOfBeforeYesterday }).update({ 'steps_goal': 0 })
   ]);
 }
 

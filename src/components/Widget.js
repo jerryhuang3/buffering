@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Container, Header, Grid } from 'semantic-ui-react';
+import StateProvider from './StateProvider';
 import moment from 'moment';
 
 const Widget = props => {
+  const context = useContext(StateProvider);
+
   useEffect(() => {
-    props.noNav();
+    context.setNav(false);
   }, []);
 
   const time = moment().format('MMMM Do YYYY');
@@ -16,7 +19,7 @@ const Widget = props => {
       <Grid divided="vertically">
         <Grid.Row columns={2}>
           <Grid.Column>{time}</Grid.Column>
-          <Grid.Column>{props.data.name}</Grid.Column>
+          <Grid.Column>{context.name}</Grid.Column>
         </Grid.Row>
       </Grid>
     </div>

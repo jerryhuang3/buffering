@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, Redirect, withRouter } from 'react-router-dom';
 import { Button, Form, Grid, Message, Segment, Header } from 'semantic-ui-react';
 import { GoogleLogin } from 'react-google-login';
+import StateContext from './StateContext';
 
 const Signup = props => {
+  const context = useContext(StateContext);
+
   const authCode = async response => {
     const res = await fetch('/signup', {
       method: 'POST',
@@ -17,17 +20,15 @@ const Signup = props => {
     if (!json) {
       props.history.push('/400/signup');
     } else {
-      signup(json.name, json.access_token);
+      context.setName(json.name);
+      context.setGoogleSession(true);
+      context.setAccessToken(json.access_token);
+      context.setPicture(json.picture);
+      props.history.push('/initialize');
     }
   };
 
-  // Send Signup prop to Nav
-  const signup = (name, access) => {
-    props.history.push('/initialize');
-    props.signup(name, true, access);
-  };
-
-  if (props.google_session) {
+  if (context.google_session) {
     return <Redirect to="/profile" />;
   }
   return (

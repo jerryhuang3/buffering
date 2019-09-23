@@ -33,6 +33,7 @@ function getPastDaysIncludingToday(numberDays) {
 }
 
 function fetchStepData(accessToken) {
+  // Chrome Extension fetch
   const request = {
     method: 'POST',
     body: JSON.stringify({
@@ -64,7 +65,6 @@ async function filterAndFetchSteps(accessToken) {
   const fetchResponse = await fetchStepData(accessToken);
   const dataAgg = await fetchResponse.json();
 
-  console.log('DataAgg is: ', dataAgg);
   let stepsTaken = [];
   //check for empty data
   for (let i = 0; i < dataAgg.bucket.length; i++) {
@@ -75,8 +75,6 @@ async function filterAndFetchSteps(accessToken) {
       stepsTaken.push(0);
     }
   }
-  console.log('Extension fetch', stepsTaken);
-
   return stepsTaken;
 }
 

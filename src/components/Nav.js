@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { Container, Menu, Button } from 'semantic-ui-react';
+import StateContext from './StateContext';
 
 const Nav = props => {
-  // Receives session prop after clicking Login or Logout button
-  const session = (name, bool, access) => {
-    props.auth(name, bool, access);
-  };
+  const context = useContext(StateContext);
 
   const logout = async () => {
     const res = await fetch('/logout', { method: 'POST' });
@@ -17,13 +15,16 @@ const Nav = props => {
     auth2.signOut().then(() => auth2.disconnect());
 
     if (logout) {
-      session(null, false, null);
+      context.setName(null);
+      context.setGoogleSession(false);
+      context.setAccessToken(null);
+      context.setPicture(null);
       props.history.push('/');
     }
   };
 
   // Nav receives state of the session from App.js
-  const sess = props.state.google_session ? (
+  const sess = context.google_session ? (
     <Container>
       <Menu.Menu position="left">
         <Menu.Item>
@@ -41,7 +42,7 @@ const Nav = props => {
       </Menu.Menu>
       <Menu.Menu position="right">
         <Menu.Item>
-          <h3 className="welcome">Welcome {props.state.name}!</h3>
+          <h3 className="welcome">Welcome {context.name}!</h3>
         </Menu.Item>
         <Menu.Item>
           <Button onClick={logout}>Logout</Button>

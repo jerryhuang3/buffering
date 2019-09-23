@@ -3,23 +3,22 @@ import { Grid, Form } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
 const Initialize = props => {
-  const [state, setState] = useState({ value: null, success: false });
+  const [success, setSuccess] = useState(false);
+  const [stepState, setStepState] = useState(null);
 
   useEffect(() => {
     const fetchGoals = async () => {
       const response = await fetch('/goals/check', { method: 'POST' });
       const json = await response.json();
-
       if (json) {
         setState({ success: json });
       }
     };
-
     fetchGoals();
   }, []);
 
   const onChange = event => {
-    setState({ value: event.target.value });
+    setStepState(event.target.value);
   };
 
   const onSubmit = async () => {
@@ -28,14 +27,14 @@ const Initialize = props => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ steps: state.value })
+      body: JSON.stringify({ steps: stepState })
     });
     const json = await response.json();
-    setState({ success: json });
+    setSuccess(json);
   };
 
   const redirect = () => {
-    if (state.success) {
+    if (success) {
       return <Redirect to="/profile" />;
     }
   };

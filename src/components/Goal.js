@@ -1,38 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Form, Button } from 'semantic-ui-react';
+import StateContext from './StateContext';
 
-const Goal = props => {
+const Goal = () => {
+  const context = useContext(StateContext);
 
-  const [state, setState] = useState({value: null})
+  const [newGoal, setNewGoal] = useState(null);
 
   const onChange = event => {
-    setState({ value: event.target.value });
+    setNewGoal(event.target.value);
   };
 
-  const onClick = async() => {
-    console.log('running normally');
+  const onClick = async () => {
     const response = await fetch('/goals/update', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ steps: state.value, googleId: props.profileData.data.google_id })
+      body: JSON.stringify({ steps: newGoal })
     });
     const json = await response.json();
-
-    window.location.reload();
+    if (json) {
+      context.setGoalUpdate(json);
+    }
   };
 
-    return (
-      <Form size="large">
-        <Form.Field className="set_goal">
-          <label>Update your goal</label>
-          <Form.Input onChange={onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          <Button onClick={onClick}>Update</Button>
-        </Form.Field>
-      </Form>
-    );
-  
-}
+  return (
+    <Form size="large">
+      <Form.Field className="set_goal">
+        <label>Update your goal</label>
+        <Form.Input onChange={onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
+        <Button onClick={onClick}>Update</Button>
+      </Form.Field>
+    </Form>
+  );
+};
 
 export default Goal;

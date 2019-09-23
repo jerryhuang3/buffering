@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import dataUtils from '../utils/data-utils';
 import utils from '../../utils.js';
-import Goal from './Goal.jsx';
-import { Grid, Divider, Card, Icon, Image, Progress, Statistic, Popup, Container } from 'semantic-ui-react';
+import Goal from './Goal.js';
+import { Grid, Divider, Card, Icon, Image, Progress, Statistic } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
-import Connect from './Connect.jsx';
+import Connect from './Connect.js';
+import StateContext from './StateContext';
 
-const Profile = props => {
+const Profile = () => {
   const [dailySteps, setDailySteps] = useState(null);
   const [weeklySteps, setWeeklySteps] = useState(null);
-  const [state, setState] = useState({ status: null });
+  const [currentStatus, setStatus] = useState(null);
+
+  const context = useContext(StateContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +43,7 @@ const Profile = props => {
       progressChart.graphStepData(goalArray, stepsArray);
     };
     fetchData();
-  }, []);
+  }, Object.values(context));
 
   const dayProgress = (steps, goal) => {
     if (steps / goal > 1) {
@@ -59,26 +62,22 @@ const Profile = props => {
   };
 
   const status = userStatus => {
-    setState({ status: userStatus.toUpperCase() });
-  };
-
-  const connect = (name, bool, access) => {
-    props.connect(name, bool, access);
+    setStatus(userStatus.toUpperCase());
   };
 
   let progress;
-  if (state.day_progress === 100) {
+  if (dailySteps === 100) {
     progress = "Congratulations! You've reached your goal for today!";
   } else {
     progress = "You've still got more walking to do bud!";
   }
   let connected;
-  if (!props.data.access_token) {
+  if (!context.access_token) {
     connected = (
       <Grid centered>
         <Grid.Row>
           <Grid.Column>
-            <Connect profileData={props} connect={connect} />
+            <Connect />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -89,11 +88,11 @@ const Profile = props => {
         <Grid.Row>
           <Grid.Column width={4}>
             <Card>
-              <Image src={props.data.picture} wrapped ui={false} circular />
+              <Image src={context.picture} wrapped ui={false} circular />
               <Card.Content>
-                <Card.Header>{props.data.name}</Card.Header>
+                <Card.Header>{context.name}</Card.Header>
                 <Card.Meta>Joined in 2019</Card.Meta>
-                <Card.Description>{props.data.name} is a full stack web developer.</Card.Description>
+                <Card.Description>{context.name} is a full stack web developer.</Card.Description>
               </Card.Content>
               <Card.Content extra>
                 <a>
@@ -106,12 +105,12 @@ const Profile = props => {
           <Grid.Column width={4} verticalAlign="middle">
             <Grid.Row divided style={{ textAlign: 'center' }}>
               <h3>Current tier of browsing:</h3>
-              <h1>{state.status}</h1>
+              <h1>{currentStatus}</h1>
             </Grid.Row>
             <br />
             <br />
             <br />
-            <Goal profileData={props} />
+            <Goal />
           </Grid.Column>
           <Grid.Column width={4} verticalAlign="middle">
             <Grid.Row divided style={{ textAlign: 'center' }}>
