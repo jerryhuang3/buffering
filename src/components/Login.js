@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
-import { Button, Form, Grid, Message, Segment, Header, Divider } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Segment, Divider } from 'semantic-ui-react';
 import { GoogleLogin } from 'react-google-login';
 import StateContext from './StateContext';
 

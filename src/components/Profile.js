@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import dataUtils from '../utils/data-utils';
-import utils from '../../utils.js';
+import utils from '../../helpers/utils.js';
 import Goal from './Goal.js';
 import { Grid, Divider, Card, Icon, Image, Progress, Statistic } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
