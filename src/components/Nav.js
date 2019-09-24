@@ -24,7 +24,7 @@ const Nav = props => {
   };
 
   // Nav receives state of the session from App.js
-  const sess = context.google_session ? (
+  const session = context.google_session ? (
     <Container>
       <Menu.Menu position="left">
         <Menu.Item>
@@ -35,9 +35,6 @@ const Nav = props => {
         </Menu.Item>
         <Menu.Item>
           <NavLink to="/demo">Demo</NavLink>
-        </Menu.Item>
-        <Menu.Item>
-          <NavLink to="/tech">Tech</NavLink>
         </Menu.Item>
       </Menu.Menu>
       <Menu.Menu position="right">
@@ -67,7 +64,7 @@ const Nav = props => {
     </Container>
   );
 
-  return <Menu>{sess}</Menu>;
+  return <Menu>{session}</Menu>;
 };
 
 export default withRouter(Nav);

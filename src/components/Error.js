@@ -16,7 +16,7 @@ export const Error = () => {
         <br />
         <br />
         <h2>
-          <a href="/home">Back to Home</a>
+          <a href="/">Back to Home</a>
         </h2>
       </div>
     </div>
