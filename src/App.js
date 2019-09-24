@@ -4,13 +4,11 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import { Error, EmailExists, WrongLogin } from './components/Error';
 import Nav from './components/Nav';
-import Widget from './components/Widget';
 import Connect from './components/Connect';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Initialize from './components/Initialize';
 import Demo from './components/Demo';
-import Tech from './components/Tech';
 import StateContext from './components/StateContext';
 
 const App = () => {
@@ -42,18 +40,16 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        {context.show_nav ? <Nav /> : <Nav/>}
+      <div className={'container'}>
+        {context.show_nav ? <Nav /> : <Nav />}
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/profile" render={props => <Profile {...props} />} />
-          <Route path="/widget" render={props => <Widget {...props} />} />
-          <Route path="/connect" render={props => <Connect {...props} />} />
-          <Route path="/login" render={props => <Login {...props} />} />
-          <Route path="/signup" render={props => <Signup {...props} />} />
-          <Route path="/initialize" render={props => <Initialize {...props} />} />
-          <Route path="/demo" render={props => <Demo {...props} />} />
-          <Route path="/tech" render={props => <Tech {...props} />} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/connect" component={Connect} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/initialize" component={Initialize} />
+          <Route path="/demo" component={Demo} />
           <Route exact path="/400/signup" component={EmailExists} />
           <Route path="/400/login" component={WrongLogin} />
           <Route component={Error} />

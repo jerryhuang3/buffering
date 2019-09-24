@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Form } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
-const Initialize = props => {
+const Initialize = () => {
   const [success, setSuccess] = useState(false);
   const [stepState, setStepState] = useState(null);
 
@@ -40,18 +40,20 @@ const Initialize = props => {
   };
 
   return (
-    <Grid centered>
-      <Grid.Column width={9}>
-        {redirect()}
-        <Form size="large">
-          <Form.Field className="set_goal">
-            <label>Set your goal:</label>
-            <Form.Input onChange={onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-            <button onClick={onSubmit}>Update</button>
-          </Form.Field>
-        </Form>
-      </Grid.Column>
-    </Grid>
+    <div className={'content-initialize'}>
+      <Grid centered>
+        <Grid.Column width={9}>
+          {redirect()}
+          <Form size="large">
+            <Form.Field className="init-goal">
+              <label>Set your goal:</label>
+              <Form.Input onChange={onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
+              <button onClick={onSubmit}>Update</button>
+            </Form.Field>
+          </Form>
+        </Grid.Column>
+      </Grid>
+    </div>
   );
 };
 

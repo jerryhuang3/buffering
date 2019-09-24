@@ -26,13 +26,15 @@ const Goal = () => {
   };
 
   return (
-    <Form size="large">
-      <Form.Field className="set_goal">
-        <label>Update your goal</label>
-        <Form.Input onChange={onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-        <Button onClick={onClick}>Update</Button>
-      </Form.Field>
-    </Form>
+    <div className={'set_goal'}>
+      <Form size="large">
+        <Form.Field>
+          <label>Update your goal</label>
+          <Form.Input onChange={onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
+          <Button onClick={onClick}>Update</Button>
+        </Form.Field>
+      </Form>
+    </div>
   );
 };
 

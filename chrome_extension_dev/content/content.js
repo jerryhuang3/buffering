@@ -17,5 +17,5 @@ xhttp.onreadystatechange = function() {
     });
   }
 };
-xhttp.open('POST', 'https://localhost:3000/extension', true);
+xhttp.open('POST', 'http://localhost:3000/extension', true);
 xhttp.send();

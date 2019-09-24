@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "exclude_globs": ["*://localhost:3000/*", "*://accounts.google.com/*"],
+      "exclude_globs": ["*://localhost:3000/*", "*://accounts.google.com/*", "*://buffrng.herokuapp.com/*"],
       "js": ["./content/jquery-3.4.0.min.js", "./content/content.js"],
       "run_at": "document_start"
     }

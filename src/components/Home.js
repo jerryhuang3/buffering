@@ -3,10 +3,10 @@ import { Grid, Container } from 'semantic-ui-react';
 
 const Home = () => {
   return (
-    <div>
-      <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
-        <h1 className="hero">Buffering</h1>
+    <div className={'content-home'}>
+      <Grid>
         <Container>
+          <h1 className="hero">Buffering</h1>
           <p className="info ">
             Buffering helps you combat unwanted internet ubiquity and meet your fitness goals. Connect to your GoogleFit app, set ambitious
             goals and, should those goals not be met, witness an absolutely degraded internet experience. Is this an internet diet? Nope.
@@ -21,7 +21,7 @@ const Home = () => {
 
             <div className="description">
               <div className="q-n-a">
-                <span className="question">Meet all your goals?</span>
+                <span className="question">MEET ALL YOUR GOALS?</span>
                 <span className="answer">
                   We deem you <span className="status">'Good'</span>. Feel no guilt that you stayed up watching car crash videos all night.
                   You earned it!
@@ -29,14 +29,14 @@ const Home = () => {
               </div>
 
               <div className="q-n-a">
-                <span className="question">Miss a day?</span>
+                <span className="question">MISS A DAY?</span>
                 <span className="answer">
                   Now your status is <span className="status">'Bad'</span>. Experience mild annoyance.
                 </span>
               </div>
 
               <div className="q-n-a">
-                <span className="question">You've slacked off for two whole days?</span>
+                <span className="question">SLACKED OFF FOR TWO WHOLE DAYS?</span>
                 <span className="answer">
                   Yikes! You're now <span className="status">'Awful'</span> and that's official according to our database. Browsing kinda
                   sucks.
@@ -44,7 +44,7 @@ const Home = () => {
               </div>
 
               <div className="q-n-a">
-                <span className="question">The past three days you've DONE NOTHING?!?</span>
+                <span className="question">THE PAST THREE DAYS YOU'VE DONE NOTHING?!?</span>
                 <span className="answer">
                   Congratulations, you're in internet <span className="status">'Hell'</span>! Yikes doesn't even cut it. Ghosts of the 90s
                   on steroids haunt your computer.
@@ -55,7 +55,7 @@ const Home = () => {
         </Container>
       </Grid>
     </div>
-  ); 
+  );
 };
 
 export default Home;

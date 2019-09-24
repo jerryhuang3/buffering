@@ -74,72 +74,59 @@ const Profile = () => {
   let connected;
   if (!context.access_token) {
     connected = (
-      <Grid centered>
-        <Grid.Row>
-          <Grid.Column>
-            <Connect />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <div className="connect">
+        <Grid centered>
+          <Grid.Row>
+            <Grid.Column>
+              <Connect />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
     );
   } else {
     connected = (
-      <Grid centered>
-        <Grid.Row>
-          <Grid.Column width={4}>
-            <Card>
-              <Image src={context.picture} wrapped ui={false} circular />
-              <Card.Content>
-                <Card.Header>{context.name}</Card.Header>
-                <Card.Meta>Joined in 2019</Card.Meta>
-                <Card.Description>{context.name} is a full stack web developer.</Card.Description>
-              </Card.Content>
-              <Card.Content extra>
-                <a>
-                  <Icon name="money bill alternate" />
-                  Points: 15
-                </a>
-              </Card.Content>
-            </Card>
-          </Grid.Column>
-          <Grid.Column width={4} verticalAlign="middle">
-            <Grid.Row divided style={{ textAlign: 'center' }}>
-              <h3>Current tier of browsing:</h3>
-              <h1>{currentStatus}</h1>
-            </Grid.Row>
-            <br />
-            <br />
-            <br />
-            <Goal />
-          </Grid.Column>
-          <Grid.Column width={4} verticalAlign="middle">
-            <Grid.Row divided style={{ textAlign: 'center' }}>
-              <Statistic className="semantic">
-                <Statistic.Value className="semantic">{weeklySteps}</Statistic.Value>
-                <Statistic.Label className="slabel">Steps Taken This Week</Statistic.Label>
-              </Statistic>
-            </Grid.Row>
-          </Grid.Column>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          <Grid.Column width={12}>
-            <p className="progress">Today's Progress</p>
-            <Progress percent={dailySteps} indicating progress>
-              {progress}
-            </Progress>
-          </Grid.Column>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          <Grid.Column width={12}>
-            <canvas id="ProgressChart" />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <React.Fragment>
+        <div className={'profile-card'}>
+          <Card>
+            <Image src={context.picture} wrapped ui={false} circular />
+            <Card.Content>
+              <Card.Header>{context.name}</Card.Header>
+              <Card.Meta>Joined in 2019</Card.Meta>
+              <Card.Description>{context.name} is a full stack web developer.</Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              <a>
+                <Icon name="money bill alternate" />
+                Points: 15
+              </a>
+            </Card.Content>
+          </Card>
+        </div>
+        <div className={'status'}>
+          <h3>Current tier of browsing:</h3>
+          <h1>{currentStatus}</h1>
+        </div>
+        <Goal />
+        <Statistic className="semantic">
+          <Statistic.Value className="semantic">{weeklySteps}</Statistic.Value>
+          <Statistic.Label className="slabel">Steps Taken This Week</Statistic.Label>
+        </Statistic>
+        <div className={'progress-bar'}>
+          <Divider inverted />
+          <p className="progress">Today's Progress</p>
+          <Progress percent={dailySteps} indicating progress inverted>
+            {progress}
+          </Progress>
+          <Divider inverted />
+        </div>
+        <div className={'canvas'}>
+          <canvas id="ProgressChart" />
+        </div>
+      </React.Fragment>
     );
   }
-  return <div>{connected}</div>;
+  return <div className={'content-profile'}>{connected}</div>;
 };
 
 export default Profile;

@@ -83,6 +83,9 @@ function graphStepData(goalArray, stepArray) {
               fontSize: 25,
               fontColor: 'white',
               beginAtZero: true
+            },
+            gridLines: {
+              color: '#B3EFFF'
             }
           }
         ],
@@ -91,6 +94,9 @@ function graphStepData(goalArray, stepArray) {
             ticks: {
               fontSize: 25,
               fontColor: 'white'
+            },
+            gridLines: {
+              color: '#B3EFFF'
             }
           }
         ]

@@ -7,7 +7,7 @@
     "start": "node server.js",
     "nodemon": "nodemon server.js",
     "build": "parcel build ./src/index.html",
-    "dev": "concurrently --kill-others \"npm run parcel\" \"npm run nodemon\""
+    "dev": "concurrently --kill-others \"parcel ./src/index.html\" \"npm run nodemon\""
   },
   "author": "Aleksey, Ratt, Jerry",
   "license": "ISC",
@@ -21,7 +21,8 @@
     "concurrently": "^4.1.0",
     "nodemon": "^1.18.11",
     "parcel-bundler": "^1.11.0",
-    "prettier": "^1.17.0"
+    "prettier": "^1.17.0",
+    "sass": "^1.22.12"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
@@ -37,7 +38,7 @@
     "knex": "^0.16.5",
     "moment-es6": "^1.0.0",
     "node-fetch": "^2.4.1",
-    "pg": "^7.10.0",
+    "pg": "^7.12.1",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-google-login": "^5.0.4",
