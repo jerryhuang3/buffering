@@ -54,7 +54,7 @@ npm install
 3. Click on the "Create credentials" dropdown menu and select OAuth client id.
 4. Choose Web application for the "Application type". You can set the Name to whatever you want.
 5. Set "Authorized JavaScript origins" and "Authorized redirect URIs" to http://localhost:3000 and create your client.
-6. Save the Client ID and Client Secret in the .env file provided. Your .env file should look like this:
+6. Create a .env file and add your Client ID and Client Secret to it. Your .env file should look like this:
 
 ```
 CLIENT_ID={your client ID without curly brackets}
