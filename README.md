@@ -18,7 +18,7 @@ Buffering landing page.
 !["Buffering Home Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/home.png)
 
 Profile page.
-!["Profile Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/profile.gif)
+!["Profile Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/profile.png)
 
 User experience if goal is not met at all the past 3 days.
 !["User with Hell status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferinghell.gif)
