@@ -1,4 +1,4 @@
-console.log('%cHello from content script', 'background: red; color: yellow; font-size: large');
+console.log('%cBuffering is running. Please login to degrade your internet experience', 'background: red; color: yellow; font-size: medium');
 
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
