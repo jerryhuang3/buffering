@@ -28,12 +28,13 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 50px 1fr;
 
   .ui.menu {
     grid-column: 1 / span 3;
     grid-row: 1 / span 1;
     align-items: start;
+    margin-bottom: 0;
   }
 
   .content-home {
@@ -146,6 +147,7 @@ body {
       grid-row: 2 / span 2;
       justify-self: center;
       align-self: center;
+      text-align: center;
     }
   }
 
@@ -376,10 +378,6 @@ input[type='number']::-webkit-outer-spin-button {
 .label {
   color: white !important;
   font-size: 1.25em !important;
-}
-
-.connect {
-  text-align: center;
 }
 
 .error {
