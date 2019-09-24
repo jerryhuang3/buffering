@@ -14,8 +14,11 @@ If you do not use Google Fit, you will have no step data associated with your ac
 
 ## Final Product
 
-Buffering landing page. Requires user to either log in or register.
-!["Buffering Home Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/buffering%20home.png)
+Buffering landing page. 
+!["Buffering Home Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/home.png)
+
+Profile page.
+!["Profile Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/profile.gif)
 
 User experience if goal is not met at all the past 3 days.
 !["User with Hell status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferinghell.gif)
