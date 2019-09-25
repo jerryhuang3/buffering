@@ -4,3 +4,4 @@ node_modules
 chrome_extension/.DS_Store
 chrome_extension/icons/.DS_Store
 dist
+.env

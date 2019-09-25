@@ -37,10 +37,11 @@ const Profile = () => {
         userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
         weekProgress(stepsArray);
         dayProgress(stepsArray[6], goalArray[6]);
-        status(userStatus);
+        setStatus(userStatus.toUpperCase());
+        progressChart.graphStepData(goalArray, stepsArray);
+      } else {
+        progressChart.graphStepData(goalArray, [0, 0, 0, 0, 0, 0, 0]);
       }
-
-      progressChart.graphStepData(goalArray, stepsArray);
     };
     fetchData();
   }, Object.values(context));
@@ -61,13 +62,11 @@ const Profile = () => {
     setWeeklySteps(sumOfSteps);
   };
 
-  const status = userStatus => {
-    setStatus(userStatus.toUpperCase());
-  };
-
   let progress;
   if (dailySteps === 100) {
     progress = "Congratulations! You've reached your goal for today!";
+  } else if (dailySteps === null) {
+    progress = "You either have no data or Google Fit didn't connect! Check out the demo tab!";
   } else {
     progress = "You've still got more walking to do bud!";
   }
@@ -93,7 +92,7 @@ const Profile = () => {
             <Card.Content>
               <Card.Header>{context.name}</Card.Header>
               <Card.Meta>Joined in 2019</Card.Meta>
-              <Card.Description>{context.name} is a full stack web developer.</Card.Description>
+              <Card.Description>{context.name} is an aspiring step taker.</Card.Description>
             </Card.Content>
             <Card.Content extra>
               <a>
@@ -109,7 +108,7 @@ const Profile = () => {
         </div>
         <Goal />
         <Statistic className="semantic">
-          <Statistic.Value className="semantic">{weeklySteps}</Statistic.Value>
+          <Statistic.Value className="semantic">{weeklySteps ? weeklySteps : 0}</Statistic.Value>
           <Statistic.Label className="slabel">Steps Taken This Week</Statistic.Label>
         </Statistic>
         <div className={'progress-bar'}>

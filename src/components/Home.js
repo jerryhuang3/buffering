@@ -15,7 +15,7 @@ const Home = () => {
 
           <div>
             <p className="extra-info">
-              This fitness app & chrome extension combo examines your last 3 days' activityand then reduces your status for each day of
+              This fitness app & chrome extension combo examines your last 3 days' activity and then reduces your status for each day of
               subpar performance.
             </p>
 
