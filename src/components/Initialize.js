@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Grid, Form } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
+import StateContext from './StateContext';
 
 const Initialize = () => {
+  const context = useContext(StateContext);
+
   const [success, setSuccess] = useState(false);
   const [stepState, setStepState] = useState(null);
 
   useEffect(() => {
-    const fetchGoals = async () => {
-      const response = await fetch('/goals/check', { method: 'POST' });
-      const json = await response.json();
-      if (json) {
-        setState({ success: json });
-      }
-    };
-    fetchGoals();
+    console.log(context);
+    if (context.google_session) {
+      fetchGoals();
+    }
   }, []);
+
+  const fetchGoals = async () => {
+    const response = await fetch('/goals/check', { method: 'POST' });
+    const json = await response.json();
+    if (json) {
+      setState({ success: json });
+    }
+  };
 
   const onChange = event => {
     setStepState(event.target.value);

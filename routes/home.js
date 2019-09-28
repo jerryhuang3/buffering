@@ -9,8 +9,9 @@ module.exports = home = async (req, res) => {
 
     // For users not connected to google
     if (!user) {
-      const user = await queries.getUser(req.session.user);
-      return res.json({ name: user.name });
+      console.log('user is not connected to google');
+      const user = await queries.getUserById(req.session.user);
+      return res.json({ name: user.name, access_token: null, image_url: user.image_url });
     }
     // For users connected to google
     // First check if access token is expired and generate a new one if it is

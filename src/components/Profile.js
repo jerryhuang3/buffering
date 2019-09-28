@@ -14,14 +14,14 @@ const Profile = () => {
 
   const context = useContext(StateContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('/', { method: 'POST' });
+  useEffect(() => { 
+    fetchData();
+  }, Object.values(context));
 
+  const fetchData = async () => {
+    const response = await fetch('/', { method: 'POST' });
       const accessData = await response.json();
-
       const stepsArray = await dataUtils.filterAndFetchSteps(accessData.access_token);
-
       const goalFetch = await fetch('/goals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,9 +42,7 @@ const Profile = () => {
       } else {
         progressChart.graphStepData(goalArray, [0, 0, 0, 0, 0, 0, 0]);
       }
-    };
-    fetchData();
-  }, Object.values(context));
+  }
 
   const dayProgress = (steps, goal) => {
     if (steps / goal > 1) {
@@ -71,19 +69,19 @@ const Profile = () => {
     progress = "You've still got more walking to do bud!";
   }
   let connected;
-  if (!context.access_token) {
-    connected = (
-      <div className="connect">
-        <Grid centered>
-          <Grid.Row>
-            <Grid.Column>
-              <Connect />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
-    );
-  } else {
+  // if (!context.access_token) {
+  //   connected = (
+  //     <div className="connect">
+  //       <Grid centered>
+  //         <Grid.Row>
+  //           <Grid.Column>
+  //             <Connect />
+  //           </Grid.Column>
+  //         </Grid.Row>
+  //       </Grid>
+  //     </div>
+  //   );
+  // } else {
     connected = (
       <React.Fragment>
         <div className={'profile-card'}>
@@ -124,7 +122,7 @@ const Profile = () => {
         </div>
       </React.Fragment>
     );
-  }
+  // }
   return <div className={'content-profile'}>{connected}</div>;
 };
 

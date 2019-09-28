@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 import { Button, Form, Grid, Message, Segment, Divider } from 'semantic-ui-react';
 import { GoogleLogin } from 'react-google-login';
@@ -7,23 +7,42 @@ import StateContext from './StateContext';
 const Login = props => {
   const context = useContext(StateContext);
 
-  const authCode = async response => {
+  const [input, setInput] = useState({});
+
+  const handleChange = e => {
+    e.persist();
+    setInput(inputs => ({ ...inputs, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    handleLogin(input);
+  };
+
+  const handleLogin = async response => {
+    console.log('Trying to login');
     const res = await fetch('/login', {
       method: 'POST',
       body: JSON.stringify(response),
       headers: { 'Content-Type': 'application/json' }
     });
     const json = await res.json();
+
+    console.log('LOGIN RESPONSE', json);
     if (!json) {
       props.history.push('/400/login');
+    } else {
+      context.setName(json.name);
+      if (json.google_session) {
+        context.setGoogleSession(true);
+        context.setAccessToken(json.access_token);
+      }
+      context.setPicture(json.picture);
+      props.history.push('/profile');
     }
-    context.setName(json.name);
-    context.setGoogleSession(true);
-    context.setAccessToken(json.access_token);
-    context.setPicture(json.picture);
   };
 
-  if (context.google_session) {
+  if (context.name) {
     return <Redirect to="/profile" />;
   }
   return (
@@ -31,13 +50,27 @@ const Login = props => {
       <div className={'login-form'}>
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
-            <h2>
-              Login to your account
-            </h2>
-            <Form action="/login" method="POST" size="large">
+            <h2>Login to your account</h2>
+            <Form onSubmit={handleSubmit} size="large">
               <Segment>
-                <Form.Input fluid icon="paper plane" iconPosition="left" placeholder="E-mail address" name="email" type="email" />
-                <Form.Input fluid icon="lock" iconPosition="left" placeholder="Password" name="password" type="password" />
+                <Form.Input
+                  onChange={handleChange}
+                  fluid
+                  icon="paper plane"
+                  iconPosition="left"
+                  placeholder="E-mail address"
+                  name="email"
+                  type="email"
+                />
+                <Form.Input
+                  onChange={handleChange}
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                />
                 <Button color="black" fluid size="large">
                   Login
                 </Button>
@@ -53,7 +86,7 @@ const Login = props => {
               clientId={process.env.CLIENT_ID}
               scope={process.env.SCOPES}
               buttonText="Login"
-              onSuccess={authCode}
+              onSuccess={handleLogin}
               responseType="code"
               accessType="offline"
               cookiePolicy={'single_host_origin'}

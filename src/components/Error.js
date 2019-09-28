@@ -49,8 +49,8 @@ export const EmailExists = () => {
 export const WrongLogin = () => {
   return (
     <div id="notfound">
-      <div class="notfound">
-        <div class="notfound-400">
+      <div className="notfound">
+        <div className="notfound-400">
           <h3>Oops! The email or password you entered is incorrect!</h3>
           <h1>
             <span>4</span>
