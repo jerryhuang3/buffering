@@ -17,8 +17,9 @@ module.exports = login = async (req, res) => {
   switch (user.type) {
     case 'google':
       // google login
-      const userId = queries.getUserId(user.email);
-      queries.setTokenExistingUser(userId.id, user.accessTok, user.accessTokExp);
+      const userId = await queries.getUserId(user.email);
+      console.log("USER ID", userId)
+      queries.setTokenExistingUser(userId, user.accessTok, user.accessTokExp);
       req.session.user = userId;
       queries.runningGoal(req.session.user);
       return res.json({ name: user.name, access_token: user.accessTok, picture: user.picture });

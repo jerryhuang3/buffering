@@ -91,15 +91,16 @@ body {
   }
 
   .content-profile {
+    padding-top: 25px;
     grid-column: 1 / span 3;
     grid-row: 2;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
     grid-template-rows: 15% 20% 20% 15% 15% 15%;
     overflow: scroll;
     .profile-card {
       grid-column: 2 / span 1;
-      grid-row: 1 / span 3;
+      grid-row: 1 / span 2;
       justify-self: center;
       align-self: center;
     }
@@ -107,7 +108,7 @@ body {
       grid-column: 3 / span 1;
       grid-row: 1 / span 1;
       justify-self: center;
-      align-self: end;
+      align-self: center;
       text-align: center;
     }
     .set_goal {
@@ -128,7 +129,7 @@ body {
       color: white !important;
     }
     .progress-bar {
-      grid-column: 3 / span 2;
+      grid-column: 2 / span 3;
       grid-row: 3 / span 1;
       align-self: start;
       .progress {

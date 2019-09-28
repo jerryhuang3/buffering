@@ -30,8 +30,11 @@ const App = () => {
       if (!json) {
       } else {
         context.setName(json.name);
-        context.setGoogleSession(true);
-        context.setAccessToken(json.access_token);
+        if (json.access_token) {
+          console.log("GOOGLE USER SAVING ")
+          context.setGoogleSession(true);
+          context.setAccessToken(json.access_token);
+        }
         context.setPicture(json.image_url);
       }
     };

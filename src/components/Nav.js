@@ -24,7 +24,7 @@ const Nav = props => {
   };
 
   // Nav receives state of the session from App.js
-  const session = context.google_session ? (
+  const session = context.name ? (
     <Container>
       <Menu.Menu position="left">
         <Menu.Item>

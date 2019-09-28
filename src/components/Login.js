@@ -32,8 +32,11 @@ const Login = props => {
     if (!json) {
       props.history.push('/400/login');
     } else {
+
+      console.log("WHAT IS", json.access_token)
       context.setName(json.name);
-      if (json.google_session) {
+      if (json.access_token) {
+        console.log("AccESs token detected")
         context.setGoogleSession(true);
         context.setAccessToken(json.access_token);
       }
