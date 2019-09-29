@@ -10,10 +10,7 @@ const Initialize = () => {
   const [stepState, setStepState] = useState(null);
 
   useEffect(() => {
-    console.log(context);
-    if (context.google_session) {
       fetchGoals();
-    }
   }, []);
 
   const fetchGoals = async () => {
@@ -40,17 +37,19 @@ const Initialize = () => {
     setSuccess(json);
   };
 
-  const redirect = () => {
+ 
     if (success) {
       return <Redirect to="/profile" />;
     }
-  };
+
+  if (!context.name) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div className={'content-initialize'}>
       <Grid centered>
         <Grid.Column width={9}>
-          {redirect()}
           <Form size="large">
             <Form.Field className="init-goal">
               <label>Set your goal:</label>

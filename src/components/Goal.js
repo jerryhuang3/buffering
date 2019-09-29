@@ -5,14 +5,15 @@ import StateContext from './StateContext';
 const Goal = () => {
   const context = useContext(StateContext);
 
-  const [newGoal, setNewGoal] = useState(null);
+  const [newGoal, setNewGoal] = useState('');
   const [didUpdate, setDidUpdate] = useState(true);
-  
+
   const onChange = event => {
     setNewGoal(event.target.value);
   };
 
-  const onClick = async () => {
+  const handleSubmit = async event => {
+    event.preventDefault();
     const response = await fetch('/goals/update', {
       method: 'POST',
       headers: {
@@ -27,15 +28,16 @@ const Goal = () => {
     } else {
       setDidUpdate(false);
     }
+    setNewGoal('');
   };
 
   return (
     <div className={'set_goal'}>
-      <Form size="large">
+      <Form onSubmit={handleSubmit} size="large">
         <Form.Field>
           <label>Update your goal</label>
-          <Form.Input onChange={onChange} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          {didUpdate ? <Button onClick={onClick}>Update</Button> : <p>You can only update once a day!</p>}
+          <Form.Input onChange={onChange} value={newGoal} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
+          {didUpdate ? <Button onSubmit={handleSubmit}>Update</Button> : <p>You can only update once a day!</p>}
         </Form.Field>
       </Form>
     </div>

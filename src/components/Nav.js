@@ -15,9 +15,8 @@ const Nav = props => {
     auth2.signOut().then(() => auth2.disconnect());
 
     if (logout) {
-      context.setName(null);
-      context.setGoogleSession(false);
       context.setAccessToken(null);
+      context.setName(null);
       context.setPicture(null);
       props.history.push('/');
     }

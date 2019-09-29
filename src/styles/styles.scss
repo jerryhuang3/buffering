@@ -26,6 +26,7 @@ body {
 .container {
   width: 100vw;
   height: 100vh;
+  min-width: 970px;
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
   grid-template-rows: 50px 1fr;
@@ -96,7 +97,7 @@ body {
     grid-row: 2;
     display: grid;
     grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
-    grid-template-rows: 15% 20% 20% 15% 15% 15%;
+    grid-template-rows: repeat(6, 1fr);
     overflow: scroll;
     .profile-card {
       grid-column: 2 / span 1;
@@ -115,7 +116,9 @@ body {
       grid-column: 3 / span 1;
       grid-row: 2 / span 1;
       text-align: center;
+      justify-self: center;
       align-self: center;
+      width: 200px;
     }
     .semantic {
       grid-column: 4 / span 1;
@@ -129,6 +132,7 @@ body {
       color: white !important;
     }
     .progress-bar {
+      padding-top:10px;
       grid-column: 2 / span 3;
       grid-row: 3 / span 1;
       align-self: start;
@@ -145,7 +149,7 @@ body {
     }
     .connect {
       grid-column: 2 / span 3;
-      grid-row: 2 / span 2;
+      grid-row: 4 / span 1;
       justify-self: center;
       align-self: center;
       text-align: center;

@@ -9,7 +9,7 @@ const cors = require('cors');
 
 // Iniitalize express and routes
 const app = express();
-const home = require('./routes/home');
+const users = require('./routes/users');
 const login = require('./routes/login');
 const logout = require('./routes/logout');
 const signup = require('./routes/signup');
@@ -41,7 +41,7 @@ app.get('/*', (req, res) => {
 });
 
 // Routes
-app.post('/', home);
+app.post('/users', users);
 app.post('/login', login);
 app.post('/logout', logout);
 app.post('/signup', signup);

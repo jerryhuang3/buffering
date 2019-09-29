@@ -3,7 +3,6 @@ import StateContext from './StateContext';
 
 const StateProvider = props => {
   const [name, setName] = useState(null);
-  const [googleSession, setGoogleSession] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [showNav, setNav] = useState(true);
   const [picture, setPicture] = useState(null);
@@ -13,16 +12,12 @@ const StateProvider = props => {
     <StateContext.Provider
       value={{
         name: name,
-        google_session: googleSession,
         access_token: accessToken,
         show_nav: showNav,
         picture: picture,
         goal_update: goalUpdate,
         setName: name => {
           setName(name);
-        },
-        setGoogleSession: bool => {
-          setGoogleSession(bool);
         },
         setAccessToken: token => {
           setAccessToken(token);

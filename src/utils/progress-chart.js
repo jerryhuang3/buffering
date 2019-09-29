@@ -32,6 +32,7 @@ function graphStepData(goalArray, stepArray) {
   const ctx = document.getElementById('ProgressChart');
   const mixedChart = new Chart(ctx, {
     type: 'bar',
+    responsive: true,
     plugin: [ChartDataLabels],
     data: {
       labels: ['6 Days Ago', '5 Days Ago', '4 Days Ago', '3 Days Ago', '2 Days Ago', 'Yesterday', 'Today'],
@@ -51,7 +52,7 @@ function graphStepData(goalArray, stepArray) {
           backgroundColor: 'rgba(0, 181, 173, 1)',
           borderColor: 'rgba(0, 181, 173, 1)',
           fill: false,
-          borderWidth: 8,
+          borderWidth: 6,
           datalabels: {
             color: '#fff',
             align: 'top',
@@ -72,7 +73,7 @@ function graphStepData(goalArray, stepArray) {
       },
       legend: {
         labels: {
-          fontSize: 25,
+          fontSize: 20,
           fontColor: 'white'
         }
       },
@@ -80,7 +81,7 @@ function graphStepData(goalArray, stepArray) {
         yAxes: [
           {
             ticks: {
-              fontSize: 25,
+              fontSize: 20,
               fontColor: 'white',
               beginAtZero: true
             },
@@ -92,7 +93,7 @@ function graphStepData(goalArray, stepArray) {
         xAxes: [
           {
             ticks: {
-              fontSize: 25,
+              fontSize: 20,
               fontColor: 'white'
             },
             gridLines: {

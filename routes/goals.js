@@ -2,7 +2,6 @@ const queries = require('../db/queries');
 const moment = require('moment');
 
 const goal = async function(req, res) {
-  console.log("GOALS RUNNING")
   const id = req.session.user;
   // calculate rounded day and week ago from current time
   const today = moment().endOf('day');

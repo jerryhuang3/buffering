@@ -20,27 +20,16 @@ const Login = props => {
   };
 
   const handleLogin = async response => {
-    console.log('Trying to login');
     const res = await fetch('/login', {
       method: 'POST',
       body: JSON.stringify(response),
       headers: { 'Content-Type': 'application/json' }
     });
     const json = await res.json();
-
-    console.log('LOGIN RESPONSE', json);
     if (!json) {
       props.history.push('/400/login');
     } else {
-
-      console.log("WHAT IS", json.access_token)
       context.setName(json.name);
-      if (json.access_token) {
-        console.log("AccESs token detected")
-        context.setGoogleSession(true);
-        context.setAccessToken(json.access_token);
-      }
-      context.setPicture(json.picture);
       props.history.push('/profile');
     }
   };

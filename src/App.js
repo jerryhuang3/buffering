@@ -25,17 +25,10 @@ const App = () => {
     });
 
     const fetchData = async () => {
-      const response = await fetch('/', { method: 'POST' });
+      const response = await fetch('/users', { method: 'POST' });
       const json = await response.json();
-      if (!json) {
-      } else {
+      if (json) {
         context.setName(json.name);
-        if (json.access_token) {
-          console.log("GOOGLE USER SAVING ")
-          context.setGoogleSession(true);
-          context.setAccessToken(json.access_token);
-        }
-        context.setPicture(json.image_url);
       }
     };
     fetchData();

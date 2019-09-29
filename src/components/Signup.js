@@ -31,17 +31,9 @@ const Signup = props => {
 
     if (!json) {
       props.history.push('/400/signup');
-    } else {
-      console.log('SIGNUP COMPONENT', json);
-      context.setName(json.name);
-      if (json.google_session) {
-        console.log('setting google session');
-        context.setGoogleSession(true);
-        context.setAccessToken(json.access_token);
-      }
-      context.setPicture(json.picture);
-      props.history.push('/initialize');
     }
+    context.setName(json.name);
+    props.history.push('/initialize');
   };
 
   if (context.name) {

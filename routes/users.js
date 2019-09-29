@@ -2,15 +2,12 @@ const auth = require('../helpers/auth');
 const queries = require('../db/queries');
 const moment = require('moment');
 
-module.exports = home = async (req, res) => {
-  console.log(req.session.user)
+module.exports = users = async (req, res) => {
   // Looks up user info upon loading app
   if (req.session.user) {
     const user = await queries.getUserWithToken(req.session.user); // Works if user is connected to google
-    console.log(user)
     // For users not connected to google
     if (!user) {
-      console.log('user is not connected to google');
       const user = await queries.getUserById(req.session.user);
       return res.json({ name: user.name, access_token: null, image_url: user.image_url });
     }
