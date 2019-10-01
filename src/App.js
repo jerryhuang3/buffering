@@ -32,6 +32,8 @@ const App = () => {
       }
     };
     fetchData();
+
+    console.log(document.getElementsByClassName('nav-left')[0].style.display);
   }, []);
 
   return (

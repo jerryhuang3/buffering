@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import StateContext from './StateContext';
 
@@ -8,7 +8,7 @@ const Nav = props => {
   const [nav, showNav] = useState(false);
 
   const onClick = e => {
-    console.log(window.innerWidth)
+    console.log(window.innerWidth);
     if (!nav) {
       document.getElementsByClassName('nav-left')[0].style.display = 'block';
     } else {
@@ -32,9 +32,6 @@ const Nav = props => {
       props.history.push('/');
     }
   };
-
-  
-
   // Nav receives state of the session from App.js
   const session = context.name ? (
     <div className={'nav'}>
@@ -91,11 +88,6 @@ const Nav = props => {
       </div>
     </div>
   );
-
-  if (window.innerWidth > 900) {
-    // document.getElementsByClassName('nav-left')[0].style.display = 'block';
-    console.log("Yes")
-  }
 
   return <div className={'nav2-container'}>{session}</div>;
 };

@@ -49,7 +49,6 @@ body {
     .nav-left {
       grid-row: 1;
       grid-column: 1;
-      display: grid;
       justify-self: start;
       ul {
         padding: 0;
@@ -79,16 +78,16 @@ body {
       justify-self: end;
     }
   }
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 768px) {
     .nav {
       .burger {
         display: block;
       }
       .nav-left {
         grid-row: 2;
-        grid-column: 2 / span 1;
-        justify-self: center;
-        text-align: center;
+        grid-column: 1 / span 1;
+        justify-self: start;
+        text-align: start;
         display: none;
         ul {
           li {
@@ -128,21 +127,21 @@ body {
     .hero {
       text-align: center;
       font-family: big-bear, sans-serif;
-      font-size: calc(.5em + 5vw);
+      font-size: calc(0.5em + 5vw);
       letter-spacing: 0.25rem;
       padding-top: 20px;
     }
     .info {
       padding: 80px;
       color: white;
-      font-size: calc(1.25em + .75vw);
+      font-size: calc(1.25em + 0.75vw);
       background-color: rgba(0, 181, 83, 0.15);
       box-shadow: 8px -8px rgba(0, 181, 83, 0.1);
     }
     .extra-info {
       padding: 80px;
       color: white;
-      font-size: calc(1.25em + .6vw);
+      font-size: calc(1.25em + 0.6vw);
       background-color: rgba(0, 99, 181, 0.15);
       box-shadow: 8px -8px rgba(0, 99, 181, 0.1);
     }
@@ -158,12 +157,12 @@ body {
       margin: 10px;
     }
     .question {
-      font-size: calc(1.25em + .5vw);
+      font-size: calc(1.25em + 0.5vw);
       width: 30%;
       margin: 10px;
     }
     .answer {
-      font-size: calc(1.25em + .55vw);
+      font-size: calc(1.25em + 0.55vw);
       width: 70%;
       margin: 10px;
     }
@@ -179,20 +178,22 @@ body {
     grid-row: 2;
     display: grid;
     grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(4, auto);
     overflow: scroll;
     .profile-card {
       grid-column: 2 / span 1;
       grid-row: 1 / span 2;
+      padding: 20px;
       justify-self: center;
       align-self: center;
-    }
-    .status {
-      grid-column: 3 / span 1;
-      grid-row: 1 / span 1;
-      justify-self: center;
-      align-self: center;
-      text-align: center;
+      max-width: 250px;
+      p {
+        margin: 0;
+      }
+      h1 {
+        margin: 0;
+        color: black;
+      }
     }
     .set_goal {
       grid-column: 3 / span 1;
@@ -202,17 +203,32 @@ body {
       align-self: center;
       width: 200px;
     }
-    .semantic {
+    .week-steps {
       grid-column: 4 / span 1;
       grid-row: 1 / span 2;
       justify-content: center;
-      font-family: big-bear !important;
-      color: white !important;
-      letter-spacing: 4px;
+      margin: 0;
+      .value {
+        font-family: big-bear !important;
+        color: white !important;
+        letter-spacing: 4px;
+      }
+      .slabel {
+        color: white !important;
+      }
     }
-    .slabel {
-      color: white !important;
+
+    .status {
+      grid-column: 3 / span 1;
+      grid-row: 1 / span 1;
+      text-align: center;
+      justify-self: center;
+      align-self: center;
+      h1 {
+        margin: 0;
+      }
     }
+
     .progress-bar {
       padding-top: 10px;
       grid-column: 2 / span 3;
@@ -227,28 +243,38 @@ body {
     }
     .canvas {
       grid-column: 2 / span 3;
-      grid-row: 4 / span 3;
+      grid-row: 4 / span 1;
+      justify-self: center;
+      align-self: center;
+      width: 75%;
     }
     .connect {
-      grid-column: 2 / span 3;
-      grid-row: 4 / span 1;
+      grid-column: 3 / span 2;
+      grid-row: 1 / span 2;
       justify-self: center;
       align-self: center;
       text-align: center;
     }
   }
-
   .content-demo {
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
+    text-align: center;
     .hero {
-      text-align: center;
       font-family: big-bear, sans-serif;
-      font-size: 10rem;
+      font-size: calc(2em + 5vw);
       letter-spacing: 0.25rem;
     }
     .tagline {
-      font-size: 3rem;
+      font-size: calc(2em + 1vw);
+      padding-top: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 50px 0;
+      li {
+        padding: 20px 0;
+      }
     }
     button {
       width: 200px;
@@ -293,6 +319,83 @@ body {
       }
     }
   }
+
+  @media screen and (max-width: 768px) {
+    .content-profile {
+      padding-top: 25px;
+      grid-column: 1 / span 3;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, auto);
+      .profile-card {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: center;
+        p {
+          margin: 0;
+        }
+        h1 {
+          margin: 0;
+          color: black;
+        }
+        .content {
+          text-align: center;
+        }
+      }
+      .status {
+        grid-column: 1;
+        grid-row: 2;
+        text-align: center;
+        justify-self: center;
+        align-self: center;
+        h1 {
+          margin: 0;
+        }
+        h3 {
+          margin: 0;
+        }
+      }
+      .set_goal {
+        grid-column: 1;
+        grid-row: 4;
+        padding: 20px 0;
+      }
+      .week-steps {
+        grid-column: 1;
+        grid-row: 3;
+        padding: 10px 0;
+      }
+      .progress-bar {
+        grid-column: 1;
+        grid-row: 5;
+        padding: 0 30px;
+        .progress {
+          color: white;
+          font-size: 12px;
+          text-align: center;
+          text-shadow: 2px 10px 10px 10px black;
+        }
+      }
+      .canvas {
+        grid-column: 1;
+        grid-row: 6;
+        width: 365px;
+      }
+      .connect {
+        grid-column: 1;
+        display: none;
+      }
+    }
+    .content-account {
+      .login-google-btn {
+        span {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
   #notfound {
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;

@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import dataUtils from '../utils/data-utils';
 import utils from '../../helpers/utils.js';
 import Goal from './Goal.js';
-import { Divider, Card, Image, Progress, Statistic } from 'semantic-ui-react';
+import { Divider, Card, Icon, Image, Progress, Statistic } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
 import Connect from './Connect.js';
 import StateContext from './StateContext';
@@ -17,11 +17,11 @@ const Profile = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const response = await fetch('/users', { method: 'POST'})
+      const response = await fetch('/users', { method: 'POST' });
       const user = await response.json();
       context.setAccessToken(user.access_token);
-      context.setPicture(user.image_url)
-    }
+      context.setPicture(user.image_url);
+    };
     getUser();
     if (context.access_token) {
       createChart(context.access_token);
@@ -75,8 +75,8 @@ const Profile = () => {
   connected = (
     <React.Fragment>
       <div className={'profile-card'}>
-        <Card fluid={true}>
-          <Image src={context.picture} wrapped ui={false} fluid={true} />
+        <Card fluid>
+          <Image src={context.picture} wrapped ui={false} fluid />
           <Card.Content>
             <Card.Header>{context.name}</Card.Header>
             <Card.Meta>Joined in 2019</Card.Meta>
@@ -85,30 +85,30 @@ const Profile = () => {
         </Card>
       </div>
       <div className={'status'}>
-        <h3>Current standing:</h3>
+        <h3>Current tier of browsing:</h3>
         <h1>{currentStatus}</h1>
       </div>
       <Goal />
-      <Statistic className="semantic">
-        <Statistic.Value className="semantic">{weeklySteps ? weeklySteps : 0}</Statistic.Value>
-        <Statistic.Label className="slabel">Steps Taken This Week</Statistic.Label>
+      <Statistic className={'week-steps'}>
+        <Statistic.Value className={'week-steps'}>{weeklySteps ? weeklySteps : 0}</Statistic.Value>
+        <Statistic.Label className={'slabel'}>Steps Taken This Week</Statistic.Label>
       </Statistic>
       {context.access_token ? (
         <React.Fragment>
           <div className={'progress-bar'}>
             <Divider inverted />
-            <p className="progress">Today's Progress</p>
+            <p className={'progress'}>Today's Progress</p>
             <Progress percent={dailySteps} indicating progress inverted>
               {progress}
             </Progress>
             <Divider inverted />
           </div>
           <div className={'canvas'}>
-            <canvas id="ProgressChart" />
+            <canvas id={'ProgressChart'} style={{ width: '365px', height: '275px' }} />
           </div>
         </React.Fragment>
       ) : (
-        <div className="connect">
+        <div className={'connect'}>
           <h2>Please connect your account to Google.</h2>
           <Connect />
         </div>
