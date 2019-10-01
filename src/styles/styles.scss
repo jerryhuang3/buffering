@@ -155,6 +155,9 @@ body {
       flex-direction: row;
       padding: 10px;
       margin: 10px;
+      span {
+        line-height: 25px;
+      }
     }
     .question {
       font-size: calc(1.25em + 0.5vw);

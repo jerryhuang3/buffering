@@ -51,7 +51,7 @@ export const WrongLogin = () => {
     <div id="notfound">
       <div className="notfound">
         <div className="notfound-400">
-          <h3>Oops! The email or password you entered is incorrect!</h3>
+          <h3>Oops! Wrong login information!</h3>
           <h1>
             <span>4</span>
             <span>0</span>

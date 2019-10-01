@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import StateContext from './StateContext';
 

@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import dataUtils from '../utils/data-utils';
 import utils from '../../helpers/utils.js';
 import Goal from './Goal.js';
-import { Divider, Card, Icon, Image, Progress, Statistic } from 'semantic-ui-react';
+import { Divider, Card, Image, Progress, Statistic } from 'semantic-ui-react';
 import progressChart from '../utils/progress-chart';
 import Connect from './Connect.js';
 import StateContext from './StateContext';
