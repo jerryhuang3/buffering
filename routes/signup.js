@@ -15,6 +15,7 @@ module.exports = signup = async (req, res) => {
 
   const emailExists = await queries.checkEmail(user.email);
 
+  console.log(user);
   if (emailExists) {
     return res.json(false);
   }
