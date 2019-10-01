@@ -6,7 +6,7 @@ const Home = () => {
     <div className={'content-home'}>
       <Grid>
         <Container>
-          <h1 className="hero">Buffering</h1>
+          <h1 className="hero">What is buffering?</h1>
           <p className="info ">
             Buffering helps you combat unwanted internet ubiquity and meet your fitness goals. Connect to your GoogleFit app, set ambitious
             goals and, should those goals not be met, witness an absolutely degraded internet experience. Is this an internet diet? Nope.
@@ -44,7 +44,7 @@ const Home = () => {
               </div>
 
               <div className="q-n-a">
-                <span className="question">THE PAST THREE DAYS YOU'VE DONE NOTHING?!?</span>
+                <span className="question">YOU'VE DONE NOTHING FOR THREE DAYS?!?</span>
                 <span className="answer">
                   Congratulations, you're in internet <span className="status">'Hell'</span>! Yikes doesn't even cut it. Ghosts of the 90s
                   on steroids haunt your computer.

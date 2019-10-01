@@ -23,13 +23,94 @@ body {
   animation: Gradient 120s ease infinite;
 }
 
+.nav2-container {
+  width: 100%;
+  grid-column: 1 / span 3;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 1fr 6fr 1fr;
+  background: white;
+
+  .nav {
+    max-width: 1720px;
+    grid-column: 2 / span 1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 50px auto;
+    align-items: center;
+
+    .burger {
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: start;
+      display: none;
+    }
+
+    .nav-left {
+      grid-row: 1;
+      grid-column: 1;
+      display: grid;
+      justify-self: start;
+      ul {
+        padding: 0;
+        list-style: none;
+        li {
+          display: inline;
+          a {
+            padding-right: 20px;
+          }
+        }
+      }
+    }
+    .nav-middle {
+      color: black;
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: center;
+      h2 {
+        font-family: big-bear, sans-serif;
+        letter-spacing: 2px;
+      }
+    }
+    .nav-right {
+      color: black;
+      grid-column: 3;
+      grid-row: 1;
+      justify-self: end;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    .nav {
+      .burger {
+        display: block;
+      }
+      .nav-left {
+        grid-row: 2;
+        grid-column: 2 / span 1;
+        justify-self: center;
+        text-align: center;
+        display: none;
+        ul {
+          li {
+            display: block;
+            a {
+              padding: 0;
+            }
+          }
+        }
+      }
+      .nav-right {
+        display: none;
+      }
+    }
+  }
+}
 .container {
   width: 100vw;
   height: 100vh;
-  min-width: 970px;
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: auto 1fr;
 
   .ui.menu {
     grid-column: 1 / span 3;
@@ -47,20 +128,21 @@ body {
     .hero {
       text-align: center;
       font-family: big-bear, sans-serif;
-      font-size: 10rem;
+      font-size: calc(.5em + 5vw);
       letter-spacing: 0.25rem;
+      padding-top: 20px;
     }
     .info {
       padding: 80px;
       color: white;
-      font-size: 30px;
+      font-size: calc(1.25em + .75vw);
       background-color: rgba(0, 181, 83, 0.15);
       box-shadow: 8px -8px rgba(0, 181, 83, 0.1);
     }
     .extra-info {
       padding: 80px;
       color: white;
-      font-size: 26px;
+      font-size: calc(1.25em + .6vw);
       background-color: rgba(0, 99, 181, 0.15);
       box-shadow: 8px -8px rgba(0, 99, 181, 0.1);
     }
@@ -76,18 +158,18 @@ body {
       margin: 10px;
     }
     .question {
-      font-size: 20px;
+      font-size: calc(1.25em + .5vw);
       width: 30%;
       margin: 10px;
     }
     .answer {
-      font-size: 22px;
+      font-size: calc(1.25em + .55vw);
       width: 70%;
       margin: 10px;
     }
     .status {
       font-family: cassette;
-      font-size: 40px;
+      font-size: calc(1.5em + 1vw);
     }
   }
 
@@ -132,7 +214,7 @@ body {
       color: white !important;
     }
     .progress-bar {
-      padding-top:10px;
+      padding-top: 10px;
       grid-column: 2 / span 3;
       grid-row: 3 / span 1;
       align-self: start;
@@ -224,7 +306,7 @@ body {
         font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
-        color:white;
+        color: white;
         margin-top: 0px;
         margin-bottom: 25px;
       }
@@ -267,7 +349,6 @@ body {
     text-shadow: -8px 0px 0px #fff;
   }
 }
-
 
 @media only screen and (max-width: 767px) {
   .notfound .notfound-400 {
