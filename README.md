@@ -6,7 +6,7 @@ Created in collaboration with [Aleksey Van Leeuwarden](https://github.com/VanLee
 
 ## Testing Live App on Heroku
 
-Download the `chrome_extension_prod` folder onto your computer. Go to chrome://extensions/ and turn on developer mode. On the top left, click 'Load unpacked', select the downloaded folder to turn on the extension.
+Download the `chrome_extension_prod` folder onto your computer. Go to chrome://extensions/ and turn on developer mode. On the top left, click 'Load unpacked', select the downloaded folder to turn on the extension. Alternatively, you can download it as an extension from https://chrome.google.com/webstore/detail/buffering/hpjcimjbbamlpadijkihkmefiblggpdk.
 
 Sign up with your Google credentials at https://buffrng.herokuapp.com and set your initial step goal to any number you like.
 
