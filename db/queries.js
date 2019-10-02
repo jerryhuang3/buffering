@@ -1,5 +1,5 @@
 // import knex
-const env = process.env.NODE_ENV || 'development'; 
+const env = process.env.NODE_ENV || 'development';
 const knexConfig = require('../knexfile')[env];
 const knex = require('knex')(knexConfig);
 const bcrypt = require('bcrypt');
@@ -11,14 +11,24 @@ function getUserId(email) {
       .where('email', email)
       .select()
   ]).then(result => {
+    return result[0][0].id;
+  });
+}
+
+function getUserById(id) {
+  return Promise.all([
+    knex('users')
+      .where('users.id', id)
+      .select()
+  ]).then(result => {
     return result[0][0];
   });
 }
 
-function getUser(id) {
+function getUserByEmail(email) {
   return Promise.all([
     knex('users')
-      .where('users.id', id)
+      .where('users.email', email)
       .select()
   ]).then(result => {
     return result[0][0];
@@ -221,7 +231,8 @@ function connectGoogle(id, googleId) {
 
 module.exports = {
   getUserId: getUserId,
-  getUser: getUser,
+  getUserById: getUserById,
+  getUserByEmail: getUserByEmail,
   getUserWithToken: getUserWithToken,
   checkGoogleIdExists: checkGoogleIdExists,
   insertUser: insertUser,

@@ -10,7 +10,6 @@ const goal = async function(req, res) {
     .endOf('day')
     .subtract(7, 'days')
     .valueOf();
-
   const foundGoalsAwait = await queries.pastWeekGoals(id, weekAgo, endOfDay);
   const foundGoals = foundGoalsAwait[0];
   let pastWeekArray = [endOfDay];
@@ -18,12 +17,10 @@ const goal = async function(req, res) {
     const ithDayAgo = today.subtract(1, 'days').valueOf();
     pastWeekArray.push(ithDayAgo);
   }
-
   const goalHistory = pastWeekArray.map(day => {
     const dayGoal = foundGoals.filter(goalObj => parseInt(goalObj.day_rounded) === day)[0]; // errors if no goals
     return dayGoal ? dayGoal.steps_goal : 0;
   });
-
   return res.json({ goalHistory: goalHistory });
 };
 

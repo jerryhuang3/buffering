@@ -6,8 +6,8 @@ const Connect = props => {
   const context = useContext(StateContext);
 
   const onClick = async () => {
+    // Getting google access code
     let googleAuth = gapi.auth2.getAuthInstance();
-
     let code = await googleAuth.grantOfflineAccess();
 
     const res = await fetch('/connect', {
@@ -16,12 +16,8 @@ const Connect = props => {
       body: JSON.stringify(code)
     });
     const json = await res.json();
-
-    context.setName(json.name);
-    context.setGoogleSession(true);
+    
     context.setAccessToken(json.access_token);
-    context.setPicture(json.picture);
-    props.history.push('/profile');
   };
 
   return (

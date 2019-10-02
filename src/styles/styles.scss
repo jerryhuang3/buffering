@@ -23,12 +23,93 @@ body {
   animation: Gradient 120s ease infinite;
 }
 
+.nav2-container {
+  width: 100%;
+  grid-column: 1 / span 3;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 1fr 6fr 1fr;
+  background: white;
+
+  .nav {
+    max-width: 1720px;
+    grid-column: 2 / span 1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 50px auto;
+    align-items: center;
+
+    .burger {
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: start;
+      display: none;
+    }
+
+    .nav-left {
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: start;
+      ul {
+        padding: 0;
+        list-style: none;
+        li {
+          display: inline;
+          a {
+            padding-right: 20px;
+          }
+        }
+      }
+    }
+    .nav-middle {
+      color: black;
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: center;
+      h2 {
+        font-family: big-bear, sans-serif;
+        letter-spacing: 2px;
+      }
+    }
+    .nav-right {
+      color: black;
+      grid-column: 3;
+      grid-row: 1;
+      justify-self: end;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .nav {
+      .burger {
+        display: block;
+      }
+      .nav-left {
+        grid-row: 2;
+        grid-column: 1 / span 1;
+        justify-self: start;
+        text-align: start;
+        display: none;
+        ul {
+          li {
+            display: block;
+            a {
+              padding: 0;
+            }
+          }
+        }
+      }
+      .nav-right {
+        display: none;
+      }
+    }
+  }
+}
 .container {
   width: 100vw;
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: auto 1fr;
 
   .ui.menu {
     grid-column: 1 / span 3;
@@ -46,20 +127,21 @@ body {
     .hero {
       text-align: center;
       font-family: big-bear, sans-serif;
-      font-size: 10rem;
+      font-size: calc(0.5em + 5vw);
       letter-spacing: 0.25rem;
+      padding-top: 20px;
     }
     .info {
       padding: 80px;
       color: white;
-      font-size: 30px;
+      font-size: calc(1.25em + 0.75vw);
       background-color: rgba(0, 181, 83, 0.15);
       box-shadow: 8px -8px rgba(0, 181, 83, 0.1);
     }
     .extra-info {
       padding: 80px;
       color: white;
-      font-size: 26px;
+      font-size: calc(1.25em + 0.6vw);
       background-color: rgba(0, 99, 181, 0.15);
       box-shadow: 8px -8px rgba(0, 99, 181, 0.1);
     }
@@ -73,62 +155,87 @@ body {
       flex-direction: row;
       padding: 10px;
       margin: 10px;
+      span {
+        line-height: 25px;
+      }
     }
     .question {
-      font-size: 20px;
+      font-size: calc(1.25em + 0.5vw);
       width: 30%;
       margin: 10px;
     }
     .answer {
-      font-size: 22px;
+      font-size: calc(1.25em + 0.55vw);
       width: 70%;
       margin: 10px;
     }
     .status {
       font-family: cassette;
-      font-size: 40px;
+      font-size: calc(1.5em + 1vw);
     }
   }
 
   .content-profile {
+    padding-top: 25px;
     grid-column: 1 / span 3;
     grid-row: 2;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 15% 20% 20% 15% 15% 15%;
+    grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
+    grid-template-rows: repeat(6, auto);
     overflow: scroll;
     .profile-card {
       grid-column: 2 / span 1;
-      grid-row: 1 / span 3;
+      grid-row: 1 / span 2;
+      padding: 20px;
       justify-self: center;
       align-self: center;
-    }
-    .status {
-      grid-column: 3 / span 1;
-      grid-row: 1 / span 1;
-      justify-self: center;
-      align-self: end;
-      text-align: center;
+      max-width: 300px;
+      p {
+        margin: 0;
+      }
+      h1 {
+        margin: 0;
+        color: black;
+      }
     }
     .set_goal {
       grid-column: 3 / span 1;
       grid-row: 2 / span 1;
       text-align: center;
+      justify-self: center;
       align-self: center;
+      width: 200px;
     }
-    .semantic {
+    .week-steps {
       grid-column: 4 / span 1;
       grid-row: 1 / span 2;
-      justify-content: center;
-      font-family: big-bear !important;
-      color: white !important;
-      letter-spacing: 4px;
+      justify-self: center;
+      align-self: center;
+      margin: 0;
+      .value {
+        font-family: big-bear !important;
+        color: white !important;
+        letter-spacing: 4px;
+      }
+      .slabel {
+        color: white !important;
+      }
     }
-    .slabel {
-      color: white !important;
+
+    .status {
+      grid-column: 3 / span 1;
+      grid-row: 1 / span 1;
+      text-align: center;
+      justify-self: center;
+      align-self: center;
+      h1 {
+        margin: 0;
+      }
     }
+
     .progress-bar {
-      grid-column: 3 / span 2;
+      padding-top: 10px;
+      grid-column: 2 / span 3;
       grid-row: 3 / span 1;
       align-self: start;
       .progress {
@@ -140,28 +247,38 @@ body {
     }
     .canvas {
       grid-column: 2 / span 3;
-      grid-row: 4 / span 3;
+      grid-row-start: 4;
+      justify-self: center;
+      align-self: center;
+      width: 80%;
     }
     .connect {
       grid-column: 2 / span 3;
-      grid-row: 2 / span 2;
+      grid-row: 3 / span 2;
       justify-self: center;
       align-self: center;
       text-align: center;
     }
   }
-
   .content-demo {
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
+    text-align: center;
     .hero {
-      text-align: center;
       font-family: big-bear, sans-serif;
-      font-size: 10rem;
+      font-size: calc(2em + 5vw);
       letter-spacing: 0.25rem;
     }
     .tagline {
-      font-size: 3rem;
+      font-size: calc(2em + 1vw);
+      padding-top: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 50px 0;
+      li {
+        padding: 20px 0;
+      }
     }
     button {
       width: 200px;
@@ -206,6 +323,83 @@ body {
       }
     }
   }
+
+  @media screen and (max-width: 768px) {
+    .content-profile {
+      padding-top: 25px;
+      grid-column: 1 / span 3;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, auto);
+      .profile-card {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: center;
+        p {
+          margin: 0;
+        }
+        h1 {
+          margin: 0;
+          color: black;
+        }
+        .content {
+          text-align: center;
+        }
+      }
+      .status {
+        grid-column: 1;
+        grid-row: 2;
+        text-align: center;
+        justify-self: center;
+        align-self: center;
+        h1 {
+          margin: 0;
+        }
+        h3 {
+          margin: 0;
+        }
+      }
+      .set_goal {
+        grid-column: 1;
+        grid-row: 4;
+        padding: 20px 0;
+      }
+      .week-steps {
+        grid-column: 1;
+        grid-row: 3;
+        padding: 10px 0;
+      }
+      .progress-bar {
+        grid-column: 1;
+        grid-row: 5;
+        padding: 0 30px;
+        .progress {
+          color: white;
+          font-size: 12px;
+          text-align: center;
+          text-shadow: 2px 10px 10px 10px black;
+        }
+      }
+      .canvas {
+        grid-column: 1;
+        grid-row: 6;
+        width: 365px;
+      }
+      .connect {
+        grid-column: 1;
+        grid-row: 6;
+      }
+    }
+    .content-account {
+      .login-google-btn {
+        span {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
   #notfound {
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
@@ -219,7 +413,7 @@ body {
         font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
-        color:white;
+        color: white;
         margin-top: 0px;
         margin-bottom: 25px;
       }
@@ -262,7 +456,6 @@ body {
     text-shadow: -8px 0px 0px #fff;
   }
 }
-
 
 @media only screen and (max-width: 767px) {
   .notfound .notfound-400 {

@@ -16,27 +16,25 @@ const App = () => {
 
   useEffect(() => {
     window.gapi.load('auth2', () => {
-      let auth2 = gapi.auth2.init({
-        apiKey: 'AIzaSyAvxeOb22g-FUMwG6oyIgOjeLUNF6jn55U',
+      gapi.auth2.init({
         client_id: '677038605397-j26crueetoelsf8vh5f9pde9l93707r7.apps.googleusercontent.com',
         cookie_policy: 'single_host_origin',
         scope: 'https://www.googleapis.com/auth/fitness.activity.read'
       });
     });
 
-    const fetchData = async () => {
-      const response = await fetch('/', { method: 'POST' });
-      const json = await response.json();
-      if (!json) {
-      } else {
-        context.setName(json.name);
-        context.setGoogleSession(true);
-        context.setAccessToken(json.access_token);
-        context.setPicture(json.image_url);
-      }
-    };
     fetchData();
+
+    console.log(document.getElementsByClassName('nav-left')[0].style.display);
   }, []);
+
+  const fetchData = async () => {
+    const response = await fetch('/users', { method: 'POST' });
+    const json = await response.json();
+    if (json) {
+      context.setName(json.name);
+    }
+  };
 
   return (
     <Router>
