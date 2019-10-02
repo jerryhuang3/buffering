@@ -8,7 +8,6 @@ const Nav = props => {
   const [nav, showNav] = useState(false);
 
   const onClick = e => {
-    console.log(window.innerWidth);
     if (!nav) {
       document.getElementsByClassName('nav-left')[0].style.display = 'block';
     } else {
@@ -29,7 +28,6 @@ const Nav = props => {
       context.setAccessToken(null);
       context.setName(null);
       context.setPicture(null);
-      props.history.push('/');
     }
   };
   // Nav receives state of the session from App.js
@@ -52,7 +50,7 @@ const Nav = props => {
             <NavLink to="/demo">Demo</NavLink>
           </li>
           <li onClick={logout}>
-            <NavLink to="/logout">Logout</NavLink>
+            <NavLink to="/">Logout</NavLink>
           </li>
         </ul>
       </div>

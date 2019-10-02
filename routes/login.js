@@ -1,12 +1,18 @@
 const auth = require('../helpers/auth');
 const queries = require('../db/queries');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 module.exports = login = async (req, res) => {
-  const user = req.body.code ? await auth.googleAuth(req.body.code) : { type: 'login', ...await queries.getUserByEmail(req.body.email) };
+  const user = req.body.code ? await auth.googleAuth(req.body.code) : { type: 'login', ...(await queries.getUserByEmail(req.body.email)) };
 
-  // Check if user exists or email is correct
+  // Check if user exists from web login
   if (!user || !user.email) {
+    return res.json(false);
+  }
+
+  // Check if user exists from Google Login
+  let userExists = await queries.getUserByEmail(user.email);
+  if (!userExists) {
     return res.json(false);
   }
 
