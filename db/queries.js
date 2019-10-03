@@ -191,6 +191,15 @@ function pastWeekGoals(id, weekAgo, endOfDay) {
   ]);
 }
 
+function pastWeekSteps(id, weekAgo, endOfDay) {
+  return Promise.all([
+    knex('steps')
+      .where('id', '=', id)
+      .whereBetween('day_rounded', [weekAgo, endOfDay])
+      .select('steps', 'day_rounded')
+  ]);
+}
+
 // Keeps steps_goal the same from last recorded day to current day
 function runningGoal(id) {
   return Promise.all([
@@ -241,6 +250,7 @@ module.exports = {
   checkEmail: checkEmail,
   checkPassword: checkPassword,
   pastWeekGoals: pastWeekGoals,
+  pastWeekSteps: pastWeekSteps,
   canUserUpdateGoal: canUserUpdateGoal,
   updateGoal: updateGoal,
   insertGoal: insertGoal,

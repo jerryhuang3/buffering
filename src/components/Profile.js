@@ -29,7 +29,8 @@ const Profile = () => {
   }, Object.values(context));
 
   const createChart = async access_token => {
-    let stepsArray = await dataUtils.filterAndFetchSteps(access_token);
+    // let stepsArray = await dataUtils.filterAndFetchSteps(access_token); // for google data
+    
     const goalFetch = await fetch('/goals', { method: 'POST' });
     const goalJSON = await goalFetch.json();
     const goalArray = goalJSON.goalHistory.reverse();
