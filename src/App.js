@@ -9,6 +9,8 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Initialize from './components/Initialize';
 import Demo from './components/Demo';
+import UserPage from './components/UserPage';
+import Leaderboard from './components/Leaderboard';
 import StateContext from './components/StateContext';
 
 const App = () => {
@@ -43,6 +45,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/profile" component={Profile} />
+          <Route path="/leaderboard" component={Leaderboard} />
           <Route path="/connect" component={Connect} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />

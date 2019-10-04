@@ -5,6 +5,37 @@ const knex = require('knex')(knexConfig);
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
+function getAllUsersPoints() {
+  return Promise.all([
+    knex('data')
+      .sum('daily_steps as total_steps')
+      .groupBy('data.id')
+      .select('id')
+  ]).then(result => {
+    return result[0];
+  });
+}
+
+function getAllUsersTotalStepsAndPoints() {
+  return Promise.all([
+    knex
+      .select('users.id', 'name', 'total_steps', 'total')
+      .from('users')
+      .join(
+        knex
+          .select('data.id')
+          .from('data')
+          .sum('daily_steps as total_steps')
+          .groupBy('data.id')
+          .as('sum'),
+        { 'users.id': 'sum.id' }
+      )
+      .join('points', { 'users.id': 'points.id' })
+  ]).then(result => {
+    return result[0];
+  });
+}
+
 function getUserId(email) {
   return Promise.all([
     knex('users')
@@ -181,7 +212,6 @@ function insertGoal(id, stepsGoal, endOfDay) {
   ]);
 }
 
-// should be changed to periodGoals
 function pastWeekData(id, weekAgo, endOfDay) {
   return Promise.all([
     knex('data')
@@ -247,7 +277,8 @@ module.exports = {
   initializeGoal: initializeGoal,
   checkGoalExists: checkGoalExists,
   runningGoal: runningGoal,
-  connectGoogle: connectGoogle
+  connectGoogle: connectGoogle,
+  getAllUsersTotalStepsAndPoints: getAllUsersTotalStepsAndPoints
 };
 
 // DATABASE STRUCTURE

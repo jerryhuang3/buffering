@@ -20,6 +20,7 @@ const initialize = require('./routes/initialize');
 const demo = require('./routes/demo');
 const extension = require('./routes/extension');
 const data = require('./routes/data');
+const leaderboard = require('./routes/leaderboard');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -56,6 +57,7 @@ app.post('/initialize', initialize);
 app.post('/extension', cors(), extension);
 app.post('/demo', demo);
 app.post('/users/:id/data', data);
+app.post('/leaderboard', leaderboard);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

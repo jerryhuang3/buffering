@@ -324,6 +324,88 @@ body {
     }
   }
 
+  .leaderboard {
+    grid-column: 2 / span 1;
+    grid-row: 2;
+    height: 92vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 125px 50px auto auto;
+    h1 {
+      grid-column: 1 / span 4;
+      grid-row: 1 / span 1;
+      justify-self: center;
+      font-family: big-bear, sans-serif;
+      font-size: calc(2em + 5vw);
+      letter-spacing: 0.25rem;
+      margin-bottom: 0;
+    }
+    .leader-header {
+      grid-column: 1 / span 4;
+      grid-row: 2 / span 1;
+      margin-bottom: 30px;
+      ul {
+        list-style: none;
+        display: grid;
+        grid-template-columns: 1fr 2fr repeat(2, 1fr);
+        border-bottom: 1px solid gray;
+        padding-bottom: 15px;
+        align-items: center;
+        justify-items: start;
+        padding-left: 50px;
+        .rank-header {
+          grid-column: 1;
+        }
+        .name-header {
+          grid-column: 2;
+        }
+        .points-header {
+          grid-column: 3;
+        }
+        .steps-header {
+          grid-column: 4;
+        }
+      }
+    }
+
+    .users {
+      grid-column: 1 / span 4;
+      grid-row: 3 / span 1;
+      overflow: auto;
+      .user {
+        grid-column: 2 / span 1;
+        ul {
+          list-style: none;
+          display: grid;
+          grid-template-columns: 1fr 2fr repeat(2, 1fr);
+          border-bottom: 1px solid gray;
+          justify-items: start;
+          padding-left: 50px;
+          align-items: center;
+          padding-bottom: 15px;
+          .rank {
+            grid-column: 1;
+          }
+          .name {
+            grid-column: 2;
+          }
+          .points {
+            grid-column: 3;
+          }
+          .steps {
+            grid-column: 4;
+          }
+        }
+      }
+    }
+
+    .pagination {
+      grid-column: 1 / span 4;
+      grid-row: 4 / span 1;
+      justify-self: center;
+    }
+  }
+
   @media screen and (max-width: 768px) {
     .content-profile {
       padding-top: 25px;
@@ -395,6 +477,19 @@ body {
       .login-google-btn {
         span {
           margin-left: 10px;
+        }
+      }
+    }
+    .leaderboard {
+      grid-template-rows: 75px 50px auto auto;
+      .leader-header ul {
+        padding-left: 0px;
+      }
+
+      .users {
+        padding-top: 20px;
+        .user ul {
+          padding-left: 0px;
         }
       }
     }

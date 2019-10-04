@@ -1,6 +1,10 @@
 const moment = require('moment');
 const fetch = require('node-fetch');
 
+const sortByPoints = (data) => {
+  return data.sort((a, b) => (a.total < b.total) ? 1 : -1)
+}
+
 function computeUserStatus(stepArray, goalArray) {
   const userStatusMap = ['good', 'bad', 'awful', 'hell'];
   let negativePoints = 0;
@@ -82,5 +86,6 @@ module.exports = {
   computeUserStatus: computeUserStatus,
   orderGoals: orderGoals,
   getPastDaysIncludingToday: getPastDaysIncludingToday,
-  filterAndFetchSteps: filterAndFetchSteps
+  filterAndFetchSteps: filterAndFetchSteps,
+  sortByPoints: sortByPoints
 };

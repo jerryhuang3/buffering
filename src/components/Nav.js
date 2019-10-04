@@ -47,6 +47,9 @@ const Nav = props => {
             <NavLink to="/profile">Profile</NavLink>
           </li>
           <li>
+            <NavLink to="/leaderboard">Leaderboard</NavLink>
+          </li>
+          <li>
             <NavLink to="/demo">Demo</NavLink>
           </li>
           <li onClick={logout}>
