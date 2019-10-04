@@ -23,21 +23,24 @@ const Profile = () => {
       context.setPicture(user.image_url);
     };
     getUser();
-    if (context.access_token) {
-      createChart(context.access_token);
-    }
+    // if (context.access_token) { //temp change for fake user data
+    createChart(context.access_token);
+    // }
   }, Object.values(context));
 
   const createChart = async access_token => {
     // let stepsArray = await dataUtils.filterAndFetchSteps(access_token); // for google data
-    
-    const goalFetch = await fetch('/goals', { method: 'POST' });
-    const goalJSON = await goalFetch.json();
-    const goalArray = goalJSON.goalHistory.reverse();
+
+    const dataFetch = await fetch('/users/2/data', { method: 'POST' });
+    const data = await dataFetch.json();
+    const [stepsArray, goalArray] = [data[0], data[1]];
     let userStatus;
+    console.log(stepsArray)
+    console.log(goalArray);
     if (!stepsArray) {
       stepsArray = [0, 0, 0, 0, 0, 0, 0];
     }
+
     const pastThreeSteps = stepsArray.slice(4);
     const pastThreeGoals = goalArray.slice(4);
     userStatus = utils.computeUserStatus(pastThreeSteps, pastThreeGoals);
@@ -94,7 +97,8 @@ const Profile = () => {
         <Statistic.Value className={'week-steps'}>{weeklySteps ? weeklySteps : 0}</Statistic.Value>
         <Statistic.Label className={'slabel'}>Steps Taken This Week</Statistic.Label>
       </Statistic>
-      {context.access_token ? (
+      {/* {context.access_token ? ( temp change for fake user data*/}
+      {context.name ? (
         <React.Fragment>
           <div className={'progress-bar'}>
             <Divider inverted />

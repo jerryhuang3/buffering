@@ -4,8 +4,9 @@ exports.up = function(knex, Promise) {
       table.increments('id');
       table.string('google_id');
       table.string('name');
-      table.string('email').unique();
+      table.string('email');
       table.string('password');
+      table.string('image_url');
     })
   ]).then(function() {
     return Promise.all([
@@ -14,19 +15,31 @@ exports.up = function(knex, Promise) {
         table.foreign('id').references('users.id');
         table.string('access_token');
         table.string('refresh_token');
-        table.datetime('updated_at');
+        table.bigInteger('expires_at');
       }),
-      knex.schema.createTable('goals', function(table) {
+      knex.schema.createTable('data', function(table) {
         table.integer('id');
         table.foreign('id').references('users.id');
-        table.string('steps_goal');
-        table.timestamp('created_at');
-        table.date('day_rounded');
+        table.bigInteger('day_rounded');
+        table.integer('steps_goal');
+        table.integer('daily_steps');
+        table.timestamps(true, true);
+      }),
+      knex.schema.createTable('points', function(table) {
+        table.integer('id');
+        table.foreign('id').references('users.id');
+        table.integer('total');
       })
     ]);
   });
 };
 
 exports.down = function(knex, Promise) {
-  return Promise.all([knex.raw('DROP TABLE google_users, tokens, goals CASCADE')]);
+  return Promise.all([
+    knex.schema
+      .dropTable('users')
+      .dropTable('tokens')
+      .dropTable('data')
+      .dropTable('points')
+  ]);
 };

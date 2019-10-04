@@ -130,8 +130,8 @@ function setTokenExistingUser(id, accessToken, expiresAt) {
 
 function canUserUpdateGoal(id) {
   return Promise.all([
-    knex('goals')
-      .join('users', { 'users.id': 'goals.id' })
+    knex('data')
+      .join('users', { 'users.id': 'data.id' })
       .where('users.id', id)
       .orderBy('day_rounded', 'desc')
       .select('day_rounded', 'steps_goal')
@@ -143,7 +143,7 @@ function canUserUpdateGoal(id) {
 
 function initializeGoal(id, stepsGoal, endOfDay) {
   return Promise.all([
-    knex('goals').insert({
+    knex('data').insert({
       id: id,
       steps_goal: stepsGoal,
       day_rounded: endOfDay
@@ -153,7 +153,7 @@ function initializeGoal(id, stepsGoal, endOfDay) {
 
 function checkGoalExists(id) {
   return Promise.all([
-    knex('goals')
+    knex('data')
       .where('id', id)
       .select()
   ]).then(result => {
@@ -163,7 +163,7 @@ function checkGoalExists(id) {
 
 function updateGoal(id, stepsGoal, endOfDay) {
   return Promise.all([
-    knex('goals')
+    knex('data')
       .where({ id: id, day_rounded: endOfDay })
       .update({
         steps_goal: stepsGoal
@@ -173,7 +173,7 @@ function updateGoal(id, stepsGoal, endOfDay) {
 
 function insertGoal(id, stepsGoal, endOfDay) {
   return Promise.all([
-    knex('goals').insert({
+    knex('data').insert({
       id: id,
       steps_goal: stepsGoal,
       day_rounded: endOfDay
@@ -182,32 +182,23 @@ function insertGoal(id, stepsGoal, endOfDay) {
 }
 
 // should be changed to periodGoals
-function pastWeekGoals(id, weekAgo, endOfDay) {
+function pastWeekData(id, weekAgo, endOfDay) {
   return Promise.all([
-    knex('goals')
+    knex('data')
       .where('id', '=', id)
       .whereBetween('day_rounded', [weekAgo, endOfDay])
-      .select('steps_goal', 'day_rounded')
-  ]);
-}
-
-function pastWeekSteps(id, weekAgo, endOfDay) {
-  return Promise.all([
-    knex('steps')
-      .where('id', '=', id)
-      .whereBetween('day_rounded', [weekAgo, endOfDay])
-      .select('steps', 'day_rounded')
+      .select('steps_goal', 'daily_steps', 'day_rounded')
   ]);
 }
 
 // Keeps steps_goal the same from last recorded day to current day
 function runningGoal(id) {
   return Promise.all([
-    knex('goals')
-      .join('users', { 'users.id': 'goals.id' })
+    knex('data')
+      .join('users', { 'users.id': 'data.id' })
       .where('users.id', id)
       .orderBy('day_rounded', 'desc')
-      .select('goals.id', 'day_rounded', 'steps_goal')
+      .select('data.id', 'day_rounded', 'steps_goal')
   ]).then(result => {
     if (!result[0][0]) {
       return;
@@ -249,8 +240,7 @@ module.exports = {
   setTokenExistingUser: setTokenExistingUser,
   checkEmail: checkEmail,
   checkPassword: checkPassword,
-  pastWeekGoals: pastWeekGoals,
-  pastWeekSteps: pastWeekSteps,
+  pastWeekData: pastWeekData,
   canUserUpdateGoal: canUserUpdateGoal,
   updateGoal: updateGoal,
   insertGoal: insertGoal,

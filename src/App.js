@@ -25,7 +25,7 @@ const App = () => {
 
     fetchData();
 
-    console.log(document.getElementsByClassName('nav-left')[0].style.display);
+    // console.log(document.getElementsByClassName('nav-left')[0].style.display);
   }, []);
 
   const fetchData = async () => {
