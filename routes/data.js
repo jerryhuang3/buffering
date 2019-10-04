@@ -3,7 +3,7 @@ const moment = require('moment');
 
 module.exports = data = async (req, res) => {
   // const id = req.session.user;
-  const id = req.params.id;
+  const id = req.params.userId;
   console.log(id);
   // calculate rounded day and week ago from current time
   const today = moment().endOf('day');

@@ -16,6 +16,27 @@ function getAllUsersPoints() {
   });
 }
 
+function getUserInfo(userId) {
+  return Promise.all([
+    knex
+      .select('users.id', 'name', 'total_steps', 'total', 'image_url')
+      .from('users')
+      .where('users.id', userId)
+      .join(
+        knex
+          .select('data.id')
+          .from('data')
+          .sum('daily_steps as total_steps')
+          .groupBy('data.id')
+          .as('sum'),
+        { 'users.id': 'sum.id' }
+      )
+      .join('points', { 'users.id': 'points.id' })
+  ]).then(result => {
+    return result[0];
+  });
+}
+
 function getAllUsersTotalStepsAndPoints() {
   return Promise.all([
     knex
@@ -264,6 +285,7 @@ module.exports = {
   getUserById: getUserById,
   getUserByEmail: getUserByEmail,
   getUserWithToken: getUserWithToken,
+  getUserInfo: getUserInfo,
   checkGoogleIdExists: checkGoogleIdExists,
   insertUser: insertUser,
   setTokenNewUser: setTokenNewUser,

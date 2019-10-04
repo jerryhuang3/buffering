@@ -31,11 +31,11 @@ const Profile = () => {
   const createChart = async access_token => {
     // let stepsArray = await dataUtils.filterAndFetchSteps(access_token); // for google data
 
-    const dataFetch = await fetch('/users/2/data', { method: 'POST' });
+    const dataFetch = await fetch('/user/2/data', { method: 'POST' });
     const data = await dataFetch.json();
     const [stepsArray, goalArray] = [data[0], data[1]];
     let userStatus;
-    console.log(stepsArray)
+    console.log(stepsArray);
     console.log(goalArray);
     if (!stepsArray) {
       stepsArray = [0, 0, 0, 0, 0, 0, 0];
