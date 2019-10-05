@@ -39,11 +39,13 @@ const friendsList = async (req, res) => {
       return rel.user_one_id;
     }
   });
-  const isUserFriend = friendsIdList.includes(req.session.user) ? true : false;
 
-  const friendsList = await Promise.all(friendsIdList.map(id => queries.getName(id)));
+  const userName = await queries.getUserName(req.params.userId);
+  // const isUserFriend = friendsIdList.includes(req.session.user) ? true : false;
 
-  res.json({ friendsList: friendsList, isUserFriend: isUserFriend });
+  const friendsList = await Promise.all(friendsIdList.map(id => queries.getUserFriendsBasicInfo(id)));
+
+  res.json({ friendsList, userName });
 };
 
 module.exports = { users, userId, friendsList };

@@ -405,6 +405,49 @@ body {
       justify-self: center;
     }
   }
+  .friends-container {
+    grid-column: 1 / span 3;
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    
+    h1 {
+      grid-column: 2 / span 1;
+      grid-row: 1;
+      font-family: big-bear, sans-serif;
+      font-size: calc(2em + 5vw);
+      letter-spacing: 0.25rem;
+      margin-bottom: 0;
+    }
+
+    .user-friends {
+      grid-column: 2 / span 1;
+      grid-row: 2;
+      display: flex;
+      flex-flow: row wrap;
+      width: 70%;
+      overflow: scroll;
+      .friend {
+        margin: 1.25em 0.4em;
+        flex-grow: 0;
+        flex-shrink: 1;
+        width: 28%;
+        background: rgb(253, 254, 254);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+        text-align: center;
+        font-size: 18px;
+        color: #07101d;
+        border-radius: 10px;
+        .friend-image {
+          background: rgb(232, 241, 242);
+          img {
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
 
   .user-profile {
     padding-top: 25px;

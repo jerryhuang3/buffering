@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import Initialize from './components/Initialize';
 import Demo from './components/Demo';
 import UserPage from './components/UserPage';
+import UserFriends from './components/UserFriends';
 import Leaderboard from './components/Leaderboard';
 import StateContext from './components/StateContext';
 
@@ -44,6 +45,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/profile" component={Profile} />
+          <Route path="/user/:userId/friends" component={UserFriends} />
           <Route path="/user/:userId" component={UserPage} />
           <Route path="/leaderboard" component={Leaderboard} />
           <Route path="/connect" component={Connect} />
@@ -53,6 +55,7 @@ const App = () => {
           <Route path="/demo" component={Demo} />
           <Route exact path="/400/signup" component={EmailExists} />
           <Route path="/400/login" component={WrongLogin} />
+
           <Route component={Error} />
         </Switch>
       </div>

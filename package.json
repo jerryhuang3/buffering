@@ -39,6 +39,7 @@
     "moment-es6": "^1.0.0",
     "node-fetch": "^2.4.1",
     "pg": "^7.12.1",
+    "reac": "0.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-google-login": "^5.0.4",

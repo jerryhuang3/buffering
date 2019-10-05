@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import StateContext from './StateContext';
 
-const FriendStatus = ({ path }) => {
-  const context = useContext(StateContext);
+const FriendStatus = ({ userId }) => {
   const [friendStatus, setFriendStatus] = useState(2);
   const [friendButton, setFriendButton] = useState('');
 
@@ -12,7 +10,7 @@ const FriendStatus = ({ path }) => {
   }, [friendStatus]);
 
   const checkFriend = async () => {
-    const otherUser = parseInt(path.slice(6));
+    const otherUser = parseInt(userId);
     const response = await fetch('/friends/check_friend', {
       method: 'POST',
       headers: {

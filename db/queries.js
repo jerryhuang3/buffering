@@ -5,17 +5,6 @@ const knex = require('knex')(knexConfig);
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 
-function getAllUsersPoints() {
-  return Promise.all([
-    knex('data')
-      .sum('daily_steps as total_steps')
-      .groupBy('data.id')
-      .select('id')
-  ]).then(result => {
-    return result[0];
-  });
-}
-
 function getUserInfo(userId) {
   return Promise.all([
     knex
@@ -66,6 +55,26 @@ function getUserFriends(userId) {
       .select()
   ]).then(result => {
     return result[0];
+  });
+}
+
+function getUserFriendsBasicInfo(userId) {
+  return Promise.all([
+    knex('users')
+      .where('id', userId)
+      .select('id', 'name', 'image_url')
+  ]).then(result => {
+    return result[0][0];
+  });
+}
+
+function getUserName(userId) {
+  return Promise.all([
+    knex('users')
+      .where('id', userId)
+      .select('name')
+  ]).then(result => {
+    return result[0][0];
   });
 }
 
@@ -136,16 +145,6 @@ function acceptFriend(currentUser, otherUser) {
             last_action_by: currentUser
           })
       ]);
-}
-
-function getName(userId) {
-  return Promise.all([
-    knex('users')
-      .where('id', userId)
-      .select('id', 'name')
-  ]).then(result => {
-    return result[0][0];
-  });
 }
 
 function getUserId(email) {
@@ -375,6 +374,7 @@ module.exports = {
   getUserId: getUserId,
   getUserById: getUserById,
   getUserByEmail: getUserByEmail,
+  getUserName: getUserName,
   getUserWithToken: getUserWithToken,
   getUserInfo: getUserInfo,
   checkGoogleIdExists: checkGoogleIdExists,
@@ -393,7 +393,7 @@ module.exports = {
   connectGoogle: connectGoogle,
   getAllUsersTotalStepsAndPoints: getAllUsersTotalStepsAndPoints,
   getUserFriends: getUserFriends,
-  getName: getName,
+  getUserFriendsBasicInfo: getUserFriendsBasicInfo,
   addFriend: addFriend,
   removeFriend: removeFriend,
   acceptFriend: acceptFriend,
