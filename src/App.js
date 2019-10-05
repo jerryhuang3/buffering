@@ -26,14 +26,13 @@ const App = () => {
     });
 
     fetchData();
-
-    // console.log(document.getElementsByClassName('nav-left')[0].style.display);
   }, []);
 
   const fetchData = async () => {
     const response = await fetch('/users', { method: 'POST' });
     const json = await response.json();
     if (json) {
+      context.setId(json.id);
       context.setName(json.name);
     }
   };

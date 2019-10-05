@@ -26,7 +26,7 @@ exports.seed = async function(knex, Promise) {
         id: userId,
         day_rounded: dayRounded,
         steps_goal: randomGoal,
-        daily_steps: 3000 + Math.floor(12000 * Math.random())
+        daily_steps: 2000 + Math.floor(12000 * Math.random())
       };
       paramsArray.push(obj);
     });

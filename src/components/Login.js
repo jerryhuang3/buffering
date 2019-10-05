@@ -29,6 +29,7 @@ const Login = props => {
     if (!json) {
       props.history.push('/400/login');
     } else {
+      context.setId(json.id);
       context.setName(json.name);
       props.history.push('/profile');
     }

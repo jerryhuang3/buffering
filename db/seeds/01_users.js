@@ -6,9 +6,6 @@ exports.seed = function(knex, Promise) {
     .del()
     .then(function() {
       // Inserts seed entries
-      return Promise.all([
-        knex('users').insert(mockData),
-        knex.raw('select setval(\'users_id_seq\', max(id)) from users')
-      ]);
+      return Promise.all([knex('users').insert(mockData)]);
     });
 };

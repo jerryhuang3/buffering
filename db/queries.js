@@ -57,6 +57,97 @@ function getAllUsersTotalStepsAndPoints() {
   });
 }
 
+function getUserFriends(userId) {
+  return Promise.all([
+    knex('relationships')
+      .where('user_one_id', userId)
+      .orWhere('user_two_id', userId)
+      .andWhere('status', 1)
+      .select()
+  ]).then(result => {
+    return result[0];
+  });
+}
+
+function checkFriendStatus(user_one_id, user_two_id) {
+  return Promise.all([
+    knex('relationships')
+      .where('user_one_id', user_one_id)
+      .andWhere('user_two_id', user_two_id)
+      .select()
+  ]).then(result => {
+    return result[0];
+  });
+}
+
+function addFriend(currentUser, otherUser) {
+  return currentUser < otherUser
+    ? Promise.all([
+        knex('relationships').insert({
+          user_one_id: currentUser,
+          user_two_id: otherUser,
+          status: 0,
+          last_action_by: currentUser
+        })
+      ])
+    : Promise.all([
+        knex('relationships').insert({
+          user_one_id: otherUser,
+          user_two_id: currentUser,
+          status: 0,
+          last_action_by: currentUser
+        })
+      ]);
+}
+
+function removeFriend(currentUser, otherUser) {
+  return currentUser < otherUser
+    ? Promise.all([
+        knex('relationships')
+          .where('user_one_id', currentUser)
+          .andWhere('user_two_id', otherUser)
+          .del()
+      ])
+    : Promise.all([
+        knex('relationships')
+          .where('user_one_id', otherUser)
+          .andWhere('user_two_id', currentUser)
+          .del()
+      ]);
+}
+
+function acceptFriend(currentUser, otherUser) {
+  return currentUser < otherUser
+    ? Promise.all([
+        knex('relationships')
+          .where('user_one_id', currentUser)
+          .andWhere('user_two_id', otherUser)
+          .update({
+            status: 1,
+            last_action_by: currentUser
+          })
+      ])
+    : Promise.all([
+        knex('relationships')
+          .where('user_one_id', otherUser)
+          .andWhere('user_two_id', currentUser)
+          .update({
+            status: 1,
+            last_action_by: currentUser
+          })
+      ]);
+}
+
+function getName(userId) {
+  return Promise.all([
+    knex('users')
+      .where('id', userId)
+      .select('id', 'name')
+  ]).then(result => {
+    return result[0][0];
+  });
+}
+
 function getUserId(email) {
   return Promise.all([
     knex('users')
@@ -300,7 +391,13 @@ module.exports = {
   checkGoalExists: checkGoalExists,
   runningGoal: runningGoal,
   connectGoogle: connectGoogle,
-  getAllUsersTotalStepsAndPoints: getAllUsersTotalStepsAndPoints
+  getAllUsersTotalStepsAndPoints: getAllUsersTotalStepsAndPoints,
+  getUserFriends: getUserFriends,
+  getName: getName,
+  addFriend: addFriend,
+  removeFriend: removeFriend,
+  acceptFriend: acceptFriend,
+  checkFriendStatus: checkFriendStatus
 };
 
 // DATABASE STRUCTURE

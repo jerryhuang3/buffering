@@ -24,14 +24,14 @@ module.exports = login = async (req, res) => {
       queries.setTokenExistingUser(userId, user.accessTok, user.accessTokExp);
       req.session.user = userId;
       queries.runningGoal(req.session.user);
-      return res.json({ name: user.name, access_token: user.accessTok, picture: user.picture });
+      return res.json({ id: userId, name: user.name, access_token: user.accessTok, picture: user.picture });
     case 'login':
       // web login
       const checkPassword = bcrypt.compareSync(req.body.password, user.password);
       if (checkPassword) {
         req.session.user = user.id;
         queries.runningGoal(req.session.user);
-        return res.json({ name: user.name, access_token: null, picture: user.image_url });
+        return res.json({ id: user.id, name: user.name, access_token: null, picture: user.image_url });
       }
       // incorrect password
       return res.json(false);

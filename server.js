@@ -9,7 +9,8 @@ const cors = require('cors');
 
 // Iniitalize express and routes
 const app = express();
-const { users, userId } = require('./routes/users');
+const { users, userId, friendsList } = require('./routes/users');
+const { addFriend, removeFriend, acceptFriend, checkFriend } = require('./routes/friends');
 const login = require('./routes/login');
 const logout = require('./routes/logout');
 const signup = require('./routes/signup');
@@ -45,7 +46,13 @@ app.get('/*', (req, res) => {
 
 // Routes
 app.post('/users', users);
-app.post('/user/:userId', userId)
+app.post('/user/:userId', userId);
+app.post('/user/:userId/data', data);
+app.post('/user/:userId/friends', friendsList);
+app.post('/friends/add_friend', addFriend);
+app.post('/friends/accept_friend', acceptFriend);
+app.post('/friends/remove_friend', removeFriend);
+app.post('/friends/check_friend', checkFriend);
 app.post('/login', login);
 app.post('/logout', logout);
 app.post('/signup', signup);
@@ -57,7 +64,6 @@ app.post('/goals/update', updateGoal);
 app.post('/initialize', initialize);
 app.post('/extension', cors(), extension);
 app.post('/demo', demo);
-app.post('/user/:userId/data', data);
 app.post('/leaderboard', leaderboard);
 
 app.listen(PORT, () => {
