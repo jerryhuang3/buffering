@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Form, Button } from 'semantic-ui-react';
-import StateContext from './StateContext';
+import StateContext from '../StateContext';
 
 const Goal = () => {
   const context = useContext(StateContext);

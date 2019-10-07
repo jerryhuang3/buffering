@@ -7,7 +7,6 @@ const UserFriends = ({ match }) => {
   const [friends, setFriends] = useState([]);
   const [firstName, setFirstName] = useState('');
   useEffect(() => {
-    console.log(match.params.userId);
     fetchFriends();
   }, []);
 
@@ -19,19 +18,17 @@ const UserFriends = ({ match }) => {
   };
 
   const friend = friends.map(friend => (
-    <div className="friend">
+    <li className="friend">
       <div className="friend-image">
         <img src={friend.image_url} />
       </div>
-      <p>
-        <NavLink to={`/user/${friend.id}`}>{friend.name}</NavLink>
-      </p>
-    </div>
+        <NavLink to={`/user/${friend.id}`}><p>{friend.name}</p></NavLink>
+    </li>
   ));
   return (
     <div className="friends-container">
       <h1>{firstName}'s Friends</h1>
-      <div className="user-friends">{friend}</div>
+      <ul className="user-friends">{friend}</ul>
     </div>
   );
 };

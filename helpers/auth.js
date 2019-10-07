@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+const axios = require('axios');
 
 async function googleAuth(authCode) {
   const body = {
@@ -13,15 +13,11 @@ async function googleAuth(authCode) {
   };
 
   // Requesting token information from google
-  const fetchRes = await fetch('https://www.googleapis.com/oauth2/v4/token', {
-    method: 'post',
-    body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' }
-  });
-
+  const fetchRes = await axios.post('https://www.googleapis.com/oauth2/v4/token', body);
+  // console.log(fetchRes)
   // Decode data and set constants
-  const fetchJSON = await fetchRes.json();
-  const id = jwt.decode(fetchJSON.id_token);
+  // const fetchJSON = await fetchRes.json();
+  const id = jwt.decode(fetchRes.data.id_token);
 
   // Create user profile object to send to server
   const profile = {
@@ -30,9 +26,9 @@ async function googleAuth(authCode) {
     name: id.name,
     email: id.email,
     picture: `https://avatars.dicebear.com/v2/avataaars/${id.name.replace(/ /g, '')}.svg`,
-    accessTok: fetchJSON.access_token,
+    accessTok: fetchRes.data.access_token,
     accessTokExp: moment(Date.now()).valueOf() + 3500000,
-    refreshTok: fetchJSON.refresh_token
+    refreshTok: fetchRes.data.refresh_token
   };
   return profile;
 }
@@ -45,16 +41,12 @@ async function refreshAccessToken(refreshToken) {
     grant_type: 'refresh_token'
   };
 
-  const res = await fetch('https://www.googleapis.com/oauth2/v4/token', {
-    method: 'post',
-    body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' }
-  });
+  const res = await axios.post('https://www.googleapis.com/oauth2/v4/token', body);
 
   // Decode data and set constants
-  const fetchToken = await res.json();
+  // const fetchToken = await res.json();
   const newToken = {
-    access_token: fetchToken.access_token,
+    access_token: res.data.access_token,
     expires_at: moment(Date.now()).valueOf() + 3500000
   };
 

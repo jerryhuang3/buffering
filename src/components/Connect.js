@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import StateContext from './StateContext';
 
 const Connect = props => {
-  const context = useContext(StateContext);
+  const ctx = useContext(StateContext);
 
   const onClick = async () => {
     // Getting google access code
@@ -17,7 +17,7 @@ const Connect = props => {
     });
     const json = await res.json();
     
-    context.setAccessToken(json.access_token);
+    ctx.setAccessToken(json.access_token);
   };
 
   return (

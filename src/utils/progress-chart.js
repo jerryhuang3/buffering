@@ -32,8 +32,6 @@ function graphStepData(goalArray, stepArray) {
   const ctx = document.getElementById('ProgressChart');
   const mixedChart = new Chart(ctx, {
     type: 'bar',
-    responsive: true,
-    maintainAspectRatio: false,
     plugin: [ChartDataLabels],
     data: {
       labels: ['6 days ago', '5 days ago', '4 days ago', '3 days ago', '2 days ago', 'yesterday', 'today'],
@@ -53,38 +51,48 @@ function graphStepData(goalArray, stepArray) {
           backgroundColor: 'rgba(0, 181, 173, 1)',
           borderColor: 'rgba(0, 181, 173, 1)',
           fill: false,
-          borderWidth: 6,
+          borderWidth: 4,
           datalabels: {
             color: '#fff',
             align: 'top',
-            offset: 15,
+            offset: 2,
+            textShadowBlur: 15,
+            textShadowColor: 'black',
             font: {
-              size: 15
+              size: 12
             }
           }
         }
       ]
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       title: {
         display: true,
         text: 'Weekly Chart',
-        fontSize: 25,
-        fontColor: 'white'
+        fontSize: 20,
+        fontColor: 'white',
+        textShadowBlur: 15,
+        textShadowColor: 'black'
       },
       legend: {
         labels: {
-          fontSize: 20,
-          fontColor: 'white'
+          fontSize: 15,
+          fontColor: 'white',
+          textShadowBlur: 15,
+          textShadowColor: 'black'
         }
       },
       scales: {
         yAxes: [
           {
             ticks: {
-              fontSize: 20,
+              fontSize: 12,
               fontColor: 'white',
-              beginAtZero: true
+              beginAtZero: true,
+              textShadowBlur: 15,
+              textShadowColor: 'black'
             },
             gridLines: {
               color: '#B3EFFF'
@@ -94,8 +102,10 @@ function graphStepData(goalArray, stepArray) {
         xAxes: [
           {
             ticks: {
-              fontSize: 20,
-              fontColor: 'white'
+              fontSize: 12,
+              fontColor: 'white',
+              textShadowBlur: 15,
+              textShadowColor: 'black'
             },
             gridLines: {
               color: '#B3EFFF'

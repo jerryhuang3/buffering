@@ -98,7 +98,9 @@ function addFriend(currentUser, otherUser) {
           status: 0,
           last_action_by: currentUser
         })
-      ])
+      ]).then(res => {
+        return { success: true };
+      })
     : Promise.all([
         knex('relationships').insert({
           user_one_id: otherUser,
@@ -106,7 +108,9 @@ function addFriend(currentUser, otherUser) {
           status: 0,
           last_action_by: currentUser
         })
-      ]);
+      ]).then(res => {
+        return { success: true };
+      });
 }
 
 function removeFriend(currentUser, otherUser) {
@@ -228,7 +232,8 @@ function checkGoogleIdExists(id) {
       })
       .select('google_id')
   ]).then(result => {
-    if (result[0][0]) {
+    console.log("query", result[0][0])
+    if (result[0][0].google_id) {
       return true;
     } else {
       return false;
@@ -245,7 +250,20 @@ function insertUser(googleId, name, email, password, imageUrl) {
       password: password,
       image_url: imageUrl
     })
-  ]);
+  ]).then(res => {
+    return { success: true };
+  });
+}
+
+function initPoints(id) {
+  return Promise.all([
+    knex('points').insert({
+      id: id,
+      total: 0
+    })
+  ]).then(res => {
+    return { success: true };
+  });
 }
 
 function setTokenNewUser(id, accessToken, refreshToken, expiresAt) {
@@ -256,7 +274,9 @@ function setTokenNewUser(id, accessToken, refreshToken, expiresAt) {
       refresh_token: refreshToken,
       expires_at: expiresAt
     })
-  ]);
+  ]).then(res => {
+    return { success: true };
+  });
 }
 
 function setTokenExistingUser(id, accessToken, expiresAt) {
@@ -267,7 +287,9 @@ function setTokenExistingUser(id, accessToken, expiresAt) {
         access_token: accessToken,
         expires_at: expiresAt
       })
-  ]);
+  ]).then(res => {
+    return { success: true };
+  });
 }
 
 function canUserUpdateGoal(id) {
@@ -283,23 +305,14 @@ function canUserUpdateGoal(id) {
   });
 }
 
-function initializeGoal(id, stepsGoal, endOfDay) {
-  return Promise.all([
-    knex('data').insert({
-      id: id,
-      steps_goal: stepsGoal,
-      day_rounded: endOfDay
-    })
-  ]);
-}
-
 function checkGoalExists(id) {
   return Promise.all([
     knex('data')
-      .where('id', id)
-      .select()
+      .where({ id: id })
+      .select('steps_goal')
   ]).then(result => {
-    return result[0].length;
+    console.log(result[0][0]);
+    return result[0][0].steps_goal;
   });
 }
 
@@ -323,11 +336,46 @@ function insertGoal(id, stepsGoal, endOfDay) {
   ]);
 }
 
+function insertGoalAndSteps(id, stepsGoal, daily_steps, endOfDay) {
+  return Promise.all([
+    knex('data').insert({
+      id: id,
+      steps_goal: stepsGoal,
+      daily_steps: daily_steps,
+      day_rounded: endOfDay
+    })
+  ]);
+}
+
+function updateSteps(id, daily_steps, endOfDay) {
+  return Promise.all([
+    knex('data')
+      .where({ id: id, day_rounded: endOfDay })
+      .update({
+        daily_steps: daily_steps
+      })
+  ]);
+}
+
+function insertSteps(id, daily_steps, endOfDay) {
+  return Promise.all([
+    knex('data').insert({
+      id: id,
+      daily_steps: daily_steps,
+      day_rounded: endOfDay
+    })
+  ]).then(res => {
+    return { success: true };
+  });
+}
+
+//erroring out
 function pastWeekData(id, weekAgo, endOfDay) {
   return Promise.all([
     knex('data')
       .where('id', '=', id)
       .whereBetween('day_rounded', [weekAgo, endOfDay])
+      .orderBy('day_rounded', 'desc')
       .select('steps_goal', 'daily_steps', 'day_rounded')
   ]);
 }
@@ -360,6 +408,33 @@ function runningGoal(id) {
   });
 }
 
+function runningGoalAndSteps(id) {
+  return Promise.all([
+    knex('data')
+      .join('users', { 'users.id': 'data.id' })
+      .where('users.id', id)
+      .orderBy('day_rounded', 'desc')
+      .select('data.id', 'day_rounded', 'steps_goal', 'daily_steps')
+  ]).then(result => {
+    if (!result[0][0]) {
+      return;
+    }
+    const id = result[0][0].id;
+    const stepsGoal = result[0][0].steps_goal;
+    const lastEndOfDay = result[0][0].day_rounded;
+    const currentEndOfDay = moment()
+      .endOf('day')
+      .valueOf();
+    let numOfDays = (currentEndOfDay - lastEndOfDay) / 86400000;
+
+    let day = parseInt(lastEndOfDay);
+    for (let i = 0; i < numOfDays; i++) {
+      day = day + 86400000;
+      insertGoalAndSteps(id, stepsGoal, 0, day);
+    }
+  });
+}
+
 function connectGoogle(id, googleId) {
   return Promise.all([
     knex('users')
@@ -387,9 +462,12 @@ module.exports = {
   canUserUpdateGoal: canUserUpdateGoal,
   updateGoal: updateGoal,
   insertGoal: insertGoal,
-  initializeGoal: initializeGoal,
+  updateSteps: updateSteps,
+  insertSteps: insertSteps,
+  initPoints: initPoints,
   checkGoalExists: checkGoalExists,
   runningGoal: runningGoal,
+  runningGoalAndSteps: runningGoalAndSteps,
   connectGoogle: connectGoogle,
   getAllUsersTotalStepsAndPoints: getAllUsersTotalStepsAndPoints,
   getUserFriends: getUserFriends,

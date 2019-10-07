@@ -6,7 +6,7 @@ const Leaderboard = props => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage, setUsersPerPage] = useState(15);
+  const [usersPerPage, setUsersPerPage] = useState(12);
 
   useEffect(() => {
     if (window.innerWidth <= 768) {

@@ -32,6 +32,7 @@ const Signup = props => {
     if (!json) {
       props.history.push('/400/signup');
     } else {
+      context.setId(json.id);
       context.setName(json.name);
       props.history.push('/initialize');
     }

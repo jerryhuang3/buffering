@@ -5,7 +5,7 @@ import { GoogleLogin } from 'react-google-login';
 import StateContext from './StateContext';
 
 const Login = props => {
-  const context = useContext(StateContext);
+  const ctx = useContext(StateContext);
 
   const [input, setInput] = useState({});
 
@@ -29,13 +29,13 @@ const Login = props => {
     if (!json) {
       props.history.push('/400/login');
     } else {
-      context.setId(json.id);
-      context.setName(json.name);
-      props.history.push('/profile');
+      ctx.setId(json.id);
+      ctx.setName(json.name);
+      props.history.push(`/user/${json.id}`);
     }
   };
 
-  if (context.name) {
+  if (ctx.name) {
     return <Redirect to="/profile" />;
   }
   return (

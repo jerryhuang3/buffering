@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
-import Profile from './components/Profile';
 import { Error, EmailExists, WrongLogin } from './components/Error';
 import Nav from './components/Nav';
 import Connect from './components/Connect';
@@ -9,15 +8,16 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Initialize from './components/Initialize';
 import Demo from './components/Demo';
-import UserPage from './components/UserPage';
+import User from './components/User';
 import UserFriends from './components/UserFriends';
 import Leaderboard from './components/Leaderboard';
 import StateContext from './components/StateContext';
 
 const App = () => {
-  const context = useContext(StateContext);
+  const ctx = useContext(StateContext);
 
   useEffect(() => {
+    console.log('APP IS LOADING');
     window.gapi.load('auth2', () => {
       gapi.auth2.init({
         client_id: '677038605397-j26crueetoelsf8vh5f9pde9l93707r7.apps.googleusercontent.com',
@@ -33,20 +33,21 @@ const App = () => {
     const response = await fetch('/users', { method: 'POST' });
     const json = await response.json();
     if (json) {
-      context.setId(json.id);
-      context.setName(json.name);
+      ctx.setId(json.id);
+      ctx.setName(json.name);
+      ctx.setAccessToken(json.access_token);
+      ctx.setPicture(json.image_url);
     }
   };
 
   return (
     <Router>
       <div className={'container'}>
-        {context.show_nav ? <Nav /> : <Nav />}
+        {ctx.show_nav ? <Nav /> : <Nav />}
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/profile" component={Profile} />
           <Route path="/user/:userId/friends" component={UserFriends} />
-          <Route path="/user/:userId" component={UserPage} />
+          <Route path="/user/:userId" component={User} />
           <Route path="/leaderboard" component={Leaderboard} />
           <Route path="/connect" component={Connect} />
           <Route path="/login" component={Login} />

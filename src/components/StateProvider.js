@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StateContext from './StateContext';
 
 const StateProvider = props => {
@@ -8,6 +8,10 @@ const StateProvider = props => {
   const [showNav, setNav] = useState(true);
   const [picture, setPicture] = useState(null);
   const [goalUpdate, setGoalUpdate] = useState(false);
+
+  useEffect(() => {
+    console.log('STATE HAS LOADED');
+  }, []);
 
   return (
     <StateContext.Provider

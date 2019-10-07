@@ -8,7 +8,7 @@ for (let i = 1; i < 7; i++) {
   pastWeekArray.push(ithDayAgo);
 }
 
-exports.seed = async function(knex, Promise) {
+exports.seed = async function(knex) {
   // Deletes ALL existing entries
   await knex('data').del();
   let paramsArray = [];

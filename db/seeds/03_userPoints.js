@@ -1,4 +1,4 @@
-exports.seed = async function(knex, Promise) {
+exports.seed = async function(knex) {
   await knex('points').del();
   let pointsArray = [];
 

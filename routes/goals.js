@@ -26,8 +26,9 @@ const goals = async function(req, res) {
 
 const checkGoal = async (req, res) => {
   const goalExists = await queries.checkGoalExists(req.session.user);
-  if (goalExists !== 0) {
-    return res.json(true);
+
+  if (goalExists !== null) {
+    return res.json(req.session.user);
   }
   return res.json(false);
 };

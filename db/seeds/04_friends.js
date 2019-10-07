@@ -1,4 +1,4 @@
-exports.seed = async function(knex, Promise) {
+exports.seed = async function(knex) {
   // Deletes ALL existing entries
   await knex('relationships').del();
 
@@ -41,6 +41,7 @@ exports.seed = async function(knex, Promise) {
     relationshipsArray.push(friendship);
   });
 
+  relationshipsArray.slice(0, 2499);
   return Promise.all([knex('relationships').insert(relationshipsArray)]);
 };
 
