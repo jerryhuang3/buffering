@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Button } from 'semantic-ui-react';
 
-const FriendStatus = ({ id, isFriend }) => {
+const FriendStatus = ({ id }) => {
   const [friendStatus, setFriendStatus] = useState(2);
   const [friendButton, setFriendButton] = useState('');
 
@@ -29,7 +29,6 @@ const FriendStatus = ({ id, isFriend }) => {
       status = 0;
     } else if (check.status === 1) {
       status = 1;
-      isFriend(true);
     } else if (check.last_action_by === otherUser && check.status !== 1) {
       status = 2;
     }

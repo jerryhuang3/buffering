@@ -1,7 +1,6 @@
 const auth = require('../helpers/auth');
 const queries = require('../db/queries');
 const bcrypt = require('bcrypt');
-const dataUtils = require('../src/utils/data-utils');
 const utils = require('../helpers/utils');
 
 module.exports = signup = async (req, res) => {
