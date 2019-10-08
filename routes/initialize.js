@@ -1,22 +1,15 @@
 const queries = require('../db/queries');
-const moment = require('moment');
+const utils = require('../helpers/utils');
 
 module.exports = initialize = async (req, res) => {
-  
   const id = req.session.user;
   const stepsGoal = req.body.steps;
-  const today = moment().endOf('day');
-  const endOfDay = today.valueOf();
-  
-  let pastWeekArray = [endOfDay];
-  for (let i = 1; i < 7; i++) {
-    const ithDayAgo = today.subtract(1, 'days').valueOf();
-    pastWeekArray.push(ithDayAgo);
-  }
- 
-  for (let k = 0; k < pastWeekArray.length; k++) {
-    await queries.initializeGoal(id, stepsGoal, pastWeekArray[k]);
-  }
+  const pastWeekArray = utils.weekArray();
+  await Promise.all([
+    pastWeekArray.forEach(day => {
+      queries.updateGoal(id, stepsGoal, day);
+    })
+  ]);
 
-  return res.json(true);
+  return res.json(id);
 };

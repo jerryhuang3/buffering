@@ -108,22 +108,21 @@ body {
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 6fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
 
   .ui.menu {
-    grid-column: 1 / span 3;
     grid-row: 1 / span 1;
     align-items: start;
     margin-bottom: 0;
   }
 
   .content-home {
-    grid-column: 1 / span 3;
     grid-row: 2;
     display: grid;
-    grid-template-columns: 100%;
-    overflow: scroll;
+    grid-template-columns: 1fr;
+    height: 100%;
+    overflow: auto;
     .hero {
       text-align: center;
       font-family: big-bear, sans-serif;
@@ -175,103 +174,19 @@ body {
     }
   }
 
-  .content-profile {
-    padding-top: 25px;
-    grid-column: 1 / span 3;
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
-    grid-template-rows: repeat(6, auto);
-    overflow: scroll;
-    .profile-card {
-      grid-column: 2 / span 1;
-      grid-row: 1 / span 2;
-      padding: 20px;
-      justify-self: center;
-      align-self: center;
-      max-width: 300px;
-      p {
-        margin: 0;
-      }
-      h1 {
-        margin: 0;
-        color: black;
-      }
-    }
-    .set_goal {
-      grid-column: 3 / span 1;
-      grid-row: 2 / span 1;
-      text-align: center;
-      justify-self: center;
-      align-self: center;
-      width: 200px;
-    }
-    .week-steps {
-      grid-column: 4 / span 1;
-      grid-row: 1 / span 2;
-      justify-self: center;
-      align-self: center;
-      margin: 0;
-      .value {
-        font-family: big-bear !important;
-        color: white !important;
-        letter-spacing: 4px;
-      }
-      .slabel {
-        color: white !important;
-      }
-    }
-
-    .status {
-      grid-column: 3 / span 1;
-      grid-row: 1 / span 1;
-      text-align: center;
-      justify-self: center;
-      align-self: center;
-      h1 {
-        margin: 0;
-      }
-    }
-
-    .progress-bar {
-      padding-top: 10px;
-      grid-column: 2 / span 3;
-      grid-row: 3 / span 1;
-      align-self: start;
-      .progress {
-        color: white;
-        font-size: 16px;
-        text-align: center;
-        text-shadow: 2px 10px 10px 10px black;
-      }
-    }
-    .canvas {
-      grid-column: 2 / span 3;
-      grid-row-start: 4;
-      justify-self: center;
-      align-self: center;
-      width: 80%;
-    }
-    .connect {
-      grid-column: 2 / span 3;
-      grid-row: 3 / span 2;
-      justify-self: center;
-      align-self: center;
-      text-align: center;
-    }
-  }
   .content-demo {
-    grid-column: 2 / span 1;
     grid-row: 2 / span 1;
     text-align: center;
+    justify-items: center;
     .hero {
+      margin: 0;
       font-family: big-bear, sans-serif;
-      font-size: calc(2em + 5vw);
+      font-size: calc(3em + 3vw);
       letter-spacing: 0.25rem;
     }
     .tagline {
-      font-size: calc(2em + 1vw);
-      padding-top: 20px;
+      margin: 14px 0;
+      font-size: calc(1em + 1vw);
     }
     ul {
       list-style: none;
@@ -288,7 +203,6 @@ body {
   }
 
   .content-initialize {
-    grid-column: 2 / span 1;
     grid-row: 2 / span 1;
     align-self: center;
     .init-goal {
@@ -298,7 +212,6 @@ body {
   }
 
   .content-account {
-    grid-column: 2 / span 1;
     grid-row: 2;
     align-self: center;
 
@@ -324,73 +237,278 @@ body {
     }
   }
 
-  @media screen and (max-width: 768px) {
-    .content-profile {
-      padding-top: 25px;
-      grid-column: 1 / span 3;
-      grid-row: 2;
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(6, auto);
-      .profile-card {
-        grid-column: 1;
-        grid-row: 1;
-        justify-self: center;
-        p {
-          margin: 0;
+  .leaderboard {
+    grid-row: 2 / span 1;
+    height: 92vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 125px 50px auto auto;
+    padding: 0 20px;
+    h1 {
+      grid-column: 1 / span 4;
+      grid-row: 1 / span 1;
+      justify-self: center;
+      font-family: big-bear, sans-serif;
+      font-size: calc(2em + 4vw);
+      letter-spacing: 0.25rem;
+      margin-bottom: 0;
+    }
+    .leader-header {
+      grid-column: 1 / span 4;
+      grid-row: 2 / span 1;
+      margin-bottom: 30px;
+      ul {
+        list-style: none;
+        display: grid;
+        grid-template-columns: 1fr 2fr repeat(2, 1fr);
+        border-bottom: 1px solid gray;
+        padding-bottom: 15px;
+        align-items: center;
+        justify-items: start;
+        padding-left: 50px;
+        .rank-header {
+          grid-column: 1;
         }
-        h1 {
-          margin: 0;
-          color: black;
+        .name-header {
+          grid-column: 2;
         }
-        .content {
-          text-align: center;
+        .points-header {
+          grid-column: 3;
         }
-      }
-      .status {
-        grid-column: 1;
-        grid-row: 2;
-        text-align: center;
-        justify-self: center;
-        align-self: center;
-        h1 {
-          margin: 0;
+        .steps-header {
+          grid-column: 4;
         }
-        h3 {
-          margin: 0;
-        }
-      }
-      .set_goal {
-        grid-column: 1;
-        grid-row: 4;
-        padding: 20px 0;
-      }
-      .week-steps {
-        grid-column: 1;
-        grid-row: 3;
-        padding: 10px 0;
-      }
-      .progress-bar {
-        grid-column: 1;
-        grid-row: 5;
-        padding: 0 30px;
-        .progress {
-          color: white;
-          font-size: 12px;
-          text-align: center;
-          text-shadow: 2px 10px 10px 10px black;
-        }
-      }
-      .canvas {
-        grid-column: 1;
-        grid-row: 6;
-        width: 365px;
-      }
-      .connect {
-        grid-column: 1;
-        grid-row: 6;
       }
     }
+
+    .users {
+      grid-column: 1 / span 4;
+      grid-row: 3 / span 1;
+      overflow: auto;
+      .user {
+        grid-column: 2 / span 1;
+        ul {
+          list-style: none;
+          display: grid;
+          grid-template-columns: 1fr 2fr repeat(2, 1fr);
+          border-bottom: 1px solid gray;
+          justify-items: start;
+          padding-left: 50px;
+          align-items: center;
+          padding-bottom: 15px;
+          font-size: 12px;
+          .rank {
+            grid-column: 1;
+          }
+          .name {
+            grid-column: 2;
+          }
+          .points {
+            grid-column: 3;
+          }
+          .steps {
+            grid-column: 4;
+          }
+        }
+      }
+    }
+
+    .pagination {
+      grid-column: 1 / span 4;
+      grid-row: 4 / span 1;
+      justify-self: center;
+    }
+  }
+  .friends-container {
+    grid-row: 2 / span 1;
+    overflow: auto;
+
+    h1 {
+      font-family: big-bear, sans-serif;
+      font-size: calc(1.5em + 4vw);
+      letter-spacing: 0.25rem;
+      margin-bottom: 0;
+      text-align: center;
+      position: sticky;
+    }
+    ul {
+      margin-left: 16%;
+      width: 72%;
+      list-style: none;
+      padding: 0;
+      li {
+        display: inline-block;
+        margin: 10px;
+        width: 225px;
+        background: rgb(232, 241, 242);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+        text-align: center;
+        font-size: 18px;
+        color: #07101d;
+        border-radius: 20%;
+        .friend-image {
+          background: rgb(232, 241, 242);
+          border-radius: 30%;
+          img {
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  .user-container {
+    text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.3);
+    padding-top: 25px;
+    grid-column: 1 / span 3;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 1fr 3fr 3fr 1fr;
+    grid-template-rows: repeat(7, auto);
+    gap: 1em;
+    overflow: scroll;
+
+    .profile-card {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: 100%;
+      grid-column: 2 / span 2;
+      grid-row: 1 / span 2;
+      padding: 20px;
+      text-align: center;
+      .add-friend {
+        padding-top: 15px;
+      }
+      img {
+        max-width: 200px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.05);
+      }
+      h3 {
+        margin: 0;
+      }
+      p {
+        margin: 0;
+      }
+    }
+    .info {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      grid-column: 2 / span 1;
+      grid-row: 3 / span 1;
+      display: grid;
+      align-content: center;
+      .stats {
+        padding: 20px 0;
+        justify-content: center;
+        ul {
+          display: flex;
+          justify-content: center;
+          list-style: none;
+          text-align: center;
+          align-items: center;
+          padding: 0;
+          margin: 0 5%;
+          // border: 1px solid rgba(255, 255, 255, 0.15);
+          li {
+            flex-grow: 0;
+            flex-shrink: 1;
+            width: 50%;
+            padding: 10px;
+            font-weight: bold;
+            h2 {
+              margin: 0;
+            }
+            p {
+              border-top: 1px solid rgba(255, 255, 255, 0.15);
+              padding-top: 5px;
+              margin-top: 5px;
+            }
+          }
+        }
+      }
+    }
+    .extra-stats {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      grid-column: 2 / span 1;
+      grid-row: 4 / span 2;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      .value {
+        font-family: big-bear !important;
+        font-size: 2rem !important;
+        color: white !important;
+        letter-spacing: 4px;
+      }
+      .set_goal {
+        padding-top: 20px;
+        justify-self: center;
+        width: 60%;
+      }
+    }
+    .user-logs {
+      grid-column: 3 / span 1;
+      grid-row: 3 / span 3;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      height: 100%;
+      width: 100%;
+      .user-log {
+        padding: 20px;
+        h1 {
+          text-align: center;
+        }
+        ul {
+          list-style: none;
+          padding-left: 0;
+          margin: 0 5%;
+          li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 14px;
+            padding: 7px 0;
+          }
+        }
+      }
+    }
+    .connect {
+      grid-column: 3 / span 1;
+      grid-row: 3 / span 3;
+      display: grid;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      justify-items: center;
+      h4 {
+        align-self: end;
+      }
+      .google-button {
+        align-self: start;
+      }
+    }
+
+    .progress-bar {
+      grid-column: 2 / span 2;
+      grid-row: 6 / span 1;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      align-self: center;
+      padding: 15px;
+      .progress-msg {
+        color: white;
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+    .canvas {
+      grid-column: 2 / span 2;
+      grid-row: 7;
+      justify-self: center;
+      align-self: center;
+      height: 350px;
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
     .content-account {
       .login-google-btn {
         span {
@@ -398,10 +516,23 @@ body {
         }
       }
     }
+    .leaderboard {
+      grid-template-rows: 75px 50px auto auto;
+      .leader-header ul {
+        padding-left: 0px;
+      }
+
+      .users {
+        padding-top: 20px;
+        .user ul {
+          padding-left: 0px;
+        }
+      }
+    }
   }
 
   #notfound {
-    grid-column: 2 / span 1;
+    grid-column: 1 / span 3;
     grid-row: 2 / span 1;
     justify-items: center;
     align-self: center;

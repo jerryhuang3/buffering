@@ -1,15 +1,29 @@
 const moment = require('moment');
-const fetch = require('node-fetch');
+const axios = require('axios');
+
+const sortByType = (data, type, direction) => {
+  if (direction === 'asc') {
+    return data.sort((a, b) => (a[type] > b[type] ? 1 : -1));
+  }
+  return data.sort((a, b) => (a[type] < b[type] ? 1 : -1));
+};
 
 function computeUserStatus(stepArray, goalArray) {
-  const userStatusMap = ['good', 'bad', 'awful', 'hell'];
   let negativePoints = 0;
   for (let i = 0; i < goalArray.length; i++) {
     if (stepArray[i] < goalArray[i]) {
       negativePoints += 1;
     }
   }
-  return userStatusMap[negativePoints];
+  if (negativePoints === 0) {
+    return { level: 'GOOD', color: 'green', shadow: '0 0 1px white' };
+  } else if (negativePoints < 2) {
+    return { level: 'BAD', color: 'yellow', shadow: '0 0 2px black' };
+  } else if (negativePoints < 3) {
+    return { level: 'AWFUL', color: 'red', shadow: '0 0 2px black' };
+  } else {
+    return { level: 'HELL', color: 'black', shadow: '0 0 2px white' };
+  }
 }
 
 function orderGoals(timeArray, foundGoals) {
@@ -33,7 +47,6 @@ function getPastDaysIncludingToday(numberDays) {
 }
 
 function fetchStepData(accessToken) {
-  // Chrome Extension fetch
   const request = {
     method: 'POST',
     body: JSON.stringify({
@@ -47,7 +60,7 @@ function fetchStepData(accessToken) {
       bucketByTime: { durationMillis: 86400000 },
       startTimeMillis: moment()
         .endOf('day')
-        .subtract(3, 'days')
+        .subtract(7, 'days')
         .valueOf(),
       endTimeMillis: moment().valueOf()
     }),
@@ -58,29 +71,57 @@ function fetchStepData(accessToken) {
       Authorization: `Bearer ${accessToken}`
     }
   };
-  return fetch('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', request);
+
+  const config = {
+    headers: {
+      token_type: 'Bearer',
+      'Content-Type': 'application/json;encoding=utf-8',
+      Host: 'www.googleapis.com',
+      Authorization: `Bearer ${accessToken}`
+    }
+  };
+  return axios.post('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', request.body, config).catch(err => 'error');
 }
 
 async function filterAndFetchSteps(accessToken) {
-  const fetchResponse = await fetchStepData(accessToken);
-  const dataAgg = await fetchResponse.json();
+  const dataAgg = await fetchStepData(accessToken);
+  if (dataAgg === 'error') {
+    return [0, 0, 0, 0, 0, 0, 0];
+  }
 
   let stepsTaken = [];
   //check for empty data
-  for (let i = 0; i < dataAgg.bucket.length; i++) {
-    if (dataAgg.bucket[i].dataset[0].point[0] !== undefined) {
-      const stepVal = dataAgg.bucket[i].dataset[0].point[0].value[0].intVal;
+  for (let i = 0; i < dataAgg.data.bucket.length; i++) {
+    if (dataAgg.data.bucket[i].dataset[0].point[0] !== undefined) {
+      const stepVal = dataAgg.data.bucket[i].dataset[0].point[0].value[0].intVal;
       stepsTaken.push(stepVal);
     } else {
       stepsTaken.push(0);
     }
   }
-  return stepsTaken;
+
+  const stepsArray = stepsTaken.reverse();
+  return stepsArray;
 }
+
+const weekArray = () => {
+  const today = moment().endOf('day');
+  const endOfDay = today.valueOf();
+
+  let array = [endOfDay];
+
+  for (let i = 1; i < 7; i++) {
+    const ithDayAgo = today.subtract(1, 'days').valueOf();
+    array.push(ithDayAgo);
+  }
+  return array;
+};
 
 module.exports = {
   computeUserStatus: computeUserStatus,
   orderGoals: orderGoals,
   getPastDaysIncludingToday: getPastDaysIncludingToday,
-  filterAndFetchSteps: filterAndFetchSteps
+  filterAndFetchSteps: filterAndFetchSteps,
+  sortByType: sortByType,
+  weekArray: weekArray
 };

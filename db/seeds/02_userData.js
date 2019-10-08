@@ -8,33 +8,36 @@ for (let i = 1; i < 7; i++) {
   pastWeekArray.push(ithDayAgo);
 }
 
-console.log('PAST WEEK ARRAY', pastWeekArray);
-
-exports.seed = async function(knex, Promise) {
+exports.seed = async function(knex) {
   // Deletes ALL existing entries
-  await knex('goals').del();
+  await knex('data').del();
   let paramsArray = [];
 
   const currentUsers = await knex('users').select();
 
   const userArray = currentUsers.map(userObj => userObj.id);
 
+  const stepsGoal = [5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000];
+
   userArray.forEach(userId => {
+    const randomGoal = stepsGoal[Math.floor(Math.random() * 8)];
     pastWeekArray.forEach(dayRounded => {
       const obj = {
         id: userId,
-        steps_goal: 4500 + Math.floor(3000 * Math.random()),
-        day_rounded: dayRounded
+        day_rounded: dayRounded,
+        steps_goal: randomGoal,
+        daily_steps: 2000 + Math.floor(12000 * Math.random())
       };
       paramsArray.push(obj);
     });
   });
 
   const insertsToRun = paramsArray.map(obj => {
-    return knex('goals').insert({
+    return knex('data').insert({
       id: obj.id,
+      day_rounded: obj.day_rounded,
       steps_goal: obj.steps_goal,
-      day_rounded: obj.day_rounded
+      daily_steps: obj.daily_steps
     });
   });
   return Promise.all(insertsToRun);

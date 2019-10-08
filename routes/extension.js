@@ -17,13 +17,13 @@ module.exports = extension = async (req, res) => {
     }
 
     // init time constants
-    const pastThreeDays = utils.getPastDaysIncludingToday(3);
-    const today = pastThreeDays[0];
-    const threeDaysAgo = pastThreeDays[pastThreeDays.length - 1];
+    const pastSevenDays = utils.getPastDaysIncludingToday(7);
+    const today = pastSevenDays[0];
+    const sevenDaysAgo = pastSevenDays[pastSevenDays.length - 1];
     // get goals from db -> order and null check
-    const foundGoalsAwait = await queries.pastWeekGoals(user.id, threeDaysAgo, today);
+    const foundGoalsAwait = await queries.pastWeekGoals(user.id, sevenDaysAgo, today);
     const foundGoals = foundGoalsAwait[0];
-    const goalHistory = utils.orderGoals(pastThreeDays, foundGoals);
+    const goalHistory = utils.orderGoals(pastSevenDays, foundGoals);
     const goalReverse = goalHistory.reverse();
     // get steps using token
     const stepHistory = await utils.filterAndFetchSteps(currentAccessToken);

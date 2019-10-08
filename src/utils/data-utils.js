@@ -46,7 +46,7 @@ async function filterAndFetchSteps(accessToken) {
         stepsTaken.push(0);
       }
     }
-    return stepsTaken;
+    return stepsTaken.reverse();
   }
 }
 

@@ -4,20 +4,20 @@ import { Redirect } from 'react-router-dom';
 import StateContext from './StateContext';
 
 const Initialize = () => {
-  const context = useContext(StateContext);
+  const ctx = useContext(StateContext);
 
-  const [success, setSuccess] = useState(false);
+  const [id, setId] = useState(null);
   const [stepState, setStepState] = useState(null);
 
   useEffect(() => {
-      fetchGoals();
+    fetchGoals();
   }, []);
 
   const fetchGoals = async () => {
     const response = await fetch('/goals/check', { method: 'POST' });
     const json = await response.json();
     if (json) {
-      setState({ success: json });
+      setId(json);
     }
   };
 
@@ -33,16 +33,16 @@ const Initialize = () => {
       },
       body: JSON.stringify({ steps: stepState })
     });
-    const json = await response.json();
-    setSuccess(json);
+    
+    const id = await response.json();
+    setId(id);
   };
 
- 
-    if (success) {
-      return <Redirect to="/profile" />;
-    }
+  if (id) {
+    return <Redirect to={`/user/${id}`} />;
+  }
 
-  if (!context.name) {
+  if (!ctx.name) {
     return <Redirect to="/login" />;
   }
 

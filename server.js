@@ -6,18 +6,23 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+const utils = require('./helpers/utils');
+const queries = require('./db/queries');
 
 // Iniitalize express and routes
 const app = express();
-const users = require('./routes/users');
+const { users, userId, friendsList } = require('./routes/users');
+const { addFriend, removeFriend, acceptFriend, checkFriend } = require('./routes/friends');
 const login = require('./routes/login');
 const logout = require('./routes/logout');
 const signup = require('./routes/signup');
 const connect = require('./routes/connect');
-const goals = require('./routes/goals');
+const { goals, checkGoal, updateGoal } = require('./routes/goals');
 const initialize = require('./routes/initialize');
 const demo = require('./routes/demo');
 const extension = require('./routes/extension');
+const data = require('./routes/data');
+const leaderboard = require('./routes/leaderboard');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -42,16 +47,24 @@ app.get('/*', (req, res) => {
 
 // Routes
 app.post('/users', users);
+app.post('/user/:userId', userId);
+app.post('/user/:userId/data', data);
+app.post('/user/:userId/friends', friendsList);
+app.post('/friends/add_friend', addFriend);
+app.post('/friends/accept_friend', acceptFriend);
+app.post('/friends/remove_friend', removeFriend);
+app.post('/friends/check_friend', checkFriend);
 app.post('/login', login);
 app.post('/logout', logout);
 app.post('/signup', signup);
 app.post('/connect', connect);
-app.post('/goals', goals.goal);
-app.post('/goals/check', goals.check);
-app.post('/goals/update', goals.update);
+app.post('/goals', goals);
+app.post('/goals/check', checkGoal);
+app.post('/goals/update', updateGoal);
 app.post('/initialize', initialize);
 app.post('/extension', cors(), extension);
 app.post('/demo', demo);
+app.post('/leaderboard', leaderboard);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

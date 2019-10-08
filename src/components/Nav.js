@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import StateContext from './StateContext';
 
-const Nav = props => {
-  const context = useContext(StateContext);
+const Nav = () => {
+  const ctx = useContext(StateContext);
 
   const [nav, showNav] = useState(false);
 
@@ -25,13 +25,13 @@ const Nav = props => {
     auth2.signOut().then(() => auth2.disconnect());
 
     if (logout) {
-      context.setAccessToken(null);
-      context.setName(null);
-      context.setPicture(null);
+      ctx.setAccessToken(null);
+      ctx.setName(null);
+      ctx.setPicture(null);
     }
   };
   // Nav receives state of the session from App.js
-  const session = context.name ? (
+  const session = ctx.name ? (
     <div className={'nav'}>
       <div className={'burger'} onClick={onClick}>
         <a>
@@ -44,7 +44,10 @@ const Nav = props => {
             <NavLink to="/">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/profile">Profile</NavLink>
+            <NavLink to={`/user/${ctx.id}`}>Profile</NavLink>
+          </li>
+          <li>
+            <NavLink to="/leaderboard">Leaderboard</NavLink>
           </li>
           <li>
             <NavLink to="/demo">Demo</NavLink>
@@ -58,7 +61,7 @@ const Nav = props => {
         <h2>Buffering</h2>
       </div>
       <div className={'nav-right'}>
-        <h3>Welcome {context.name}!</h3>
+        <h4>Welcome {ctx.name}!</h4>
       </div>
     </div>
   ) : (

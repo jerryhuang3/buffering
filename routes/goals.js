@@ -1,7 +1,7 @@
 const queries = require('../db/queries');
 const moment = require('moment');
 
-const goal = async function(req, res) {
+const goals = async function(req, res) {
   const id = req.session.user;
   // calculate rounded day and week ago from current time
   const today = moment().endOf('day');
@@ -24,15 +24,16 @@ const goal = async function(req, res) {
   return res.json({ goalHistory: goalHistory });
 };
 
-const check = async (req, res) => {
+const checkGoal = async (req, res) => {
   const goalExists = await queries.checkGoalExists(req.session.user);
-  if (goalExists !== 0) {
-    return res.json(true);
+
+  if (goalExists !== null) {
+    return res.json(req.session.user);
   }
   return res.json(false);
 };
 
-const update = async function(req, res) {
+const updateGoal = async function(req, res) {
   const id = req.session.user;
   const stepsGoal = req.body.steps;
   const endOfDay = moment()
@@ -48,4 +49,4 @@ const update = async function(req, res) {
   }
 };
 
-module.exports = { update, check, goal };
+module.exports = { updateGoal, checkGoal, goals };

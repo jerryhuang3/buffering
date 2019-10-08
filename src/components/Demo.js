@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
+import StateContext from './StateContext';
 
 const Demo = props => {
-  const onClick = async e => {
+  const ctx = useContext(StateContext);
+
+  const demoStatus = async e => {
     const response = await fetch('/demo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -11,7 +14,18 @@ const Demo = props => {
     });
     const json = await response.json();
 
-    props.history.push('/profile');
+    props.history.push(`/user/${ctx.id}`);
+  };
+
+  const updateMock = async e => {
+    const response = await fetch('/demo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: e.target.value })
+    });
+    const json = await response.json();
+
+    props.history.push(`/user/${ctx.id}`);
   };
 
   return (
@@ -20,26 +34,30 @@ const Demo = props => {
       <h2 className="tagline">Make this user experience:</h2>
       <ul>
         <li>
-          <Button onClick={onClick} value={'good'} color="green">
+          <Button onClick={demoStatus} value={'good'} color="green">
             Good
           </Button>
         </li>
         <li>
-          <Button onClick={onClick} value={'bad'} color="yellow">
+          <Button onClick={demoStatus} value={'bad'} color="yellow">
             Bad
           </Button>
         </li>
         <li>
-          <Button onClick={onClick} value={'awful'} color="orange">
+          <Button onClick={demoStatus} value={'awful'} color="orange">
             Awful
           </Button>
         </li>
         <li>
-          <Button onClick={onClick} value={'hell'} color="red">
+          <Button onClick={demoStatus} value={'hell'} color="red">
             Hell
           </Button>
         </li>
       </ul>
+      <h3>Is the mock user data outdated?</h3>
+      <Button size="large" onClick={updateMock} value={'mock'}>
+        Update Mock Data
+      </Button>
     </div>
   );
 };

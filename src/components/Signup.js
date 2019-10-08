@@ -5,7 +5,7 @@ import { GoogleLogin } from 'react-google-login';
 import StateContext from './StateContext';
 
 const Signup = props => {
-  const context = useContext(StateContext);
+  const ctx = useContext(StateContext);
 
   const [input, setInput] = useState({});
 
@@ -32,12 +32,14 @@ const Signup = props => {
     if (!json) {
       props.history.push('/400/signup');
     } else {
-      context.setName(json.name);
+      ctx.setId(json.id);
+      ctx.setName(json.name);
+      ctx.setAccessToken(json.access_token);
       props.history.push('/initialize');
     }
   };
 
-  if (context.name) {
+  if (ctx.name) {
     return <Redirect to="/profile" />;
   }
   return (
@@ -46,7 +48,6 @@ const Signup = props => {
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
             <h2>Create a new account</h2>
-            {/* <Form action="/signup" method="POST" size="large"> */}
             <Form onSubmit={handleSubmit} size="large">
               <Segment>
                 <Form.Input onChange={handleChange} fluid icon="user" iconPosition="left" placeholder="Full Name" name="name" />
