@@ -37,7 +37,7 @@ const Goal = () => {
         <Form.Field>
           <label>Update your goal</label>
           <Form.Input onChange={onChange} value={newGoal} fluid icon="trophy" iconPosition="left" name="goal" type="number" />
-          {didUpdate ? <Button onSubmit={handleSubmit}>Update</Button> : <p>You can only update once a day!</p>}
+          {didUpdate ? <Button onSubmit={handleSubmit}>Update</Button> : <label>You can only update once a day!</label>}
         </Form.Field>
       </Form>
     </div>

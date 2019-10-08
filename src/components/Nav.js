@@ -27,7 +27,7 @@ const Nav = () => {
     if (logout) {
       ctx.setAccessToken(null);
       ctx.setName(null);
-      ctcx.setPicture(null);
+      ctx.setPicture(null);
     }
   };
   // Nav receives state of the session from App.js

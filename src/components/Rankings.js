@@ -1,9 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Rankings = ({ users, loading, usersPerPage, page }) => {
+const Rankings = ({ users, loading}) => {
   const userClick = id => {
-    console.log('HI you clicked', id);
   };
 
   if (loading) {
@@ -13,8 +12,8 @@ const Rankings = ({ users, loading, usersPerPage, page }) => {
   return (
     <div className={'user'}>
       {users.map((user, idx) => (
-        <ul>
-          <li className={'rank'}>{idx + 1 + (page - 1) * usersPerPage}</li>
+        <ul key={idx}>
+          <li className={'rank'}>{user.rank}</li>
           <li className={'name'} onClick={() => userClick(user.id)}>
             <NavLink to={`/user/${user.id}`}>{user.name}</NavLink>
           </li>

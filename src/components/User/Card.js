@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import FriendStatus from './FriendStatus';
 import StateContext from '../StateContext';
 
-const Card = ({ id, user, isFriend }) => {
+const Card = ({ id, user }) => {
   const ctx = useContext(StateContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(true);
 
   useEffect(() => {
-    if (ctx.id && ctx.id !== user.id) {
+    if (user.id && ctx.id && ctx.id !== user.id) {
       setIsOwnProfile(false);
     }
     if (user.id) {

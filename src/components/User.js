@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Progress, Divider } from 'semantic-ui-react';
+import { Progress } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 import Card from './User/Card';
 import Logs from './User/Logs';
@@ -22,7 +22,7 @@ const User = ({ match }) => {
   // Fetch user information on load
   useEffect(() => {
     fetchUser();
-  }, [userId, ctx.access_token, currentStatus.level]);
+  }, [userId, ctx.name, ctx.access_token, currentStatus.level, ctx.goal_update]);
 
   const fetchUser = async () => {
     const response = await Promise.all([
@@ -74,7 +74,7 @@ const User = ({ match }) => {
         <Logs user={user} steps={steps} />
       ) : (
         <div className={'connect'}>
-          <h4>Please connect your account to Google.</h4>
+          <h4>Please connect your account to Googlex.</h4>
           <Connect />
         </div>
       )}
@@ -100,7 +100,7 @@ const User = ({ match }) => {
           </ul>
         </div>
       </div>
-      <Stats weeklySteps={weeklySteps} />
+      <Stats user={user} weeklySteps={weeklySteps} />
       <div className="progress-bar">
         <p className="progress-msg">Today's Progress</p>
         <Progress percent={dailyProgress} indicating progress inverted>

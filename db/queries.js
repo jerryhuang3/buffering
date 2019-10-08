@@ -232,7 +232,6 @@ function checkGoogleIdExists(id) {
       })
       .select('google_id')
   ]).then(result => {
-    console.log("query", result[0][0])
     if (result[0][0].google_id) {
       return true;
     } else {
@@ -311,7 +310,6 @@ function checkGoalExists(id) {
       .where({ id: id })
       .select('steps_goal')
   ]).then(result => {
-    console.log(result[0][0]);
     return result[0][0].steps_goal;
   });
 }

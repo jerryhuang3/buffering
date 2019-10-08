@@ -31,6 +31,7 @@ const Login = props => {
     } else {
       ctx.setId(json.id);
       ctx.setName(json.name);
+      ctx.setAccessToken(json.access_token);
       props.history.push(`/user/${json.id}`);
     }
   };

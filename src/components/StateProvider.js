@@ -10,7 +10,6 @@ const StateProvider = props => {
   const [goalUpdate, setGoalUpdate] = useState(false);
 
   useEffect(() => {
-    console.log('STATE HAS LOADED');
   }, []);
 
   return (

@@ -40,23 +40,30 @@ module.exports = login = async (req, res) => {
       const checkPassword = bcrypt.compareSync(req.body.password, user.password);
       if (checkPassword) {
         // check if user has google account connected
-        const [connectedToGoogle] = await queries.checkGoogleIdExists(user.id);
+        const connectedToGoogle = await queries.checkGoogleIdExists(user.id);
 
         if (connectedToGoogle) {
-          // udpate steps to google fit data if connected
-          const [stepsArray] = await utils.filterAndFetchSteps(user.accessTok);
+          // get new tokens
+          const userAuth = await queries.getUserWithToken(user.id);
+          const newAccessToken = await auth.refreshAccessToken(userAuth.refresh_token);
+          await queries.setTokenExistingUser(user.id, newAccessToken.access_token, newAccessToken.expires_at);
+
+          // update steps to google fit data if connected
+          const stepsArray = await utils.filterAndFetchSteps(userAuth.access_token);
           await Promise.all([
             queries.runningGoal(user.id),
             pastWeekArray.forEach((day, idx) => {
               queries.updateSteps(user.id, stepsArray[idx], day);
             })
           ]);
+          req.session.user = user.id;
+          return res.json({ id: user.id, name: user.name, access_token: newAccessToken.access_token, picture: user.image_url });
         } else {
           // keep a running goal with step count of 0
           queries.runningGoalAndSteps(user.id);
+          req.session.user = user.id;
+          return res.json({ id: user.id, name: user.name, access_token: null, picture: user.image_url });
         }
-        req.session.user = user.id;
-        return res.json({ id: user.id, name: user.name, access_token: null, picture: user.image_url });
       }
       // incorrect password
       return res.json(false);

@@ -39,7 +39,6 @@ const Initialize = () => {
   };
 
   if (id) {
-    console.log('redirecting to profile', id, typeof id);
     return <Redirect to={`/user/${id}`} />;
   }
 

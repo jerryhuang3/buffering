@@ -14,11 +14,8 @@ async function googleAuth(authCode) {
 
   // Requesting token information from google
   const fetchRes = await axios.post('https://www.googleapis.com/oauth2/v4/token', body);
-  // console.log(fetchRes)
   // Decode data and set constants
-  // const fetchJSON = await fetchRes.json();
   const id = jwt.decode(fetchRes.data.id_token);
-
   // Create user profile object to send to server
   const profile = {
     type: 'google',
@@ -44,7 +41,6 @@ async function refreshAccessToken(refreshToken) {
   const res = await axios.post('https://www.googleapis.com/oauth2/v4/token', body);
 
   // Decode data and set constants
-  // const fetchToken = await res.json();
   const newToken = {
     access_token: res.data.access_token,
     expires_at: moment(Date.now()).valueOf() + 3500000

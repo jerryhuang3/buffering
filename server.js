@@ -66,30 +66,6 @@ app.post('/extension', cors(), extension);
 app.post('/demo', demo);
 app.post('/leaderboard', leaderboard);
 
-app.post('/test', async (req, res) => {
-  const pastWeekArray = utils.weekArray();
-
-  const [insertUser, stepsArray, id] = await Promise.all([
-    queries.insertUser(1, 'test', 'gmal@gmail.com', null, 'image.jpg'),
-    utils.filterAndFetchSteps('test '),
-    queries.getUserId('ascromenin@gmail.com')
-  ]);
-  // res.json({ test, stepsArray, id });
-  // req.session.user = id;
-  // console.log(stepsArray);
-  const stepsArray2 = [100, 200, 300, 400, 500, 600, 700];
-  const [initPoints, insertSteps] = await Promise.all([
-    // queries.setTokenNewUser(id, user.accessTok, user.refreshTok, user.accessTokExp),
-    queries.initPoints(id),
-    pastWeekArray.forEach((day, idx) => {
-      queries.insertSteps(id, stepsArray2[idx], day);
-      console.log(day, idx, stepsArray2[idx]);
-    })
-  ]);
-  console.log('finished');
-  res.json({ initPoints, insertSteps });
-});
-
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

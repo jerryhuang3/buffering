@@ -1,8 +1,11 @@
 const moment = require('moment');
 const axios = require('axios');
 
-const sortByPoints = data => {
-  return data.sort((a, b) => (a.total < b.total ? 1 : -1));
+const sortByType = (data, type, direction) => {
+  if (direction === 'asc') {
+    return data.sort((a, b) => (a[type] > b[type] ? 1 : -1));
+  }
+  return data.sort((a, b) => (a[type] < b[type] ? 1 : -1));
 };
 
 function computeUserStatus(stepArray, goalArray) {
@@ -83,7 +86,7 @@ function fetchStepData(accessToken) {
 async function filterAndFetchSteps(accessToken) {
   const dataAgg = await fetchStepData(accessToken);
   if (dataAgg === 'error') {
-    return dataAgg;
+    return [0, 0, 0, 0, 0, 0, 0];
   }
 
   let stepsTaken = [];
@@ -96,8 +99,8 @@ async function filterAndFetchSteps(accessToken) {
       stepsTaken.push(0);
     }
   }
- 
-  const stepsArray = stepsTaken.reverse()
+
+  const stepsArray = stepsTaken.reverse();
   return stepsArray;
 }
 
@@ -119,6 +122,6 @@ module.exports = {
   orderGoals: orderGoals,
   getPastDaysIncludingToday: getPastDaysIncludingToday,
   filterAndFetchSteps: filterAndFetchSteps,
-  sortByPoints: sortByPoints,
+  sortByType: sortByType,
   weekArray: weekArray
 };

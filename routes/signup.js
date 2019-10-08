@@ -37,7 +37,7 @@ module.exports = signup = async (req, res) => {
       })
     ]);
 
-    return res.json({ id: user.id, name: user.name, access_token: user.accessTok, picture: user.picture });
+    return res.json({ id: id, name: user.name, access_token: user.accessTok, picture: user.picture });
   } else if (user.type === 'signup') {
     // Web sign up
     await queries.insertUser(null, user.name, user.email, user.password, user.picture);
@@ -47,6 +47,6 @@ module.exports = signup = async (req, res) => {
 
     await Promise.all([queries.initPoints(id), pastWeekArray.forEach(day => queries.insertSteps(id, 0, day))]);
 
-    return res.json({ id: user.id, name: user.name, access_token: null, picture: user.picture });
+    return res.json({ id: id, name: user.name, access_token: null, picture: user.picture });
   }
 };

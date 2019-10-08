@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Button } from 'semantic-ui-react';
-import { checkPropTypes } from 'prop-types';
 
 const FriendStatus = ({ id, isFriend }) => {
   const [friendStatus, setFriendStatus] = useState(2);

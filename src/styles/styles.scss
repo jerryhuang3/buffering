@@ -432,14 +432,21 @@ body {
       grid-column: 2 / span 1;
       grid-row: 4 / span 2;
       display: grid;
-      align-content: center;
-      justify-content: center;
-      padding: 20px 0;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
       .value {
         font-family: big-bear !important;
         font-size: 2rem !important;
         color: white !important;
         letter-spacing: 4px;
+      }
+      .set_goal {
+        padding-top: 20px;
+        justify-self: center;
+        width: 60%;
       }
     }
     .user-logs {
@@ -525,7 +532,7 @@ body {
   }
 
   #notfound {
-    grid-column: 2 / span 1;
+    grid-column: 1 / span 3;
     grid-row: 2 / span 1;
     justify-items: center;
     align-self: center;
