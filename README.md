@@ -20,10 +20,16 @@ Buffering landing page.
 Profile page.
 !["Profile Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/profile.png)
 
-User experience if goal is not met at all the past 3 days.
+Leaderboard page.
+!["Leaderboard Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/leaderboard.png)
+
+Friends page.
+!["Friends Page"](https://github.com/jerryhuang3/buffering/blob/master/docs/friends.png)
+
+User experience if goal is not met 3 out of the past 7 days.
 !["User with Hell status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferinghell.gif)
 
-User experience if goal is not met 2 out of the past 3 days.
+User experience if goal is not met 2 out of the past 7 days.
 !["User in Awful status"](https://github.com/jerryhuang3/buffering/blob/master/docs/bufferingawful.gif)
 
 ## Dependencies
