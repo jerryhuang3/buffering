@@ -10,14 +10,13 @@ module.exports = data = async (req, res) => {
   const endOfDay = today.valueOf();
   const weekAgo = moment()
     .endOf('day')
-    .subtract(6, 'days')
+    .subtract(7, 'days')
     .valueOf();
 
   const userData = await queries.pastWeekData(parseInt(id), weekAgo, endOfDay);
- 
+
   const steps = userData[0].map(idx => idx.daily_steps).reverse();
   const goals = userData[0].map(idx => idx.steps_goal).reverse();
-
 
   return res.json([steps, goals]);
 };

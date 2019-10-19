@@ -74,6 +74,7 @@ function updateMock(i) {
     if (!result[0][0]) {
       return;
     }
+
     const id = result[0][0].id;
     const stepsGoal = result[0][0].steps_goal;
     const lastEndOfDay = result[0][0].day_rounded;

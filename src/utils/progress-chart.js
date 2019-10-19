@@ -29,7 +29,9 @@ function graphStepData(goalArray, stepArray) {
     const newColor = goalRedOrGreen(goalArray[i], stepArray[i], i);
     colorArray.push(newColor);
   }
+
   const ctx = document.getElementById('ProgressChart');
+
   const mixedChart = new Chart(ctx, {
     type: 'bar',
     plugin: [ChartDataLabels],

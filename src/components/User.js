@@ -35,19 +35,19 @@ const User = ({ match }) => {
     const friendsObj = await response[2].json();
 
     const [stepsArray, goalArray] = [userData[0], userData[1]];
-
     let sumOfSteps = 0;
     for (let i = 0; i < stepsArray.length; i++) {
       sumOfSteps = sumOfSteps + stepsArray[i];
     }
     progressChart.graphStepData(goalArray, stepsArray);
+
     const userStatus = utils.computeUserStatus(stepsArray, goalArray);
 
     let progress;
     if (goalArray[0] === 0) {
       progress = 100;
     } else {
-      progress = ((stepsArray[0] / goalArray[0]) * 100).toFixed(2);
+      progress = ((stepsArray[6] / goalArray[6]) * 100).toFixed(2);
     }
 
     setUser(userProfile);
