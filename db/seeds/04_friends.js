@@ -41,7 +41,7 @@ exports.seed = async function(knex) {
     relationshipsArray.push(friendship);
   });
 
-  relationshipsArray.slice(0, 2499);
+  relationshipsArray.slice(0, 999);
   return Promise.all([knex('relationships').insert(relationshipsArray)]);
 };
 

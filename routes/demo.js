@@ -24,7 +24,7 @@ module.exports = demo = (req, res) => {
       });
       break;
     case 'mock':
-      for (let i = 1; i <= 2500; i++) {
+      for (let i = 1; i <= 505; i++) {
         status.updateMock(i);
       }
       return res.json('Mock data updated');

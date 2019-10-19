@@ -42,9 +42,9 @@ const Leaderboard = props => {
     if (type === 'rank') {
       const direction = isPointsAscending ? 'desc' : 'asc';
       if (direction === 'asc') {
-        sort = '▲';
-      } else {
         sort = '▼';
+      } else {
+        sort = '▲';
       }
       const sortedUsers = utils.sortByType(users, type, direction);
       setUsers(sortedUsers);
@@ -54,9 +54,9 @@ const Leaderboard = props => {
     } else {
       const direction = isStepsAscending ? 'desc' : 'asc';
       if (direction === 'asc') {
-        sort = '▲';
-      } else {
         sort = '▼';
+      } else {
+        sort = '▲';
       }
       const sortedUsers = utils.sortByType(users, type, direction);
       setUsers(sortedUsers);
