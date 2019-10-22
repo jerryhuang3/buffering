@@ -37,7 +37,7 @@ const Login = props => {
   };
 
   if (ctx.name) {
-    return <Redirect to="/profile" />;
+    return <Redirect to={`/user/${ctx.id}`} />;
   }
   return (
     <div className={'content-account'}>

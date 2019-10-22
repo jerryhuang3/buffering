@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Progress } from 'semantic-ui-react';
-import { NavLink } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 import Card from './User/Card';
 import Logs from './User/Logs';
 import Stats from './User/Stats';
@@ -9,7 +9,7 @@ import StateContext from './StateContext';
 import utils from '../../helpers/utils';
 import progressChart from '../utils/progress-chart';
 
-const User = ({ match }) => {
+const User = ({ match, history }) => {
   const ctx = useContext(StateContext);
   const userId = match.params.userId;
   const [user, setUser] = useState({});
@@ -28,11 +28,17 @@ const User = ({ match }) => {
     const response = await Promise.all([
       fetch(`/user/${userId}`, { method: 'POST' }),
       fetch(`/user/${userId}/data`, { method: 'POST' }),
-      fetch(`/user/${userId}/friends`, { method: 'POST' })
+      fetch(`/user/${userId}/friends`, { method: 'POST' }),
+      fetch('/users', { method: 'POST' })
     ]);
     const userProfile = await response[0].json();
     const userData = await response[1].json();
     const friendsObj = await response[2].json();
+    const loggedIn = await response[3].json();
+
+    if (!loggedIn) {
+      return history.push('/login');
+    }
 
     const [stepsArray, goalArray] = [userData[0], userData[1]];
     let sumOfSteps = 0;
@@ -70,13 +76,13 @@ const User = ({ match }) => {
   return (
     <div className="user-container">
       <Card id={userId} user={user} />
-      {ctx.access_token ? (
-        <Logs user={user} steps={steps} />
-      ) : (
+      {!ctx.access_token && parseInt(userId) === ctx.id ? (
         <div className={'connect'}>
-          <h4>Please connect your account to Googlex.</h4>
+          <h4>Please connect your account to Google.</h4>
           <Connect />
         </div>
+      ) : (
+        <Logs user={user} steps={steps} />
       )}
       <div className="info">
         <div className="stats">

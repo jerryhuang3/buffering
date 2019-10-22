@@ -74,7 +74,6 @@ function updateMock(i) {
     if (!result[0][0]) {
       return;
     }
-
     const id = result[0][0].id;
     const stepsGoal = result[0][0].steps_goal;
     const lastEndOfDay = result[0][0].day_rounded;
@@ -84,6 +83,7 @@ function updateMock(i) {
     let numOfDays = (currentEndOfDay - lastEndOfDay) / 86400000;
 
     let day = parseInt(lastEndOfDay);
+
     for (let j = 0; j < numOfDays; j++) {
       day = day + 86400000;
       insertGoalAndStepsMock(id, stepsGoal, 2000 + Math.floor(12000 * Math.random()), day);

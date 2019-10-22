@@ -10,7 +10,7 @@ module.exports = data = async (req, res) => {
   const endOfDay = today.valueOf();
   const weekAgo = moment()
     .endOf('day')
-    .subtract(7, 'days')
+    .subtract(6, 'days')
     .valueOf();
 
   const userData = await queries.pastWeekData(parseInt(id), weekAgo, endOfDay);

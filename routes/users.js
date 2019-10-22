@@ -41,7 +41,6 @@ const friendsList = async (req, res) => {
   });
 
   const userName = await queries.getUserName(req.params.userId);
-  // const isUserFriend = friendsIdList.includes(req.session.user) ? true : false;
 
   const friendsList = await Promise.all(friendsIdList.map(id => queries.getUserFriendsBasicInfo(id)));
 

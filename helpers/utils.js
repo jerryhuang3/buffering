@@ -3,9 +3,9 @@ const axios = require('axios');
 
 const sortByType = (data, type, direction) => {
   if (direction === 'asc') {
-    return data.sort((a, b) => (a[type] > b[type] ? 1 : -1));
+    return data.sort((a, b) => a[type] - b[type]);
   }
-  return data.sort((a, b) => (a[type] < b[type] ? 1 : -1));
+  return data.sort((a, b) => b[type] - a[type]);
 };
 
 function computeUserStatus(stepArray, goalArray) {

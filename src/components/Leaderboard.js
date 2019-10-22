@@ -54,10 +54,11 @@ const Leaderboard = props => {
     } else {
       const direction = isStepsAscending ? 'desc' : 'asc';
       if (direction === 'asc') {
-        sort = '▼';
-      } else {
         sort = '▲';
+      } else {
+        sort = '▼';
       }
+      console.log(type)
       const sortedUsers = utils.sortByType(users, type, direction);
       setUsers(sortedUsers);
       setStepsDirection(sort);

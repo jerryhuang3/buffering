@@ -424,11 +424,12 @@ function runningGoalAndSteps(id) {
       .endOf('day')
       .valueOf();
     let numOfDays = (currentEndOfDay - lastEndOfDay) / 86400000;
-
+   
     let day = parseInt(lastEndOfDay);
+    
     for (let i = 0; i < numOfDays; i++) {
       day = day + 86400000;
-      insertGoalAndSteps(id, stepsGoal, 0, day);
+      insertGoalAndSteps(id, stepsGoal, 2000 + Math.floor(12000 * Math.random()), day);
     }
   });
 }
