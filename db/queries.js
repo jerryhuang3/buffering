@@ -397,7 +397,7 @@ function runningGoal(id) {
       .endOf('day')
       .valueOf();
     let numOfDays = (currentEndOfDay - lastEndOfDay) / 86400000;
-
+    console.log(numOfDays);
     let day = parseInt(lastEndOfDay);
     for (let i = 0; i < numOfDays; i++) {
       day = day + 86400000;
@@ -406,7 +406,7 @@ function runningGoal(id) {
   });
 }
 
-function runningGoalAndSteps(id) {
+function runningGoalAndSteps(id, stepsArray) {
   return Promise.all([
     knex('data')
       .join('users', { 'users.id': 'data.id' })
@@ -424,12 +424,16 @@ function runningGoalAndSteps(id) {
       .endOf('day')
       .valueOf();
     let numOfDays = (currentEndOfDay - lastEndOfDay) / 86400000;
-   
+
     let day = parseInt(lastEndOfDay);
-    
+
     for (let i = 0; i < numOfDays; i++) {
       day = day + 86400000;
-      insertGoalAndSteps(id, stepsGoal, 2000 + Math.floor(12000 * Math.random()), day);
+      if (stepsArray[i]) {
+        insertGoalAndSteps(id, stepsGoal, stepsArray[i], day);
+      } else {
+        insertGoalAndSteps(id, stepsGoal, 2000 + Math.floor(12000 * Math.random()), day);
+      }
     }
   });
 }

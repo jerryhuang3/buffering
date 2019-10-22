@@ -24,14 +24,9 @@ module.exports = login = async (req, res) => {
     case 'google':
       // google login
       const [id, stepsArray] = await Promise.all([queries.getUserId(user.email), utils.filterAndFetchSteps(user.accessTok)]);
-
-      await Promise.all([
-        queries.setTokenExistingUser(id, user.accessTok, user.accessTokExp),
-        queries.runningGoal(id),
-        pastWeekArray.forEach((day, idx) => {
-          queries.updateSteps(id, stepsArray[idx], day);
-        })
-      ]);
+      console.log(stepsArray);
+      console.log(pastWeekArray);
+      await Promise.all([queries.setTokenExistingUser(id, user.accessTok, user.accessTokExp), queries.runningGoalAndSteps(id, stepsArray)]);
 
       req.session.user = id;
       return res.json({ id: id, name: user.name, access_token: user.accessTok, picture: user.picture });
@@ -50,17 +45,12 @@ module.exports = login = async (req, res) => {
 
           // update steps to google fit data if connected
           const stepsArray = await utils.filterAndFetchSteps(userAuth.access_token);
-          await Promise.all([
-            queries.runningGoal(user.id),
-            pastWeekArray.forEach((day, idx) => {
-              queries.updateSteps(user.id, stepsArray[idx], day);
-            })
-          ]);
+          await Promise.all([queries.runningGoalAndSteps(user.id, stepsArray)]);
           req.session.user = user.id;
           return res.json({ id: user.id, name: user.name, access_token: newAccessToken.access_token, picture: user.image_url });
         } else {
-          // keep a running goal with step count of 0
-          queries.runningGoalAndSteps(user.id);
+          // keep a running goal with random step count
+          queries.runningGoalAndSteps(user.id, null);
           req.session.user = user.id;
           return res.json({ id: user.id, name: user.name, access_token: null, picture: user.image_url });
         }
