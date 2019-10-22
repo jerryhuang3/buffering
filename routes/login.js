@@ -24,8 +24,6 @@ module.exports = login = async (req, res) => {
     case 'google':
       // google login
       const [id, stepsArray] = await Promise.all([queries.getUserId(user.email), utils.filterAndFetchSteps(user.accessTok)]);
-      console.log(stepsArray);
-      console.log(pastWeekArray);
       await Promise.all([queries.setTokenExistingUser(id, user.accessTok, user.accessTokExp), queries.runningGoalAndSteps(id, stepsArray)]);
 
       req.session.user = id;

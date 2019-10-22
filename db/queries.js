@@ -424,14 +424,16 @@ function runningGoalAndSteps(id, stepsArray) {
       .endOf('day')
       .valueOf();
     let numOfDays = (currentEndOfDay - lastEndOfDay) / 86400000;
-
     let day = parseInt(lastEndOfDay);
-
-    for (let i = 0; i < numOfDays; i++) {
-      day = day + 86400000;
-      if (stepsArray[i]) {
-        insertGoalAndSteps(id, stepsGoal, stepsArray[i], day);
-      } else {
+    if (stepsArray) {
+      const stepsToInsert = stepsArray.slice(0, numOfDays).reverse();
+      for (let i = 0; i < numOfDays; i++) {
+        day = day + 86400000;
+        insertGoalAndSteps(id, stepsGoal, stepsToInsert[i], day);
+      }
+    } else {
+      for (let i = 0; i < numOfDays; i++) {
+        day = day + 86400000;
         insertGoalAndSteps(id, stepsGoal, 2000 + Math.floor(12000 * Math.random()), day);
       }
     }
