@@ -52,6 +52,9 @@ const Nav = () => {
           <li>
             <NavLink to="/demo">Demo</NavLink>
           </li>
+          <li>
+            <a href="https://chrome.google.com/webstore/detail/buffering/hpjcimjbbamlpadijkihkmefiblggpdk" target="_blank">Extension</a>
+          </li>
           <li onClick={logout}>
             <NavLink to="/">Logout</NavLink>
           </li>

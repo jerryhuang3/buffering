@@ -7,7 +7,7 @@ import StateContext from './StateContext';
 const Login = props => {
   const ctx = useContext(StateContext);
 
-  const [input, setInput] = useState({});
+  const [input, setInput] = useState({ email: "test@test.com", password: "test"});
 
   const handleChange = e => {
     e.persist();
@@ -20,6 +20,7 @@ const Login = props => {
   };
 
   const handleLogin = async response => {
+    console.log(response)
     const res = await fetch('/login', {
       method: 'POST',
       body: JSON.stringify(response),
@@ -53,6 +54,7 @@ const Login = props => {
                   icon="paper plane"
                   iconPosition="left"
                   placeholder="E-mail address"
+                  value={input.email}
                   name="email"
                   type="email"
                 />
@@ -62,6 +64,7 @@ const Login = props => {
                   icon="lock"
                   iconPosition="left"
                   placeholder="Password"
+                  value={input.password}
                   name="password"
                   type="password"
                 />
