@@ -25,7 +25,7 @@
     "sass": "^1.23.0"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcrypt": "^3.0.6",
     "chart.js": "^2.8.0",
     "chartjs-plugin-datalabels": "^0.6.0",
